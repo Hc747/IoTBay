@@ -1,5 +1,13 @@
 package au.edu.uts.wsd;
 
-public class TestJAXB {
+import java.util.UUID;
+
+public final class TestJAXB {
+    
+    public static void main(String[] args) throws Exception {
+        
+        System.out.println("ID: "+UUID.randomUUID());
+        
+    }
     
 }

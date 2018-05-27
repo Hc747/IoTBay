@@ -2,9 +2,16 @@
 <%@page import="au.edu.uts.wsd.action.Action"%>
 <%@page import="au.edu.uts.wsd.Constants"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    if ("register".equals(request.getParameter("action"))) {
+        request.setAttribute(Action.KEY, new RegisterAction());
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
 
+    <jsp:include page="../WEB-INF/includes/common/handle_action.jsp"/>
+    
     <jsp:include page="../WEB-INF/includes/common/head.jsp"/>
 
     <body>
@@ -17,28 +24,9 @@
 
             <div class="container">
                 
-                <%                     
-                    if ("register".equals(request.getParameter("action"))) {
-                        Action action = new RegisterAction();
-                        
-                        try {
-                            action.invoke(application, session, request, response);
-                            %>
-                                <div class="alert alert-success" role="alert">
-                                    Registration Successful. Click <a href="<%= Constants.BASE_URL %>">here</a> to get back to the main page.
-                                </div>
-                            <%
-                        } catch (Exception e) {
-                            %>
-                                <div class="alert alert-warning" role="alert">
-                                    Warning: <%= e.getMessage() %>
-                                </div>
-                            <%
-                        }
-                    }
-                %>
+                <jsp:include page="../WEB-INF/includes/common/render_action.jsp"/>
                 
-                <form action="<%= Constants.BASE_URL %>/register/?action=register" method="POST">
+                <form action="<%= Constants.BASE_URL %>register/?action=register" method="POST">
                     <div class="form-group">
                         <label for="name">
                             Name

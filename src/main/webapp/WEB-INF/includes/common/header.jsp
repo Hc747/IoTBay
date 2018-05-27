@@ -3,7 +3,7 @@
 <%@page import="java.util.List"%>
 <%@page import="java.util.Arrays"%>
 <%@page import="au.edu.uts.wsd.Constants"%>
-<%@page import="au.edu.uts.wsd.Person"%>
+<%@page import="au.edu.uts.wsd.model.Person"%>
 <%
     final Person person = (Person) session.getAttribute(Person.KEY);
 %>
@@ -23,16 +23,16 @@
                         This project demonstrates the following:
                     <ul class="text-white">
                         <li>
-                            Displaying data dynamically via JSP
+                            Rendering data dynamically via JSP and Java Code
                         </li>
                         <li>
-                            Displaying data dynamically via JSP and XSLT
+                            Rendering data dynamically via JSP and XSLT
                         </li>
                         <li>
-                            Client-sided data validation (basic)
+                            Basic Client-sided data validation
                         </li>
                         <li>
-                            Server-sided data validation (basic)
+                            Basic Server-sided data validation
                         </li>
                         <li>
                             A basic ReST API
@@ -55,12 +55,12 @@
                         %>
 
                         <li>
-                            <a href="http://localhost:8080/demo_project/login/" class="text-white">
+                            <a href="<%= Constants.BASE_URL %>login/" class="text-white">
                                 Login
                             </a>
                         </li>
                         <li>
-                            <a href="http://localhost:8080/demo_project/register/" class="text-white">
+                            <a href="<%= Constants.BASE_URL %>register/" class="text-white">
                                 Register
                             </a>
                         </li>
@@ -68,7 +68,7 @@
                         <% } else { %>
 
                         <li>
-                            <a href="http://localhost:8080/demo_project/logout/" class="text-white">
+                            <a href="<%= Constants.BASE_URL %>logout/" class="text-white">
                                 Logout
                             </a>
                         </li>
@@ -90,8 +90,22 @@
 
                     <%
 
-                        //see information here about changing the Glassfish JDK version: https://stackoverflow.com/questions/10444959/how-do-i-specify-the-jdk-for-a-glassfish-domain
-                        //remember to make sure you're modifying the same Glassfish installation that Netbeans uses
+                        //to use features of Java 7 / 8, you'll need to modify your glassfish installations
+                        //JDK version.
+                        //To do so, go to the location of your glassfish installation and navigate to the following file.
+                        //glassfish > domains > %domain_name% > config > default-web.xml
+                        //Navigate to the JSP servlet and add the following parameters.
+                        
+                        // <init-param>
+                        //  <param-name>compilerSourceVM</param-name>
+                        //  <param-value>1.8</param-value>
+                        // </init-param>
+                        // 
+                        // <init-param>
+                        //  <param-name>compilerTargetVM</param-name>
+                        //  <param-value>1.8</param-value>
+                        // </init-param>
+                        
                         final StringBuilder location = new StringBuilder();
 
                         location.append(Constants.APPLICATION_NAME);
@@ -105,19 +119,27 @@
                             paths.removeFirst(); //get rid of the empty context path component
                             paths.removeLast(); //get rid of the filename (index.jsp etc)
 
+                            //equivalent to an 'enhanced for loop'
                             paths.forEach(path -> location.append(" > ").append(path));
 
                         }
 
                     %>
-
                     <%= location %>
                 </strong>
             </a>
-
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <div class="text-white">
+                <strong>
+                    <%
+                        String greeting = String.format("Welcome, %s!", person == null ? "Guest" : person.getName());
+                    %>
+                    <%= greeting %>
+                </strong> 
+                &nbsp;
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
         </div>
     </div>
 

@@ -11,8 +11,6 @@
         </session-timeout>
     </session-config>
     
-    <!--
-    
     <servlet>
         <servlet-name>Jersey REST Web Services</servlet-name>
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
@@ -27,7 +25,5 @@
         <servlet-name>Jersey REST Web Services</servlet-name>
         <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
-    
-    -->
     
 </web-app>

@@ -2,9 +2,16 @@
 <%@page import="au.edu.uts.wsd.action.Action"%>
 <%@page import="au.edu.uts.wsd.Constants"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%     
+    if ("login".equals(request.getParameter("action"))) {
+        request.setAttribute(Action.KEY, new LoginAction());
+    }
+%>
 <!DOCTYPE html>
 <html lang="en">
 
+    <jsp:include page="../WEB-INF/includes/common/handle_action.jsp"/>
+    
     <jsp:include page="../WEB-INF/includes/common/head.jsp"/>
 
     <body>
@@ -17,28 +24,9 @@
 
             <div class="container">
                 
-                <%                     
-                    if ("login".equals(request.getParameter("action"))) {
-                        Action action = new LoginAction();
-                        
-                        try {
-                            action.invoke(application, session, request, response);
-                            %>
-                                <div class="alert alert-success" role="alert">
-                                    Login Successful. Click <a href="<%= Constants.BASE_URL %>">here</a> to get back to the main page.
-                                </div>
-                            <%
-                        } catch (Exception e) {
-                            %>
-                                <div class="alert alert-warning" role="alert">
-                                    Warning: <%= e.getMessage() %>
-                                </div>
-                            <%
-                        }
-                    }
-                %>
+                <jsp:include page="../WEB-INF/includes/common/render_action.jsp"/>
                 
-                <form action="<%= Constants.BASE_URL %>/login/?action=login" method="POST">
+                <form action="<%= Constants.BASE_URL %>login/?action=login" method="POST">
                     <div class="form-group">
                         <label for="email">
                             Email address
@@ -55,6 +43,7 @@
                         <input type="checkbox" class="form-check-input" id="remember" name="remember">
                         <label class="form-check-label" for="remember">Remember me</label>
                     </div>
+                    <input type="hidden" name="id" value="sdfsdsdfsdg"/>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>

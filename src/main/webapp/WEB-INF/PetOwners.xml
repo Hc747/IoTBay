@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<people 
+    xmlns="https://au.edu.uts.wsd/pet-manager"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://au.edu.uts.wsd/pet-manager PetOwners.xsd">
+    
+    <person id="e93c98c7-3e92-4759-bfb1-111aa44b3827">
+        <name>Harrison Cole</name>
+        <email>harrison.cole@uts.edu.au</email>
+        <password>helloworld123</password>
+        <pets>
+            <animal microchip="938f7989-f0d4-4799-87d7-064a6552cde6">
+                <name>Little Guy</name>
+                <species>DOG</species>
+            </animal>
+            <animal microchip="dffd55b9-8ce6-4f2a-b1b7-56853eada8e3">
+                <name>Maisy</name>
+                <species>DOG</species>
+            </animal>
+            <animal microchip="9d02cd9d-194f-4210-95c2-71dbbfec79bd">
+                <name>Scrappy</name>
+                <species>BIRD</species>
+            </animal>
+            <animal microchip="64f2cd42-b3d2-4494-9f54-03e0e5adf8b6">
+                <name>Charlie</name>
+                <species>CAT</species>
+            </animal>
+        </pets>
+    </person>
+    
+    <person id="d70c4ea7-03a2-46f1-8b2c-67655ee24404">
+        <name>Potato Chip</name>
+        <email>potato@chips.com</email>
+        <password>crisps123</password>
+        <pets/>
+    </person>
+    
+</people>

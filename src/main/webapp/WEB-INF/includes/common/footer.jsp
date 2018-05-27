@@ -1,7 +1,7 @@
 <footer class="text-muted">
     <div class="container">
         <p class="float-right">
-            <a href="#">
+            <a href="#" class="btn btn-primary">
                 Back to top
             </a>
         </p>
