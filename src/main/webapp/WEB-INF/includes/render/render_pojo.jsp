@@ -39,7 +39,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <small class="text-muted">Dogs: <%= dogs%></small>
                             <small class="text-muted">Cats: <%= cats%></small>
-                            <small class="text-muted">Birds: <%= birds%>/></small>
+                            <small class="text-muted">Birds: <%= birds%></small>
                             <small class="text-muted">Total: <%= total%></small>
                         </div>
                     </div>
