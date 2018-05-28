@@ -1,39 +1,36 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<people 
-    xmlns="https://au.edu.uts.wsd/pet-manager"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="https://au.edu.uts.wsd/pet-manager PetOwners.xsd">
-    
-    <person id="e93c98c7-3e92-4759-bfb1-111aa44b3827">
-        <name>Harrison Cole</name>
-        <email>harrison.cole@uts.edu.au</email>
-        <password>helloworld123</password>
-        <pets>
-            <animal microchip="938f7989-f0d4-4799-87d7-064a6552cde6">
-                <name>Little Guy</name>
-                <species>DOG</species>
-            </animal>
-            <animal microchip="dffd55b9-8ce6-4f2a-b1b7-56853eada8e3">
-                <name>Maisy</name>
-                <species>DOG</species>
-            </animal>
-            <animal microchip="9d02cd9d-194f-4210-95c2-71dbbfec79bd">
-                <name>Scrappy</name>
-                <species>BIRD</species>
-            </animal>
-            <animal microchip="64f2cd42-b3d2-4494-9f54-03e0e5adf8b6">
-                <name>Charlie</name>
-                <species>CAT</species>
-            </animal>
-        </pets>
-    </person>
-    
-    <person id="d70c4ea7-03a2-46f1-8b2c-67655ee24404">
-        <name>Potato Chip</name>
-        <email>potato@chips.com</email>
-        <password>crisps123</password>
-        <pets/>
-    </person>
-    
-</people>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<wsd:people xmlns:wsd="https://au.edu.uts.wsd/pet-manager" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://au.edu.uts.wsd/pet-manager PetOwners.xsd">
+    <wsd:person id="e93c98c7-3e92-4759-bfb1-111aa44b3827">
+        <wsd:name>Harrison Cole</wsd:name>
+        <wsd:email>harrison.cole@uts.edu.au</wsd:email>
+        <wsd:password>helloworld123</wsd:password>
+        <wsd:pets>
+            <wsd:animal microchip="938f7989-f0d4-4799-87d7-064a6552cde6">
+                <wsd:name>Little Guy</wsd:name>
+                <wsd:species>DOG</wsd:species>
+                <wsd:imageURL>https://www.kimballstock.com/images/dog-stock-photos.jpg</wsd:imageURL>
+            </wsd:animal>
+            <wsd:animal microchip="dffd55b9-8ce6-4f2a-b1b7-56853eada8e3">
+                <wsd:name>Maisy</wsd:name>
+                <wsd:species>DOG</wsd:species>
+                <wsd:imageURL>https://www.kimballstock.com/images/dog-stock-photos.jpg</wsd:imageURL>
+            </wsd:animal>
+            <wsd:animal microchip="9d02cd9d-194f-4210-95c2-71dbbfec79bd">
+                <wsd:name>Scrappy</wsd:name>
+                <wsd:species>BIRD</wsd:species>
+                <wsd:imageURL>https://www.stockvault.net/data/2011/02/05/117437/thumb16.jpg</wsd:imageURL>
+            </wsd:animal>
+            <wsd:animal microchip="64f2cd42-b3d2-4494-9f54-03e0e5adf8b6">
+                <wsd:name>Charlie</wsd:name>
+                <wsd:species>CAT</wsd:species>
+                <wsd:imageURL>http://i0.kym-cdn.com/photos/images/original/000/959/452/436.jpg</wsd:imageURL>
+            </wsd:animal>
+        </wsd:pets>
+    </wsd:person>
+    <wsd:person id="d70c4ea7-03a2-46f1-8b2c-67655ee24404">
+        <wsd:name>Potato Chip</wsd:name>
+        <wsd:email>potato@chips.com</wsd:email>
+        <wsd:password>crisps123</wsd:password>
+        <wsd:pets/>
+    </wsd:person>
+</wsd:people>

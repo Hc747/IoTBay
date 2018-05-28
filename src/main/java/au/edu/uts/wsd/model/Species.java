@@ -1,5 +1,7 @@
 package au.edu.uts.wsd.model;
 
+//In reality, animal images would be on a per-animal basis, 
+//rather than per-species of animal
 public enum Species {
     CAT("http://i0.kym-cdn.com/photos/images/original/000/959/452/436.jpg"),
     DOG("https://www.kimballstock.com/images/dog-stock-photos.jpg"),

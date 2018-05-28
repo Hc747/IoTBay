@@ -37,7 +37,7 @@ public final class PetManager implements Serializable {
         try (FileInputStream stream = new FileInputStream(baseFilepath + filepath)) {
             JAXBContext context = JAXBContext.newInstance(clazz);
             Unmarshaller unmarshaller = context.createUnmarshaller();
-
+            
             return (T) unmarshaller.unmarshal(stream);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -51,6 +51,7 @@ public final class PetManager implements Serializable {
 
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+            marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "https://au.edu.uts.wsd/pet-manager PetOwners.xsd");
 
             marshaller.marshal(object, stream);
         } catch (Exception e) {

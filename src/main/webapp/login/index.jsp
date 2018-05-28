@@ -43,7 +43,6 @@
                         <input type="checkbox" class="form-check-input" id="remember" name="remember">
                         <label class="form-check-label" for="remember">Remember me</label>
                     </div>
-                    <input type="hidden" name="id" value="sdfsdsdfsdg"/>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>

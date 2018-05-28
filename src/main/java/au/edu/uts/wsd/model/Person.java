@@ -1,6 +1,7 @@
 package au.edu.uts.wsd.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -66,6 +67,21 @@ public class Person implements Serializable {
 
     public void setPets(Animals pets) {
         this.pets = pets;
+    }
+    
+    //Determine that a person is equal to another person if they have the same
+    //id.
+    //see the contract between Object#equals and Object#hashcode
+    //https://docs.oracle.com/javase/7/docs/api/java/lang/Object.html
+    
+    @Override
+    public boolean equals(Object other) {
+        return other instanceof Person && ((Person) other).id.equals(id);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
     
 }
