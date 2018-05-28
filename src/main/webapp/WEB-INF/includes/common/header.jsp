@@ -37,9 +37,6 @@
                         <li>
                             A basic ReST API
                         </li>
-                        <li>
-                            A basic SOAP API
-                        </li>
                     </ul>
                     </p> 
                 </div>
