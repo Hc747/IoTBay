@@ -28,17 +28,18 @@ public class LoginAction extends Action {
         
         //TODO: password hashing
         
-        if (password.length() < 8) {
-            throw new ActionException("Your password must be at least 8 characters.");
-        }
-        
-        
+
         final IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);
-        final Optional<User> user = ctx.getUsers().find(u -> u.getUsername().equals(username) && u.getPassword().equals(password));
+        final Optional<User> candidate = ctx.getUsers().findByUsername(username);
+        final User user = candidate.orElseThrow(() -> new ActionException("Incorrect username or password."));
+
+        if (!user.getPassword().equals(password)) {
+            throw new ActionException("Incorrect username or password.");
+        }
+
+        AuthenticationUtil.authenticate(session, user);
         
-        AuthenticationUtil.authenticate(session, user.orElseThrow(() -> new ActionException("Incorrect username or password.")));
-        
-        message = String.format("Login successful. Welcome, %s", user.get().getUsername());
+        message = String.format("Login successful. Welcome, %s", user.getUsername());
     }
     
 }
