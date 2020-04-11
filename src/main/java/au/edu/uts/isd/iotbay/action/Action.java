@@ -1,4 +1,4 @@
-package au.edu.uts.wsd.action;
+package au.edu.uts.isd.iotbay.action;
 
 import java.io.Serializable;
 import javax.servlet.ServletContext;
@@ -16,12 +16,13 @@ public abstract class Action implements Serializable {
     public final void process(ServletContext application, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
         try {
             invoke(application, session, request, response);
+            type = MessageType.SUCCESS;
         } catch (ActionException e) {
-            type = MessageType.WARNING;
             message = e.getMessage();
+            type = MessageType.WARNING;
         } catch (Exception e) {
-            type = MessageType.DANGER;
             message = "An unexpected error occurred. Unable to process your request.";
+            type = MessageType.DANGER;
             
             e.printStackTrace();
         }

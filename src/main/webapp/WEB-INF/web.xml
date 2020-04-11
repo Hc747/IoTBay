@@ -11,12 +11,12 @@
         </session-timeout>
     </session-config>
     
-    <servlet>
+<!--    <servlet>
         <servlet-name>Jersey REST Web Services</servlet-name>
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
         <init-param>
             <param-name>com.sun.jersey.config.property.packages</param-name>
-            <param-value>au.edu.uts.wsd.rest</param-value>
+            <param-value>au.edu.uts.isd.iotbay.rest</param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -24,6 +24,6 @@
     <servlet-mapping>
         <servlet-name>Jersey REST Web Services</servlet-name>
         <url-pattern>/rest/*</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
     
 </web-app>

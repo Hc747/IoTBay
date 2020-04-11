@@ -1,8 +1,8 @@
-<%@page import="au.edu.uts.wsd.action.Action"%>
-<%
-    Action action = (Action) request.getAttribute(Action.KEY);
+<%@page import="au.edu.uts.isd.iotbay.action.Action"%>
+<% 
+    final Action action = (Action) request.getAttribute(Action.KEY);
     
     if (action != null) {
+        out.println(action.render());
+    }
 %>
-<%= action.render() %>
-<% } %>

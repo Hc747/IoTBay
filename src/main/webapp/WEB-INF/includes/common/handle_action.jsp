@@ -1,6 +1,8 @@
-<%@page import="au.edu.uts.wsd.action.impl.LogoutAction"%>
-<%@page import="au.edu.uts.wsd.action.Action"%>
+<%@page import="au.edu.uts.isd.iotbay.action.ActionRegistry"%>
+<%@page import="au.edu.uts.isd.iotbay.action.Action"%>
 <% 
+    request.setAttribute(Action.KEY, ActionRegistry.get(request.getParameter("action")));
+    
     Action action = (Action) request.getAttribute(Action.KEY);
     
     if (action == null) {

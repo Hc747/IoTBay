@@ -1,9 +1,5 @@
-<%@page import="au.edu.uts.wsd.action.impl.LogoutAction"%>
-<%@page import="au.edu.uts.wsd.action.Action"%>
-<%@page import="au.edu.uts.wsd.Constants"%>
-s
+<%@page import="au.edu.uts.isd.iotbay.Constants"%>
 <%    
-    session.setAttribute(Action.KEY, new LogoutAction());
-    
-    response.sendRedirect(Constants.BASE_URL);
+    final String action = String.format("%s?action=logout", Constants.BASE_URL);
+    response.sendRedirect(action);
 %>

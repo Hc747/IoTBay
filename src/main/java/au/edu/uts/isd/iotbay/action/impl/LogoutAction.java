@@ -1,8 +1,7 @@
-package au.edu.uts.wsd.action.impl;
+package au.edu.uts.isd.iotbay.action.impl;
 
-import au.edu.uts.wsd.Constants;
-import au.edu.uts.wsd.model.Person;
-import au.edu.uts.wsd.action.Action;
+import au.edu.uts.isd.iotbay.action.Action;
+import au.edu.uts.isd.iotbay.util.AuthenticationUtil;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,19 +11,14 @@ public class LogoutAction extends Action {
 
     @Override
     protected void invoke(ServletContext application, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        boolean loggedIn = session.getAttribute(Person.KEY) != null;
+        final boolean valid = AuthenticationUtil.unauthenticate(session);
         
-        session.invalidate();
-        
-        if (loggedIn) {
+        if (valid) {
             type = MessageType.SUCCESS;
             message = "Logout successful.";
         } else {
-            type = MessageType.WARNING;
-            message = "You were already logged out.";
+            throw new ActionException("You cannot do this while logged out.");
         }
-        
-        response.sendRedirect(Constants.BASE_URL);
     }
     
 }

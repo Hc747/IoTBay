@@ -1,4 +1,4 @@
-<%@page import="au.edu.uts.wsd.Constants"%>
+<%@page import="au.edu.uts.isd.iotbay.Constants"%>
 <section class="jumbotron text-center">
     <div class="container">
 
