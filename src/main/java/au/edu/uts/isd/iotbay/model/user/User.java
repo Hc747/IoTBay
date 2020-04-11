@@ -1,13 +1,10 @@
 package au.edu.uts.isd.iotbay.model.user;
 
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-/**
- *
- * @author Harrison
- */
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 public class User {

@@ -6,16 +6,13 @@ import au.edu.uts.isd.iotbay.model.user.Role;
 import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.util.AuthenticationUtil;
 import au.edu.uts.isd.iotbay.util.UUIDGenerator;
-import java.util.Optional;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
-/**
- *
- * @author Harrison
- */
 public class RegisterAction extends Action {
 
     @Override
@@ -31,6 +28,8 @@ public class RegisterAction extends Action {
         if (name == null || username == null || password == null) {
             throw new ActionException("You must supply a name, username and password in order to login.");
         }
+
+        //TODO: password hashing
         
         final IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);
         final Optional<User> existing = ctx.getUsers().findByUsername(username);

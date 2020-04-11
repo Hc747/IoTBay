@@ -7,10 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-/**
- *
- * @author Harrison
- */
 public class ActionRegistry {
     
     //TODO: make non-static

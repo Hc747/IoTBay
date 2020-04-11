@@ -29,7 +29,7 @@ public class LoginAction extends Action {
         //TODO: password hashing
         
         if (password.length() < 8) {
-            throw new ActionException("Your password must be atleast 8 characters.");
+            throw new ActionException("Your password must be at least 8 characters.");
         }
         
         

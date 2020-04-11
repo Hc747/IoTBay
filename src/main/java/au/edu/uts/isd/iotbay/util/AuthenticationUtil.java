@@ -3,10 +3,6 @@ package au.edu.uts.isd.iotbay.util;
 import au.edu.uts.isd.iotbay.model.user.User;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author Harrison
- */
 public class AuthenticationUtil {
     
     private static final String SESSION_KEY = "authenticated-user";
@@ -32,7 +28,6 @@ public class AuthenticationUtil {
         boolean result = isAuthenticated(session);
         session.invalidate();
         return result;
-//        Object principle = session.get
     }
     
 }
