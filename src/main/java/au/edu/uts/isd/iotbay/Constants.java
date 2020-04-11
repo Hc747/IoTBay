@@ -11,5 +11,4 @@ public final class Constants {
     private Constants() {
         throw new IllegalStateException("Unable to create an instance of the Constants class");
     }
-    
 }

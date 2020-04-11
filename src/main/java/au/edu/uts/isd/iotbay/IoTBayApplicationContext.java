@@ -48,5 +48,4 @@ public final class IoTBayApplicationContext implements Serializable {
         
         private static IoTBayApplicationContext holder() { return DEFAULT; }
     }
-
 }

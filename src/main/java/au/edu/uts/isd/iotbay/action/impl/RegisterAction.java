@@ -1,7 +1,7 @@
 package au.edu.uts.isd.iotbay.action.impl;
 
 import au.edu.uts.isd.iotbay.IoTBayApplicationContext;
-import au.edu.uts.isd.iotbay.action.Action;
+import au.edu.uts.isd.iotbay.action.UnauthenticatedAction;
 import au.edu.uts.isd.iotbay.model.user.Role;
 import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.util.AuthenticationUtil;
@@ -13,13 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
-public class RegisterAction extends Action {
+public class RegisterAction extends UnauthenticatedAction {
 
     @Override
     protected void invoke(ServletContext application, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        if (AuthenticationUtil.isAuthenticated(session)) {
-            throw new ActionException("You cannot do this while logged in.");
-        }
+        super.invoke(application, session, request, response);
         
         String name = request.getParameter("name");
         String username = request.getParameter("username");
@@ -44,5 +42,4 @@ public class RegisterAction extends Action {
         
         message = String.format("Registration successful. Welcome %s", user.getUsername());
     }
-    
 }
