@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 @Getter
 public final class IoTBayApplicationContext implements Serializable {
     
-    private static final String CONTEXT_KEY = "IoTBay";
+    private static final String CONTEXT_KEY = "application-context";
     
     private final UserRepository users;
     
@@ -24,23 +24,27 @@ public final class IoTBayApplicationContext implements Serializable {
     //TODO: other repositories
 
     public static IoTBayApplicationContext getInstance(ServletContext application, Supplier<IoTBayApplicationContext> supplier) {
-        IoTBayApplicationContext ctx = (IoTBayApplicationContext) application.getAttribute(CONTEXT_KEY);
-        if (ctx == null) { //TODO: ensure double checked locking is okay
-            synchronized (application) {
-                ctx = (IoTBayApplicationContext) application.getAttribute(CONTEXT_KEY);
-                if (ctx == null) {
-                    ctx = supplier.get();
-                    application.setAttribute(CONTEXT_KEY, ctx);
-                }
-            }
-        }
-        return ctx;
+        return getInstance(application, CONTEXT_KEY, supplier);
     }
-    
+
     public static IoTBayApplicationContext getInstance(ServletContext application) {
         return getInstance(application, IoTBayApplicationContextHolder::holder);
     }
-    
+
+    private static <T> T getInstance(ServletContext application, String key, Supplier<T> supplier) {
+        T result = (T) application.getAttribute(key);
+        if (result == null) {
+            synchronized (application) {
+                result = (T) application.getAttribute(key);
+                if (result == null) {
+                    result = supplier.get();
+                    application.setAttribute(key, result);
+                }
+            }
+        }
+        return result;
+    }
+
     private static final class IoTBayApplicationContextHolder {
         private static final IoTBayApplicationContext DEFAULT = new IoTBayApplicationContext(
             UserRepository.create()

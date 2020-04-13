@@ -1,10 +1,10 @@
 package au.edu.uts.isd.iotbay.action;
 
-import java.io.Serializable;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.Serializable;
 
 public abstract class Action implements Serializable {
     
@@ -34,15 +34,8 @@ public abstract class Action implements Serializable {
         if (message == null || message.isEmpty() || type == null) {
             return "";
         }
-        
-        StringBuilder builder = new StringBuilder();
-        
-        builder
-                .append(String.format("<div class=\"alert alert-%s\" role=\"alert\">", type.name().toLowerCase()))
-                .append(message)
-                .append("</div>");
-        
-        return builder.toString();
+
+        return String.format("<div class=\"alert alert-%s\" role=\"alert\">", type.name().toLowerCase()) + message + "</div>";
     }
     
     public class ActionException extends Exception {
@@ -62,5 +55,4 @@ public abstract class Action implements Serializable {
         WARNING,
         DANGER
     }
-    
 }
