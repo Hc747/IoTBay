@@ -21,7 +21,7 @@ public class LoginAction extends UnauthenticatedAction {
         String password = request.getParameter("password");
         
         if (username == null || password == null) {
-            throw new ActionException("You must supply an username and password in order to login.");
+            reject("You must supply an username and password in order to login.");
         }
         
         //TODO: password hashing
@@ -32,7 +32,7 @@ public class LoginAction extends UnauthenticatedAction {
         final User user = candidate.orElseThrow(() -> new ActionException("Incorrect username or password."));
 
         if (!user.getPassword().equals(password)) {
-            throw new ActionException("Incorrect username or password.");
+            reject("Incorrect username or password.");
         }
 
         AuthenticationUtil.authenticate(session, user);

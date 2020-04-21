@@ -29,6 +29,10 @@ public abstract class Action implements Serializable {
     }
     
     protected abstract void invoke(ServletContext application, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception;
+
+    protected static void reject(String reason) throws ActionException {
+        throw new ActionException(reason);
+    }
     
     public String render() {
         if (message == null || message.isEmpty() || type == null) {
@@ -38,7 +42,7 @@ public abstract class Action implements Serializable {
         return String.format("<div class=\"alert alert-%s\" role=\"alert\">", type.name().toLowerCase()) + message + "</div>";
     }
     
-    public class ActionException extends Exception {
+    public static class ActionException extends Exception {
     
         public ActionException(String message) {
             super(message);
@@ -50,7 +54,7 @@ public abstract class Action implements Serializable {
         
     }
     
-    public enum MessageType {
+    protected enum MessageType {
         SUCCESS,
         WARNING,
         DANGER

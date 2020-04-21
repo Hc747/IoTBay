@@ -24,7 +24,7 @@ public class RegisterAction extends UnauthenticatedAction {
         String password = request.getParameter("password");
         
         if (name == null || username == null || password == null) {
-            throw new ActionException("You must supply a name, username and password in order to login.");
+            reject("You must supply a name, username and password in order to login.");
         }
 
         //TODO: password hashing
@@ -33,7 +33,7 @@ public class RegisterAction extends UnauthenticatedAction {
         final Optional<User> existing = ctx.getUsers().findByUsername(username);
         
         if (existing.isPresent()) {
-            throw new ActionException("Sorry, that username is already taken.");
+            reject("Sorry, that username is already taken.");
         }
         
         final User user = ctx.getUsers().save(new User(UUIDGenerator.generate(), name, username, password, Role.USER));

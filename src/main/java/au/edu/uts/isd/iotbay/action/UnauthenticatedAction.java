@@ -12,7 +12,7 @@ public class UnauthenticatedAction extends Action {
     @Override
     protected void invoke(ServletContext application, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (AuthenticationUtil.isAuthenticated(session)) {
-            throw new ActionException("You cannot do this while logged in.");
+            reject("You cannot do this while logged in.");
         }
     }
 }
