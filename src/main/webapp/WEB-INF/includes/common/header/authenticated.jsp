@@ -1,11 +1,11 @@
 <%@page import="au.edu.uts.isd.iotbay.model.user.User"%>
-<%@page import="au.edu.uts.isd.iotbay.Constants"%>
 <%@page import="au.edu.uts.isd.iotbay.util.AuthenticationUtil"%>
+<%@ page import="static au.edu.uts.isd.iotbay.Constants.BASE_URL" %>
 <%
     final User user = AuthenticationUtil.user(session);
 %>
 <strong>
-    Welcome, <a href="<%= Constants.BASE_URL %>profile/"><%= user.getUsername() %></a>
+    Welcome, <a href="<%= BASE_URL %>profile/"><%= user.getUsername() %></a>
 </strong>
-&nbsp;
-<a href="<%= Constants.BASE_URL %>logout/">Logout</a>
+<a href="<%= BASE_URL%>main/">Main Page</a>
+<a href="<%= BASE_URL %>logout/">Logout</a>
