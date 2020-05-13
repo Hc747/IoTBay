@@ -1,4 +1,4 @@
-# IoTBay - ISD 2020 - 12962712 - Harrison Colesdfhjksdfghhjsd
+# IoTBay - ISD 2020 - G106
 ## Deploying the code.
 1. Run glassfish server 4.1.1.
 2. Login to the admin console.
