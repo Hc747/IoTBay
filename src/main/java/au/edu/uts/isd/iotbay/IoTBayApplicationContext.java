@@ -1,6 +1,8 @@
 package au.edu.uts.isd.iotbay;
 
 import au.edu.uts.isd.iotbay.repository.user.UserRepository;
+import au.edu.uts.isd.iotbay.util.DataSourceProvider;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 
 import javax.servlet.ServletContext;
@@ -9,13 +11,15 @@ import java.util.Objects;
 import java.util.function.Supplier;
 
 @Getter
-public final class IoTBayApplicationContext implements Serializable {
+public final class IoTBayApplicationContext implements Serializable, AutoCloseable {
     
     private static final String CONTEXT_KEY = "application-context";
-    
+
+    private final HikariDataSource datasource;
     private final UserRepository users;
     
-    IoTBayApplicationContext(UserRepository users) {
+    IoTBayApplicationContext(HikariDataSource datasource, UserRepository users) {
+        this.datasource = Objects.requireNonNull(datasource);
         this.users = Objects.requireNonNull(users);
     }
     
@@ -45,9 +49,16 @@ public final class IoTBayApplicationContext implements Serializable {
         return result;
     }
 
+    @Override
+    public void close() throws Exception {
+        datasource.close();
+    }
+
     private static final class IoTBayApplicationContextHolder {
+
         private static final IoTBayApplicationContext DEFAULT = new IoTBayApplicationContext(
-            UserRepository.create()
+                DataSourceProvider.from(IoTBayApplicationContextHolder.class.getResource("database.properties").getPath()),
+                UserRepository.create()
         );
         
         private static IoTBayApplicationContext holder() { return DEFAULT; }
