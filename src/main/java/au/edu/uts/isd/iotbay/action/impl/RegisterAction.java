@@ -5,13 +5,13 @@ import au.edu.uts.isd.iotbay.action.UnauthenticatedAction;
 import au.edu.uts.isd.iotbay.model.user.Role;
 import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.util.AuthenticationUtil;
-import au.edu.uts.isd.iotbay.util.UUIDGenerator;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RegisterAction extends UnauthenticatedAction {
 
@@ -35,8 +35,9 @@ public class RegisterAction extends UnauthenticatedAction {
         if (existing.isPresent()) {
             reject("Sorry, that username is already taken.");
         }
-        
-        final User user = ctx.getUsers().save(new User(UUIDGenerator.generate(), name, username, password, Role.USER));
+
+        //TODO: correctly generate id
+        final User user = ctx.getUsers().save(new User(ThreadLocalRandom.current().nextInt(), name, username, password, Role.USER));
         
         AuthenticationUtil.authenticate(session, user);
         

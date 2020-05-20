@@ -1,8 +1,8 @@
 package au.edu.uts.isd.iotbay;
 
+import au.edu.uts.isd.iotbay.database.ConnectionProvider;
+import au.edu.uts.isd.iotbay.database.ConnectionProviderFactory;
 import au.edu.uts.isd.iotbay.repository.user.UserRepository;
-import au.edu.uts.isd.iotbay.util.DataSourceProvider;
-import com.zaxxer.hikari.HikariDataSource;
 import lombok.Getter;
 
 import javax.servlet.ServletContext;
@@ -15,10 +15,10 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
     
     private static final String CONTEXT_KEY = "application-context";
 
-    private final HikariDataSource datasource;
+    private final ConnectionProvider datasource;
     private final UserRepository users;
     
-    IoTBayApplicationContext(HikariDataSource datasource, UserRepository users) {
+    IoTBayApplicationContext(ConnectionProvider datasource, UserRepository users) {
         this.datasource = Objects.requireNonNull(datasource);
         this.users = Objects.requireNonNull(users);
     }
@@ -57,7 +57,7 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
     private static final class IoTBayApplicationContextHolder {
 
         private static final IoTBayApplicationContext DEFAULT = new IoTBayApplicationContext(
-                DataSourceProvider.from(IoTBayApplicationContextHolder.class.getResource("database.properties").getPath()),
+                ConnectionProviderFactory.hikari(IoTBayApplicationContextHolder.class.getResource("database.properties").getPath()),
                 UserRepository.create()
         );
         
