@@ -63,6 +63,7 @@ public class PersistentUserRepository implements UserRepository {
     @Override
     @SneakyThrows //TODO: consider implications
     public User save(User instance) {
+        //TODO: on duplicate key update
         final String query = "INSERT INTO user (email_address, role_id, first_name, last_name, password_hash) values (?, ?, ?, ?, ?);";
         final int inserted = datasource.withPreparedStatement(query, statement -> {
             final String[] names = instance.getName().split(" ", 1);
@@ -73,7 +74,7 @@ public class PersistentUserRepository implements UserRepository {
             statement.setString(5, instance.getPassword());
             return statement.executeUpdate();
         });
-        return inserted > 1 ? findByUsername(instance.getUsername()).orElseThrow(SQLException::new) : null;
+        return inserted > 0 ? findByUsername(instance.getUsername()).orElseThrow(SQLException::new) : null;
     }
 
     @Override

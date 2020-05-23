@@ -13,7 +13,7 @@ public abstract class Action implements Serializable {
     protected MessageType type = MessageType.SUCCESS;
     protected String message;
     
-    public final void process(ServletContext application, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+    public final void process(ServletContext application, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
             invoke(application, session, request, response);
             type = MessageType.SUCCESS;
@@ -26,6 +26,7 @@ public abstract class Action implements Serializable {
             type = MessageType.DANGER;
             
             e.printStackTrace();
+            throw e;
         }
     }
     
