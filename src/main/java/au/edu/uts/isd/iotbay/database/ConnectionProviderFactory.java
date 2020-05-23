@@ -38,7 +38,7 @@ public final class ConnectionProviderFactory {
         }
 
         @Override
-        public void close() throws Exception {
+        public void close() {
             datasource.close();
         }
     }
