@@ -7,7 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class User {
     
-    private final int id;
+    private Integer id;
     private String name, username, password;
     private Role role;
     

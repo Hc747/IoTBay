@@ -1,6 +1,7 @@
 package au.edu.uts.isd.iotbay.database;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -14,6 +15,14 @@ public interface ConnectionProvider extends AutoCloseable {
     default <T> T withConnection(SQLFunction<Connection, T> action) throws SQLException {
         try (Connection connection = connection()) {
             return action.apply(connection);
+        }
+    }
+
+    default <T> T withPreparedStatement(String query, SQLFunction<PreparedStatement, T> action) throws SQLException {
+        try (Connection connection = connection()) {
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                return action.apply(statement);
+            }
         }
     }
 

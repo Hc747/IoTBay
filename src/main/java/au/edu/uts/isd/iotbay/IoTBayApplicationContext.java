@@ -25,6 +25,10 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
         this.datasource = Objects.requireNonNull(datasource);
         this.users = Objects.requireNonNull(users);
     }
+
+    IoTBayApplicationContext(ConnectionProvider datasource) {
+        this(datasource, UserRepository.create(datasource));
+    }
     
     //TODO: product repository
     //TODO: order repository
@@ -37,7 +41,7 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
     public static IoTBayApplicationContext getInstance(ServletContext application) {
         return getInstance(application, () -> {
             final String properties = application.getRealPath(PROPERTIES_PATH);
-            return new IoTBayApplicationContext(hikari(properties), UserRepository.create());
+            return new IoTBayApplicationContext(hikari(properties));
         });
     }
 
