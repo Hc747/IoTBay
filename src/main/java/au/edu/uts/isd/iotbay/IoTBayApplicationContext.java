@@ -1,19 +1,22 @@
 package au.edu.uts.isd.iotbay;
 
 import au.edu.uts.isd.iotbay.database.ConnectionProvider;
-import au.edu.uts.isd.iotbay.database.ConnectionProviderFactory;
 import au.edu.uts.isd.iotbay.repository.user.UserRepository;
 import lombok.Getter;
 
+import javax.annotation.PreDestroy;
 import javax.servlet.ServletContext;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+import static au.edu.uts.isd.iotbay.database.ConnectionProviderFactory.hikari;
+
 @Getter
 public final class IoTBayApplicationContext implements Serializable, AutoCloseable {
     
     private static final String CONTEXT_KEY = "application-context";
+    private static final String PROPERTIES_PATH = "WEB-INF/database.properties";
 
     private final ConnectionProvider datasource;
     private final UserRepository users;
@@ -32,7 +35,10 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
     }
 
     public static IoTBayApplicationContext getInstance(ServletContext application) {
-        return getInstance(application, IoTBayApplicationContextHolder::holder);
+        return getInstance(application, () -> {
+            final String properties = application.getRealPath(PROPERTIES_PATH);
+            return new IoTBayApplicationContext(hikari(properties), UserRepository.create());
+        });
     }
 
     private static <T> T getInstance(ServletContext application, String key, Supplier<T> supplier) {
@@ -50,17 +56,8 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
     }
 
     @Override
+    @PreDestroy
     public void close() throws Exception {
         datasource.close();
-    }
-
-    private static final class IoTBayApplicationContextHolder {
-
-        private static final IoTBayApplicationContext DEFAULT = new IoTBayApplicationContext(
-                ConnectionProviderFactory.hikari(IoTBayApplicationContextHolder.class.getResource("database.properties").getPath()),
-                UserRepository.create()
-        );
-        
-        private static IoTBayApplicationContext holder() { return DEFAULT; }
     }
 }
