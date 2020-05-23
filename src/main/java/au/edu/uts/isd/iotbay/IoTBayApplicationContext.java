@@ -57,7 +57,11 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
 
     @Override
     @PreDestroy
-    public void close() throws Exception {
-        datasource.close();
+    public void close() {
+        try {
+            datasource.close();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 }
