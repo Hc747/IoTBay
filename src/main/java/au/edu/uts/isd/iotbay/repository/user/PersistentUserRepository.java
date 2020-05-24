@@ -15,7 +15,7 @@ public class PersistentUserRepository implements UserRepository {
 
     private static final ResultExtractor<User> EXTRACTOR = r -> {
         int id = r.getInt("id");
-        String name = r.getString("first_name") + r.getString("last_name");
+        String name = r.getString("first_name") + (r.getString("last_name") == null ? "" : " " + r.getString("last_name"));
         String username = r.getString("email_address");
         String password = r.getString("password_hash");
         Role role = Role.findByOrdinal(r.getInt("role_id"));

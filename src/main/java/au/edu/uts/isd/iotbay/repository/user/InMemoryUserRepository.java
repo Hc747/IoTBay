@@ -1,9 +1,9 @@
 package au.edu.uts.isd.iotbay.repository.user;
 
 import au.edu.uts.isd.iotbay.model.user.User;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -22,7 +22,7 @@ public class InMemoryUserRepository implements UserRepository {
 
     @Override
     public Collection<User> all() {
-        return users.values();
+        return new ArrayList<>(users.values());
     }
 
     @Override
