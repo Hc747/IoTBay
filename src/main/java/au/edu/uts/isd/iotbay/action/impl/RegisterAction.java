@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class RegisterAction extends UnauthenticatedAction {
 
@@ -36,8 +35,11 @@ public class RegisterAction extends UnauthenticatedAction {
             reject("Sorry, that username is already taken.");
         }
 
-        //TODO: correctly generate id
-        final User user = ctx.getUsers().save(new User(ThreadLocalRandom.current().nextInt(), name, username, password, Role.USER));
+        final User user = ctx.getUsers().save(new User(null, name, username, password, Role.USER));
+
+        if (user == null) {
+            reject("Unable to register an account; please try again.");
+        }
         
         AuthenticationUtil.authenticate(session, user);
         

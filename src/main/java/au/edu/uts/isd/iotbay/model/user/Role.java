@@ -22,4 +22,12 @@ public enum Role {
             return UNKNOWN;
         }
     }
+
+    public static Role findByOrdinal(int ordinal) {
+        try {
+            return values()[ordinal];
+        } catch (Exception e) {
+            return UNKNOWN;
+        }
+    }
 }

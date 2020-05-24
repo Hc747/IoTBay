@@ -7,9 +7,7 @@ import au.edu.uts.isd.iotbay.model.user.User;
 import lombok.SneakyThrows;
 
 import java.sql.SQLException;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -20,7 +18,7 @@ public class PersistentUserRepository implements UserRepository {
         String name = r.getString("first_name") + r.getString("last_name");
         String username = r.getString("email_address");
         String password = r.getString("password_hash");
-        Role role = Role.USER; //TODO: get actual role.
+        Role role = Role.findByOrdinal(r.getInt("role_id"));
         return new User(id, name, username, password, role);
     };
 
@@ -63,18 +61,31 @@ public class PersistentUserRepository implements UserRepository {
     @Override
     @SneakyThrows //TODO: consider implications
     public User save(User instance) {
-        //TODO: on duplicate key update
-        final String query = "INSERT INTO user (email_address, role_id, first_name, last_name, password_hash) values (?, ?, ?, ?, ?);";
-        final int inserted = datasource.withPreparedStatement(query, statement -> {
-            final String[] names = instance.getName().split(" ", 1);
+        final boolean update = instance.getId() != null;
+        final String query;
+
+        if (update) {
+            query = "UPDATE user SET email_address = ?, role_id = ?, first_name = ?, last_name = ?, password_hash = ? WHERE id = ? LIMIT 1;";
+        } else {
+            query = "INSERT INTO user (email_address, role_id, first_name, last_name, password_hash) values (?, ?, ?, ?, ?);";
+        }
+
+        final int modified = datasource.withPreparedStatement(query, statement -> {
+            final String[] names = instance.getNames();
+
             statement.setString(1, instance.getUsername());
             statement.setInt(2, instance.getRole().ordinal());
             statement.setString(3, names[0]);
-            statement.setString(4, names.length > 1 ? names[2] : null);
+            statement.setString(4, names[1]);
             statement.setString(5, instance.getPassword());
+
+            if (update) {
+                statement.setInt(6, instance.getId());
+            }
+
             return statement.executeUpdate();
         });
-        return inserted > 0 ? findByUsername(instance.getUsername()).orElseThrow(SQLException::new) : null;
+        return modified > 0 ? findByUsername(instance.getUsername()).orElseThrow(SQLException::new) : null;
     }
 
     @Override
