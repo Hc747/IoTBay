@@ -16,7 +16,7 @@
             %>
             <% if (user == null) { %>
                 You are not logged in.</br>
-                Click <a href="<%= Constants.BASE_URL %>register/">here</a> to register.
+                Click <a href="<%= Constants.path(true, "register") %>">here</a> to register.
             <% } else { %>
                 Logged in as: '<%= user.getUsername() %>' with id: '<%= user.getId() %>'</br>
                 Your role is: <%= user.getRole().name() %></br>

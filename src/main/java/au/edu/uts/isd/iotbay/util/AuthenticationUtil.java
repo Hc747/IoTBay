@@ -11,7 +11,7 @@ public class AuthenticationUtil {
     private static final int BCRYPT_LOG_ROUNDS = 12;
     
     public static boolean isAuthenticated(HttpSession session) {
-        return user(session) != null;
+        return session != null && user(session) != null;
     }
     
     public static User user(HttpSession session) {

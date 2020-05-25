@@ -9,5 +9,5 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
 
     <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="<%= Constants.BASE_URL %>css/style.css">
+    <link rel="stylesheet" href="<%= Constants.path(false, "css", "style.css") %>">
 </head>

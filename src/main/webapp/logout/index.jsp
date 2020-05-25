@@ -1,5 +1,5 @@
-<%@ page import="static au.edu.uts.isd.iotbay.Constants.BASE_URL" %>
+<%@ page import="au.edu.uts.isd.iotbay.Constants" %>
 <%    
-    final String action = String.format("%s?action=logout", BASE_URL);
+    final String action = String.format("%s?action=logout", Constants.path(false));
     response.sendRedirect(action);
 %>

@@ -8,11 +8,11 @@
 <header>
     <div class="navbar navbar-dark bg-dark box-shadow">
         <div class="container d-flex justify-content-between">
-            <a href="<%= Constants.BASE_URL%>" class="navbar-brand d-flex align-items-center">
+            <a href="<%= Constants.path(false) %>" class="navbar-brand d-flex align-items-center">
                 <strong>
                     <%
                         final StringBuilder location = new StringBuilder(Constants.APPLICATION_NAME);
-                        final String current = request.getServletPath().replace(Constants.BASE_URL, "");
+                        final String current = request.getServletPath().replace(Constants.path(false), "");
                         final String[] segments = current.split("/");
                         
                         for (int index = 1; index < segments.length - 1; index++) {
