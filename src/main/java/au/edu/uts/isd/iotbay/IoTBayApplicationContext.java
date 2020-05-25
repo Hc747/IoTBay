@@ -1,6 +1,7 @@
 package au.edu.uts.isd.iotbay;
 
 import au.edu.uts.isd.iotbay.database.ConnectionProvider;
+import au.edu.uts.isd.iotbay.repository.payment.PaymentMethodRepository;
 import au.edu.uts.isd.iotbay.repository.user.UserRepository;
 import lombok.Getter;
 
@@ -20,14 +21,16 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
 
     private final ConnectionProvider datasource;
     private final UserRepository users;
+    private final PaymentMethodRepository payments;
     
-    IoTBayApplicationContext(ConnectionProvider datasource, UserRepository users) {
+    IoTBayApplicationContext(ConnectionProvider datasource, UserRepository users, PaymentMethodRepository payments) {
         this.datasource = Objects.requireNonNull(datasource);
         this.users = Objects.requireNonNull(users);
+        this.payments = Objects.requireNonNull(payments);
     }
 
     IoTBayApplicationContext(ConnectionProvider datasource) {
-        this(datasource, UserRepository.create(datasource));
+        this(datasource, UserRepository.create(datasource), PaymentMethodRepository.create(datasource));
     }
     
     //TODO: product repository
@@ -40,8 +43,14 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
 
     public static IoTBayApplicationContext getInstance(ServletContext application) {
         return getInstance(application, () -> {
-            final String properties = application.getRealPath(PROPERTIES_PATH);
-            return new IoTBayApplicationContext(hikari(properties));
+            final ConnectionProvider datasource;
+            if (Constants.PERSISTENCE_ENABLED) {
+                final String properties = application.getRealPath(PROPERTIES_PATH);
+                datasource = hikari(properties);
+            } else {
+                datasource = null;
+            }
+            return new IoTBayApplicationContext(datasource);
         });
     }
 

@@ -8,9 +8,9 @@ import lombok.SneakyThrows;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.*;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.Objects;
+import java.util.Optional;
 
 public class PersistentUserRepository implements UserRepository {
 
@@ -48,18 +48,6 @@ public class PersistentUserRepository implements UserRepository {
     public Collection<User> all() {
         final String query = "SELECT * FROM user;";
         return datasource.withStatement(statement -> EXTRACTOR.all(statement.executeQuery(query)));
-    }
-
-    @Override
-    public Collection<User> findAll(Predicate<User> criteria) {
-        //TODO: apply the criteria in a query rather than fetching every user -> applying in memory...
-        return all().stream().filter(criteria).collect(Collectors.toList());
-    }
-
-    @Override
-    public Optional<User> find(Predicate<User> criteria) {
-        //TODO: apply the criteria in a query rather than fetching every user -> applying in memory...
-        return all().stream().filter(criteria).findAny();
     }
 
     @Override

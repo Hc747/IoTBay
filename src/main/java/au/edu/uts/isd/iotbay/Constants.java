@@ -3,6 +3,8 @@ package au.edu.uts.isd.iotbay;
 import java.util.StringJoiner;
 
 public final class Constants {
+
+    public static boolean PERSISTENCE_ENABLED = true;
     
     public static final String APPLICATION_NAME = "IoTBay";
     

@@ -4,8 +4,6 @@ import au.edu.uts.isd.iotbay.model.user.User;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class InMemoryUserRepository implements UserRepository {
 
@@ -23,21 +21,6 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public Collection<User> all() {
         return new ArrayList<>(users.values());
-    }
-
-    @Override
-    public Collection<User> findAll(Predicate<User> criteria) {
-        return users.values().stream().filter(criteria).collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    @Override
-    public Optional<User> find(Predicate<User> criteria) {
-        for (User user : users.values()) {
-            if (criteria.test(user)) {
-                return Optional.of(user);
-            }
-        }
-        return Optional.empty();
     }
 
     @Override
