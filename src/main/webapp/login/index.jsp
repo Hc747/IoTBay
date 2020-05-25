@@ -1,5 +1,22 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%--TODO: add login redirection--%>
+<%--<%--%>
+<%--    final String query = request.getQueryString();--%>
+<%--    final StringBuilder endpoint = new StringBuilder("?");--%>
+
+<%--    if (query == null) {--%>
+<%--        endpoint.append("action=login");--%>
+<%--    } else {--%>
+<%--        if (query.contains("action=login")) {--%>
+<%--            endpoint.append(query);--%>
+<%--        } else {--%>
+<%--            endpoint.append("action=login&").append(query);--%>
+<%--        }--%>
+<%--    }--%>
+
+<%--    request.setAttribute("endpoint", endpoint.toString());--%>
+<%--%>--%>
 <t:layout>
     <jsp:body>
         <div class="container">

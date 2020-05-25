@@ -2,19 +2,20 @@ package au.edu.uts.isd.iotbay.servlet.filter;
 
 import au.edu.uts.isd.iotbay.Constants;
 import au.edu.uts.isd.iotbay.util.AuthenticationUtil;
+import lombok.SneakyThrows;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
-public class AuthenticationFilter implements Filter {
+public class UnauthenticatedFilter implements Filter {
 
-    public static final String AUTHENTICATION_PATH = Constants.path(true, "login");
+    private static final String REDIRECTION_PATH = Constants.path(true);
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    @SneakyThrows
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) {
         final HttpServletRequest req = (HttpServletRequest) request;
         final HttpServletResponse res = (HttpServletResponse) response;
 
@@ -22,9 +23,9 @@ public class AuthenticationFilter implements Filter {
         final boolean authenticated = AuthenticationUtil.isAuthenticated(session);
 
         if (authenticated) {
-            chain.doFilter(request, response);
+            res.sendRedirect(REDIRECTION_PATH);
         } else {
-            res.sendRedirect(AUTHENTICATION_PATH); //TODO: append redirect URL?
+            chain.doFilter(request, response);
         }
     }
 

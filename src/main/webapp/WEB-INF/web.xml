@@ -10,11 +10,21 @@
         </session-timeout>
     </session-config>
     <filter>
-        <filter-name>authentication</filter-name>
-        <filter-class>au.edu.uts.isd.iotbay.servlet.filter.AuthenticationFilter</filter-class>
+        <filter-name>authenticated</filter-name>
+        <filter-class>au.edu.uts.isd.iotbay.servlet.filter.AuthenticatedFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>unauthenticated</filter-name>
+        <filter-class>au.edu.uts.isd.iotbay.servlet.filter.UnauthenticatedFilter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>authentication</filter-name>
+        <filter-name>authenticated</filter-name>
         <url-pattern>/profile/*</url-pattern>
+        <url-pattern>/payment/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>unauthenticated</filter-name>
+        <url-pattern>/login/*</url-pattern>
+        <url-pattern>/register/*</url-pattern>
     </filter-mapping>
 </web-app>

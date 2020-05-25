@@ -39,5 +39,24 @@ public class LoginAction extends UnauthenticatedAction {
         AuthenticationUtil.authenticate(session, user);
         
         message = String.format("Login successful. Welcome, %s", user.getUsername());
+        //TODO: add login redirection
+//
+//        final String encoded = request.getParameter("redirect_url");
+//
+//        if (encoded != null) {
+//            final String decoded = decode(encoded);
+//
+////            if (decoded.startsWith(Constants.path(false))) {
+//                response.sendRedirect(decoded);
+////            }
+//        }
     }
+//
+//    private static String decode(String encoded) {
+//        try {
+//            return URLDecoder.decode(encoded, StandardCharsets.UTF_8.toString());
+//        } catch (UnsupportedEncodingException ex) {
+//            throw new RuntimeException(ex.getCause());
+//        }
+//    }
 }
