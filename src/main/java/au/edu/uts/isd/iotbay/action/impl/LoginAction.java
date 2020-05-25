@@ -24,9 +24,6 @@ public class LoginAction extends UnauthenticatedAction {
             reject("You must supply an username and password in order to login.");
         }
         
-        //TODO: password hashing
-        
-
         final IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);
         final Optional<User> candidate = ctx.getUsers().findByUsername(username);
         final User user = candidate.orElseThrow(() -> new ActionException("Incorrect username or password."));

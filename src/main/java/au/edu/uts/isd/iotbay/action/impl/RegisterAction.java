@@ -28,8 +28,6 @@ public class RegisterAction extends UnauthenticatedAction {
             reject("You must supply a name, username and password in order to login.");
         }
 
-        //TODO: password hashing
-        
         final IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);
         final Optional<User> existing = ctx.getUsers().findByUsername(username);
         
