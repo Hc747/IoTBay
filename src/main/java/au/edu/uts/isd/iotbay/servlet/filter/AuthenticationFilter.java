@@ -26,18 +26,6 @@ public class AuthenticationFilter implements Filter {
         } else {
             res.sendRedirect(AUTHENTICATION_PATH); //TODO: append redirect URL?
         }
-
-//        if (requiresAuthentication(req) && !authenticated) {
-//            res.sendRedirect(AUTHENTICATION_PATH); //TODO: redirect URL?
-//            return;
-//        }
-//
-//        chain.doFilter(request, response);
-    }
-
-    private boolean requiresAuthentication(HttpServletRequest request) {
-        final String path = request.getServletPath();
-        return path.startsWith("/profile/");
     }
 
     @Override public void init(FilterConfig filterConfig) {}
