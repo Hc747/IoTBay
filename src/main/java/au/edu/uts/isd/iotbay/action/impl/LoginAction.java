@@ -35,6 +35,10 @@ public class LoginAction extends UnauthenticatedAction {
             reject("Incorrect username or password.");
         }
 
+        if (!user.isEnabled()) {
+            reject("This account has been disabled.");
+        }
+
         AuthenticationUtil.authenticate(session, user);
         
         message = String.format("Login successful. Welcome, %s", user.getUsername());
