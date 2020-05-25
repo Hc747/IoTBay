@@ -7,5 +7,4 @@
 <strong>
     Welcome, <a href="<%= Constants.path(true, "profile") %>"><%= user.getUsername() %></a>
 </strong>
-<a href="<%= Constants.path(true, "main")%>">Main Page</a>
 <a href="<%= Constants.path(true, "logout") %>">Logout</a>
