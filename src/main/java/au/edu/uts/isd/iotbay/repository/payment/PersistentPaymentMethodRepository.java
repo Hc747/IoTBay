@@ -43,7 +43,7 @@ public class PersistentPaymentMethodRepository implements PaymentMethodRepositor
     @SneakyThrows //TODO: consider implications
     public Collection<PaymentMethod> all() {
         final String query = "SELECT * FROM payment_method pm LEFT JOIN payment_method_credit_card cc on pm.id = cc.payment_method_id LEFT JOIN payment_method_paypal pp ON pm.id = pp.payment_method_id;";
-        return datasource.withStatement(statement -> EXTRACTOR.all(statement.executeQuery(query)));
+        return datasource.useStatement(statement -> EXTRACTOR.all(statement.executeQuery(query)));
     }
 
     @Override
@@ -56,7 +56,7 @@ public class PersistentPaymentMethodRepository implements PaymentMethodRepositor
 
         if (instance.getId() == null) {
             final String query = "INSERT INTO payment_method (type) VALUES (?);";
-            id = datasource.withPreparedStatement(query, statement -> {
+            id = datasource.useKeyedPreparedStatement(query, statement -> {
                 statement.setString(1, type.name());
 
                 final int affected = statement.executeUpdate();
@@ -92,7 +92,7 @@ public class PersistentPaymentMethodRepository implements PaymentMethodRepositor
             default: return null;
         }
 
-        final int modified = datasource.withPreparedStatement(query, statement -> {
+        final int modified = datasource.usePreparedStatement(query, statement -> {
            statement.setInt(1, id);
 
            if (type == Type.PAYPAL) {
@@ -126,7 +126,7 @@ public class PersistentPaymentMethodRepository implements PaymentMethodRepositor
             return null;
         }
         final String query = "DELETE FROM payment_method WHERE id = ?;";
-        final int deleted = datasource.withPreparedStatement(query, statement -> {
+        final int deleted = datasource.usePreparedStatement(query, statement -> {
             statement.setInt(1, instance.getId());
             return statement.executeUpdate();
         });

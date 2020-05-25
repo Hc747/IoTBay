@@ -6,6 +6,7 @@ import au.edu.uts.isd.iotbay.model.user.Role;
 import au.edu.uts.isd.iotbay.model.user.User;
 import lombok.SneakyThrows;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -36,7 +37,7 @@ public class PersistentUserRepository implements UserRepository {
     @SneakyThrows //TODO: consider implications
     public Optional<User> findByUsername(String username) {
         final String query = "SELECT * FROM user WHERE email_address = ? LIMIT 1;";
-        final User user = datasource.withPreparedStatement(query, statement -> {
+        final User user = datasource.usePreparedStatement(query, statement -> {
            statement.setString(1, username);
            return EXTRACTOR.single(statement.executeQuery());
         });
@@ -47,7 +48,7 @@ public class PersistentUserRepository implements UserRepository {
     @SneakyThrows //TODO: consider implications
     public Collection<User> all() {
         final String query = "SELECT * FROM user;";
-        return datasource.withStatement(statement -> EXTRACTOR.all(statement.executeQuery(query)));
+        return datasource.useStatement(statement -> EXTRACTOR.all(statement.executeQuery(query)));
     }
 
     @Override
@@ -62,7 +63,7 @@ public class PersistentUserRepository implements UserRepository {
             query = "INSERT INTO user (email_address, role_id, first_name, last_name, password_hash, enabled, created_at, verified_at) values (?, ?, ?, ?, ?, ?, ?, ?);";
         }
 
-        final Integer id = datasource.withPreparedStatement(query, statement -> {
+        final ConnectionProvider.SQLFunction<PreparedStatement, Integer> handler = statement -> {
             final String[] names = instance.getNameComponents();
 
             statement.setString(1, instance.getUsername());
@@ -95,11 +96,14 @@ public class PersistentUserRepository implements UserRepository {
             }
 
             return null;
-        });
+        };
+
+        final Integer id = update ? datasource.usePreparedStatement(query, handler) : datasource.useKeyedPreparedStatement(query, handler);
 
         if (id == null) {
             return null;
         }
+
         instance.setId(id);
         return instance;
     }
@@ -115,7 +119,7 @@ public class PersistentUserRepository implements UserRepository {
         } else {
             return null;
         }
-        final int deleted = datasource.withPreparedStatement(query.toString(), statement -> {
+        final int deleted = datasource.usePreparedStatement(query.toString(), statement -> {
             if (instance.getId() != null) {
                 statement.setInt(1, instance.getId());
             } else {
