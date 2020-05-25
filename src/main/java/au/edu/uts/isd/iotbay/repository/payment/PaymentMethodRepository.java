@@ -10,5 +10,4 @@ public interface PaymentMethodRepository extends Repository<PaymentMethod> {
         //TODO: in memory implementation
         return new PersistentPaymentMethodRepository(datasource);
     }
-
 }

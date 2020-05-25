@@ -9,7 +9,7 @@ import java.util.StringJoiner;
 @Data
 @AllArgsConstructor
 public class User {
-    
+
     private Integer id;
     private String name, username, password;
     private Role role;
