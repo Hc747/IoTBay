@@ -31,12 +31,12 @@ public class LoginAction extends UnauthenticatedAction {
         final Optional<User> candidate = ctx.getUsers().findByUsername(username);
         final User user = candidate.orElseThrow(() -> new ActionException("Incorrect username or password."));
 
-        if (!user.getPassword().equals(password)) {
-            reject("Incorrect username or password.");
-        }
-
         if (!user.isEnabled()) {
             reject("This account has been disabled.");
+        }
+
+        if (!AuthenticationUtil.verify(password, user.getPassword())) {
+            reject("Incorrect username or password.");
         }
 
         AuthenticationUtil.authenticate(session, user);
