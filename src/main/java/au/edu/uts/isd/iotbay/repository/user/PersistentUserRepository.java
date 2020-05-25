@@ -7,6 +7,7 @@ import au.edu.uts.isd.iotbay.model.user.User;
 import lombok.SneakyThrows;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -19,7 +20,10 @@ public class PersistentUserRepository implements UserRepository {
         String username = r.getString("email_address");
         String password = r.getString("password_hash");
         Role role = Role.findByOrdinal(r.getInt("role_id"));
-        return new User(id, name, username, password, role);
+        boolean enabled = r.getBoolean("enabled");
+        Timestamp created = r.getTimestamp("created_at");
+        Timestamp verified = r.getTimestamp("verified_at");
+        return new User(id, name, username, password, role, enabled, created, verified);
     };
 
     private final ConnectionProvider datasource;
@@ -31,7 +35,7 @@ public class PersistentUserRepository implements UserRepository {
     @Override
     @SneakyThrows //TODO: consider implications
     public Optional<User> findByUsername(String username) {
-        final String query = "SELECT * FROM user WHERE email_address = ?";
+        final String query = "SELECT * FROM user WHERE email_address = ? LIMIT 1;";
         final User user = datasource.withPreparedStatement(query, statement -> {
            statement.setString(1, username);
            return EXTRACTOR.single(statement.executeQuery());
@@ -65,19 +69,22 @@ public class PersistentUserRepository implements UserRepository {
         final String query;
 
         if (update) {
-            query = "UPDATE user SET email_address = ?, role_id = ?, first_name = ?, last_name = ?, password_hash = ? WHERE id = ? LIMIT 1;";
+            query = "UPDATE user SET email_address = ?, role_id = ?, first_name = ?, last_name = ?, password_hash = ?, enabled = ?, created_at = ?, verified_at = ? WHERE id = ? LIMIT 1;";
         } else {
-            query = "INSERT INTO user (email_address, role_id, first_name, last_name, password_hash) values (?, ?, ?, ?, ?);";
+            query = "INSERT INTO user (email_address, role_id, first_name, last_name, password_hash, enabled, created_at, verified_at) values (?, ?, ?, ?, ?, ?, ?, ?);";
         }
 
         final int modified = datasource.withPreparedStatement(query, statement -> {
-            final String[] names = instance.getNames();
+            final String[] names = instance.getNameComponents();
 
             statement.setString(1, instance.getUsername());
             statement.setInt(2, instance.getRole().ordinal());
             statement.setString(3, names[0]);
             statement.setString(4, names[1]);
             statement.setString(5, instance.getPassword());
+            statement.setBoolean(6, instance.isEnabled());
+            statement.setTimestamp(7, instance.getCreated());
+            statement.setTimestamp(8, instance.getVerified());
 
             if (update) {
                 statement.setInt(6, instance.getId());

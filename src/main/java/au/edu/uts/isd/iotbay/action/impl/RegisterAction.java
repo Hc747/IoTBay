@@ -10,6 +10,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Optional;
 
 public class RegisterAction extends UnauthenticatedAction {
@@ -35,7 +37,7 @@ public class RegisterAction extends UnauthenticatedAction {
             reject("Sorry, that username is already taken.");
         }
 
-        final User user = ctx.getUsers().save(new User(null, name, username, password, Role.USER));
+        final User user = ctx.getUsers().save(new User(null, name, username, password, Role.USER, true, Timestamp.from(Instant.now()), null));
 
         if (user == null) {
             reject("Unable to register an account; please try again.");
