@@ -1,11 +1,12 @@
 package au.edu.uts.isd.iotbay.model.payment;
 
 import lombok.Data;
+import lombok.ToString;
 
 import java.sql.Date;
-import java.util.Objects;
 
 @Data
+@ToString(callSuper = true)
 public class CreditCardPaymentMethod extends PaymentMethod {
 
     private String number, holder, cvv;
@@ -13,10 +14,14 @@ public class CreditCardPaymentMethod extends PaymentMethod {
 
     public CreditCardPaymentMethod(Integer id, String number, String holder, String cvv, Date expiration) {
         super(id);
-        this.number = Objects.requireNonNull(number);
-        this.holder = Objects.requireNonNull(holder);
-        this.cvv = Objects.requireNonNull(cvv);
-        this.expiration = Objects.requireNonNull(expiration);
+        this.number = number;
+        this.holder = holder;
+        this.cvv = cvv;
+        this.expiration = expiration;
+//        this.number = Objects.requireNonNull(number);
+//        this.holder = Objects.requireNonNull(holder);
+//        this.cvv = Objects.requireNonNull(cvv);
+//        this.expiration = Objects.requireNonNull(expiration);
     }
 
     public boolean hasExpired() {

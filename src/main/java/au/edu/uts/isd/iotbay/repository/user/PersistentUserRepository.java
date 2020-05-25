@@ -6,7 +6,7 @@ import au.edu.uts.isd.iotbay.model.user.Role;
 import au.edu.uts.isd.iotbay.model.user.User;
 import lombok.SneakyThrows;
 
-import java.sql.SQLException;
+import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Objects;
@@ -62,7 +62,7 @@ public class PersistentUserRepository implements UserRepository {
             query = "INSERT INTO user (email_address, role_id, first_name, last_name, password_hash, enabled, created_at, verified_at) values (?, ?, ?, ?, ?, ?, ?, ?);";
         }
 
-        final int modified = datasource.withPreparedStatement(query, statement -> {
+        final Integer id = datasource.withPreparedStatement(query, statement -> {
             final String[] names = instance.getNameComponents();
 
             statement.setString(1, instance.getUsername());
@@ -78,9 +78,30 @@ public class PersistentUserRepository implements UserRepository {
                 statement.setInt(6, instance.getId());
             }
 
-            return statement.executeUpdate();
+            final int modified = statement.executeUpdate();
+
+            if (modified <= 0) {
+                return null;
+            }
+
+            if (update) {
+                return instance.getId();
+            }
+
+            try (ResultSet keys = statement.getGeneratedKeys()) {
+                if (keys.next()) {
+                    return keys.getInt(1);
+                }
+            }
+
+            return null;
         });
-        return modified > 0 ? findByUsername(instance.getUsername()).orElseThrow(SQLException::new) : null;
+
+        if (id == null) {
+            return null;
+        }
+        instance.setId(id);
+        return instance;
     }
 
     @Override

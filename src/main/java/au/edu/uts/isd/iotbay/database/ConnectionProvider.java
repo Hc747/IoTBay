@@ -20,7 +20,7 @@ public interface ConnectionProvider extends AutoCloseable {
 
     default <T> T withPreparedStatement(String query, SQLFunction<PreparedStatement, T> action) throws SQLException {
         try (Connection connection = connection()) {
-            try (PreparedStatement statement = connection.prepareStatement(query)) {
+            try (PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
                 return action.apply(statement);
             }
         }
