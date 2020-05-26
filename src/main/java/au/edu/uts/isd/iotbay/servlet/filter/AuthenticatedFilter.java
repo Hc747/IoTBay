@@ -1,6 +1,7 @@
 package au.edu.uts.isd.iotbay.servlet.filter;
 
 import au.edu.uts.isd.iotbay.Constants;
+import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.util.AuthenticationUtil;
 import lombok.SneakyThrows;
 
@@ -24,9 +25,9 @@ public class AuthenticatedFilter implements Filter {
         final HttpServletResponse res = (HttpServletResponse) response;
 
         final HttpSession session = req.getSession();
-        final boolean authenticated = AuthenticationUtil.isAuthenticated(session);
+        final User user = AuthenticationUtil.user(session);
 
-        if (authenticated) {
+        if (isAuthenticated(req, session, user)) {
             chain.doFilter(request, response);
         } else {
             final StringBuffer requested = req.getRequestURL();
@@ -35,6 +36,10 @@ public class AuthenticatedFilter implements Filter {
 
             res.sendRedirect(location);
         }
+    }
+
+    protected boolean isAuthenticated(HttpServletRequest request, HttpSession session, User user) {
+        return AuthenticationUtil.isAuthenticated(session) && user != null;
     }
 
     private static String encode(String url) {
