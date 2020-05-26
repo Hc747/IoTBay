@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import java.sql.Date;
+import java.util.Objects;
 
 @Data
 @ToString(callSuper = true)
@@ -14,14 +15,10 @@ public class CreditCardPaymentMethod extends PaymentMethod {
 
     public CreditCardPaymentMethod(Integer id, String number, String holder, String cvv, Date expiration) {
         super(id);
-        this.number = number;
-        this.holder = holder;
-        this.cvv = cvv;
-        this.expiration = expiration;
-//        this.number = Objects.requireNonNull(number);
-//        this.holder = Objects.requireNonNull(holder);
-//        this.cvv = Objects.requireNonNull(cvv);
-//        this.expiration = Objects.requireNonNull(expiration);
+        this.number = Objects.requireNonNull(number);
+        this.holder = Objects.requireNonNull(holder);
+        this.cvv = Objects.requireNonNull(cvv);
+        this.expiration = Objects.requireNonNull(expiration);
     }
 
     public boolean hasExpired() {
@@ -31,5 +28,10 @@ public class CreditCardPaymentMethod extends PaymentMethod {
     @Override
     public Type type() {
         return Type.CREDIT_CARD;
+    }
+
+    @Override
+    public String details() {
+        return String.format("Card Number: %s, Holder: %s, CVV: %s, Expiration: %s", number, holder, cvv, expiration.toString());
     }
 }

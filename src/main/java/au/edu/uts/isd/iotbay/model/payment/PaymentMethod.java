@@ -12,6 +12,8 @@ public abstract class PaymentMethod {
     }
 
     public abstract Type type();
+    
+    public abstract String details();
 
     public enum Type {
         PAYPAL,
