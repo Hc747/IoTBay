@@ -7,7 +7,6 @@
         <jsp:include page="/WEB-INF/includes/common/header.jsp"/>
         <main role="main">
             <jsp:include page="/WEB-INF/includes/common/render_action.jsp"/>
-            <jsp:include page="/WEB-INF/includes/common/banner.jsp"/>
             <jsp:doBody/>
         </main>
         <jsp:include page="/WEB-INF/includes/common/footer.jsp"/>
