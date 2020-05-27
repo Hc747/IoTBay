@@ -4,6 +4,8 @@ import java.util.function.Supplier;
 
 public interface ActionRegistry {
 
+    //TODO(harrison): documentation
+
     boolean register(String key, Supplier<Action> action);
 
     boolean deregister(String key);

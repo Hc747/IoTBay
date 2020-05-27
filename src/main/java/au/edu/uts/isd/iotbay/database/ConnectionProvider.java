@@ -7,6 +7,8 @@ import java.sql.Statement;
 
 public interface ConnectionProvider extends AutoCloseable {
 
+    //TODO(harrison): documentation
+
     /**
      * Not recommended for direct use, as it requires direct resource management.
      */

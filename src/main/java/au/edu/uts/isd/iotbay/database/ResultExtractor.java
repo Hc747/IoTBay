@@ -9,6 +9,8 @@ import java.util.List;
 @FunctionalInterface
 public interface ResultExtractor<T> {
 
+    //TODO(harrison): documentation
+
     T extract(ResultSet results) throws SQLException;
 
     default T single(ResultSet results) throws SQLException {
