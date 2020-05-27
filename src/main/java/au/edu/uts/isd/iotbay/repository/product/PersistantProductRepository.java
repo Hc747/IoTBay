@@ -3,6 +3,7 @@ package au.edu.uts.isd.iotbay.repository.product;
 import au.edu.uts.isd.iotbay.database.ConnectionProvider;
 import au.edu.uts.isd.iotbay.database.ResultExtractor;
 import au.edu.uts.isd.iotbay.model.product.Product;
+import lombok.SneakyThrows;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -27,45 +28,32 @@ public class PersistantProductRepository implements ProductRepository {
     };
 
     @Override
+    @SneakyThrows
     public Optional<Product> findByProductId(int product_id) {
         final String query = "SELECT * FROM products WHERE id = ? LIMIT 1;";
-        try {
-            final Product product = datasource.usePreparedStatement(query, statement -> {
-                statement.setString(1, String.valueOf(product_id));
-                return EXTRACTOR.single(statement.executeQuery());
-            });
-            return Optional.ofNullable(product);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            //return Optional.ofNullable(new Product(product_id));
-        }
-        return Optional.ofNullable(new Product(-1));
+        final Product product = datasource.usePreparedStatement(query, statement -> {
+            statement.setString(1, String.valueOf(product_id));
+            return EXTRACTOR.single(statement.executeQuery());
+        });
+        return Optional.ofNullable(product);
     }
 
     @Override
+    @SneakyThrows
     public Optional<Product> findByProductName(String product_name) {
         final String query = "SELECT * FROM products WHERE name = ? LIMIT 1;";
-        try {
-            final Product product = datasource.usePreparedStatement(query, statement -> {
-                statement.setString(1, product_name);
-                return EXTRACTOR.single(statement.executeQuery());
-            });
-            return Optional.ofNullable(product);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return Optional.ofNullable(new Product(-1));
+        final Product product = datasource.usePreparedStatement(query, statement -> {
+            statement.setString(1, product_name);
+            return EXTRACTOR.single(statement.executeQuery());
+        });
+        return Optional.ofNullable(product);
     }
 
     @Override
+    @SneakyThrows
     public Collection<Product> all() {
         final String query = "SELECT * FROM product;";
-        try {
-            return datasource.useStatement(statement -> EXTRACTOR.all(statement.executeQuery(query)));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
+        return datasource.useStatement(statement -> EXTRACTOR.all(statement.executeQuery(query)));
     }
 
     @Override
@@ -81,15 +69,5 @@ public class PersistantProductRepository implements ProductRepository {
     @Override
     public Product delete(Product instance) {
         return null;
-    }
-
-    @Override
-    public Collection<Product> findAll(Predicate<Product> criteria) {
-        return null;
-    }
-
-    @Override
-    public Optional<Product> find(Predicate<Product> criteria) {
-        return Optional.empty();
     }
 }
