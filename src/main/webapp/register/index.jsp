@@ -9,13 +9,13 @@
                     <label for="name">
                         Name
                     </label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" required>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" value="${name}" required>
                 </div>
                 <div class="form-group">
                     <label for="username">
                         Username / email address
                     </label>
-                    <input type="email" class="form-control" id="username" name="username" placeholder="Enter username / email address" required>
+                    <input type="email" class="form-control" id="username" name="username" placeholder="Enter username / email address" value="${username}" required>
                 </div>
                 <div class="form-group">
                     <label for="password">

@@ -25,7 +25,7 @@
                     <label for="username">
                         Username
                     </label>
-                    <input type="email" class="form-control" id="username" name="username" placeholder="Enter username / email address" required>
+                    <input type="email" class="form-control" id="username" name="username" placeholder="Enter username / email address" value="${username}" required>
                 </div>
                 <div class="form-group">
                     <label for="password">

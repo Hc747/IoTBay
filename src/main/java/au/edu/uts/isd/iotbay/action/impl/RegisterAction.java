@@ -32,12 +32,16 @@ public class RegisterAction extends UnauthenticatedAction {
         final Optional<User> existing = ctx.getUsers().findByUsername(username);
         
         if (existing.isPresent()) {
+            request.setAttribute("username", username);
+            request.setAttribute("name", name);
             reject("Sorry, that username is already taken.");
         }
 
         final User user = ctx.getUsers().create(new User(null, name, username, AuthenticationUtil.hash(password), Role.USER, true, Timestamp.from(Instant.now()), null));
 
         if (user == null) {
+            request.setAttribute("username", username);
+            request.setAttribute("name", name);
             reject("Unable to register an account; please try again.");
         }
         
