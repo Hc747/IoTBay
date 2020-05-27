@@ -53,7 +53,7 @@ public class InMemoryUserRepository implements UserRepository {
         return new InMemoryUserRepository(Collections.synchronizedMap(new HashMap<>()));
     }
 
-    public static InMemoryUserRepository unsafe() {
+    public static InMemoryUserRepository unsynchronised() {
         return new InMemoryUserRepository(new HashMap<>());
     }
 }

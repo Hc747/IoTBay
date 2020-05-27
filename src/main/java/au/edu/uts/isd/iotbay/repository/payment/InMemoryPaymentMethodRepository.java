@@ -49,7 +49,7 @@ public class InMemoryPaymentMethodRepository implements PaymentMethodRepository 
         return new InMemoryPaymentMethodRepository(Collections.synchronizedMap(new HashMap<>()));
     }
 
-    public static InMemoryPaymentMethodRepository unsafe() {
+    public static InMemoryPaymentMethodRepository unsynchronised() {
         return new InMemoryPaymentMethodRepository(new HashMap<>());
     }
 }
