@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
+import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
+
 public class LoginAction extends UnauthenticatedAction {
 
     @Override
@@ -20,8 +22,8 @@ public class LoginAction extends UnauthenticatedAction {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         
-        if (username == null || password == null) {
-            reject("You must supply an username and password in order to login.");
+        if (isNullOrEmpty(username) || isNullOrEmpty(password)) {
+            reject("You must supply a username and password in order to login.");
         }
         
         final IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);

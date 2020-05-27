@@ -1,5 +1,11 @@
 package au.edu.uts.isd.iotbay;
 
+import au.edu.uts.isd.iotbay.action.ActionProcessor;
+import au.edu.uts.isd.iotbay.action.ActionRegistry;
+import au.edu.uts.isd.iotbay.action.InMemoryActionRegistry;
+import au.edu.uts.isd.iotbay.action.impl.LoginAction;
+import au.edu.uts.isd.iotbay.action.impl.LogoutAction;
+import au.edu.uts.isd.iotbay.action.impl.RegisterAction;
 import au.edu.uts.isd.iotbay.database.ConnectionProvider;
 import au.edu.uts.isd.iotbay.repository.payment.PaymentMethodRepository;
 import au.edu.uts.isd.iotbay.repository.user.UserRepository;
@@ -20,17 +26,19 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
     private static final String PROPERTIES_PATH = "WEB-INF/database.properties";
 
     private final ConnectionProvider datasource;
+    private final ActionProcessor processor;
     private final UserRepository users;
     private final PaymentMethodRepository payments;
     
-    IoTBayApplicationContext(ConnectionProvider datasource, UserRepository users, PaymentMethodRepository payments) {
+    IoTBayApplicationContext(ConnectionProvider datasource, ActionProcessor processor, UserRepository users, PaymentMethodRepository payments) {
         this.datasource = Objects.requireNonNull(datasource);
+        this.processor = Objects.requireNonNull(processor);
         this.users = Objects.requireNonNull(users);
         this.payments = Objects.requireNonNull(payments);
     }
 
-    IoTBayApplicationContext(ConnectionProvider datasource) {
-        this(datasource, UserRepository.create(datasource), PaymentMethodRepository.create(datasource));
+    IoTBayApplicationContext(ConnectionProvider datasource, ActionProcessor processor) {
+        this(datasource, processor, UserRepository.create(datasource), PaymentMethodRepository.create(datasource));
     }
     
     //TODO: product repository
@@ -43,6 +51,7 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
 
     public static IoTBayApplicationContext getInstance(ServletContext application) {
         return getInstance(application, () -> {
+            final ActionProcessor processor = new ActionProcessor(createRegistry());
             final ConnectionProvider datasource;
             if (Constants.PERSISTENCE_ENABLED) {
                 final String properties = application.getRealPath(PROPERTIES_PATH);
@@ -50,7 +59,7 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
             } else {
                 datasource = null;
             }
-            return new IoTBayApplicationContext(datasource);
+            return new IoTBayApplicationContext(datasource, processor);
         });
     }
 
@@ -66,6 +75,16 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
             }
         }
         return result;
+    }
+
+    private static ActionRegistry createRegistry() {
+        final ActionRegistry registry = InMemoryActionRegistry.concurrent();
+
+        registry.register("login", LoginAction::new);
+        registry.register("register", RegisterAction::new);
+        registry.register("logout", LogoutAction::new);
+
+        return registry;
     }
 
     @Override
