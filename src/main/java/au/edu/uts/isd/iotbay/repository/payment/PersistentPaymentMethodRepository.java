@@ -122,7 +122,7 @@ public class PersistentPaymentMethodRepository implements PaymentMethodRepositor
 
     @SneakyThrows
     private PaypalPaymentMethod doUpdate(PaypalPaymentMethod paypal) {
-        final String query = "UPDATE payment_method_paypal SET token = ? WHERE payment_method_id = ?;";
+        final String query = "UPDATE payment_method_paypal SET token = ? WHERE payment_method_id = ? LIMIT 1;";
         final int updated = datasource.usePreparedStatement(query, statement -> {
             statement.setString(1, paypal.getToken());
             statement.setInt(2, paypal.getId());
@@ -134,7 +134,7 @@ public class PersistentPaymentMethodRepository implements PaymentMethodRepositor
 
     @SneakyThrows
     private CreditCardPaymentMethod doUpdate(CreditCardPaymentMethod card) {
-        final String query = "UPDATE payment_method_credit_card SET card_number = ?, card_holder_name = ?, card_verification_value = ?, expiration_date = ? WHERE payment_method_id = ?;";
+        final String query = "UPDATE payment_method_credit_card SET card_number = ?, card_holder_name = ?, card_verification_value = ?, expiration_date = ? WHERE payment_method_id = ? LIMIT 1;";
         final int updated = datasource.usePreparedStatement(query, statement -> {
             statement.setString(1, card.getNumber());
             statement.setString(2, card.getHolder());
