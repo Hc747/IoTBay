@@ -17,7 +17,7 @@ public class User {
     private Timestamp created, verified;
 
     public String[] getNameComponents() {
-        final String[] components = name.split(" ");
+        final String[] components = name.split(" +");
         final StringJoiner joiner = new StringJoiner(" ");
         for (int index = 1; index < components.length; index++) {
             joiner.add(components[index]);

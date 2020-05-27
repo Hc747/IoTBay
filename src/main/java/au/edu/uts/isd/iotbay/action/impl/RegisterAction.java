@@ -5,6 +5,7 @@ import au.edu.uts.isd.iotbay.action.UnauthenticatedAction;
 import au.edu.uts.isd.iotbay.model.user.Role;
 import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.util.AuthenticationUtil;
+import au.edu.uts.isd.iotbay.util.Validator;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,9 @@ import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Optional;
+
+import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
+import static au.edu.uts.isd.iotbay.util.Validator.matches;
 
 public class RegisterAction extends UnauthenticatedAction {
 
@@ -24,8 +28,13 @@ public class RegisterAction extends UnauthenticatedAction {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         
-        if (name == null || username == null || password == null) {
+        if (isNullOrEmpty(name) || isNullOrEmpty(username) || isNullOrEmpty(password)) {
             reject("You must supply a name, username and password in order to login.");
+        }
+
+        if (!matches(Validator.Patterns.NAME_PATTERN, name) || !matches(Validator.Patterns.USERNAME_PATTERN, username) || !matches(Validator.Patterns.PASSWORD_PATTERN, password)) {
+            //TODO: improve UX; provide specific errors
+            reject("Your nominated name, username and / or password do not meet validation requirements.");
         }
 
         final IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);
