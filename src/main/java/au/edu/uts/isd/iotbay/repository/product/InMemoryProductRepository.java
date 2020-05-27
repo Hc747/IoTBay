@@ -7,64 +7,49 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Predicate;
-
-import static java.lang.String.valueOf;
 
 public class InMemoryProductRepository implements ProductRepository {
 
     private static final AtomicInteger SEQUENCE = new AtomicInteger(1);
 
-    private final Map<String, Product> products;
+    private final Map<Integer, Product> products;
 
-    public InMemoryProductRepository(Map<String, Product> products) {
+    public InMemoryProductRepository(Map<Integer, Product> products) {
         this.products = products;
     }
 
     @Override
     public Optional<Product> findByProductId(int product_id) {
-        return Optional.empty();
+        return Optional.ofNullable(products.get(product_id));
     }
 
     @Override
     public Optional<Product> findByProductName(String product_name) {
-        return Optional.empty();
+        return find(product -> product.getName().equalsIgnoreCase(product_name));
     }
 
     @Override
     public Collection<Product> all() {
         return new ArrayList<>(products.values());
-        //return null;
     }
 
     @Override
     public Product create(Product instance) {
-        return products.compute(valueOf(instance.getProduct_id()), (String k, Product v) -> {
-            instance.setProduct_id(SEQUENCE.get());
+        final Integer id = SEQUENCE.getAndIncrement();
+        return products.compute(id, (k, v) -> {
+            instance.setId(id);
             return instance;
         });
-        //return null;
     }
 
     @Override
     public Product update(Product instance) {
-        products.put(String.valueOf(instance.getProduct_id()), instance);
+        products.put(instance.getId(), instance);
         return instance;
-        //return null;
     }
 
     @Override
     public Product delete(Product instance) {
-        return products.remove(String.valueOf(instance.getProduct_id()), instance) ? instance : null;
-    }
-
-    @Override
-    public Collection<Product> findAll(Predicate<Product> criteria) {
-        return null;
-    }
-
-    @Override
-    public Optional<Product> find(Predicate<Product> criteria) {
-        return Optional.empty();
+        return products.remove(instance.getId(), instance) ? instance : null;
     }
 }
