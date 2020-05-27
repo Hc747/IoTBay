@@ -21,7 +21,7 @@ public final class ConnectionProviderFactory {
     }
 
     private ConnectionProviderFactory() {
-        throw new IllegalStateException("Unable to create an instance of the DataSourceProvider class");
+        throw new IllegalStateException("Unable to create an instance of: " + getClass().getSimpleName());
     }
 
     private static class HikariConnectionProvider implements ConnectionProvider {
