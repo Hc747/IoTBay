@@ -8,7 +8,7 @@ public interface PaymentMethodRepository extends Repository<PaymentMethod> {
 
     static PaymentMethodRepository create(ConnectionProvider datasource) {
         if (datasource == null) {
-            return InMemoryPaymentMethodRepository.synchronised();
+            return InMemoryPaymentMethodRepository.concurrent();
         }
         return new PersistentPaymentMethodRepository(datasource);
     }

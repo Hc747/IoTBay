@@ -6,7 +6,6 @@ import au.edu.uts.isd.iotbay.model.user.Role;
 import au.edu.uts.isd.iotbay.model.user.User;
 import lombok.SneakyThrows;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -53,17 +52,9 @@ public class PersistentUserRepository implements UserRepository {
 
     @Override
     @SneakyThrows //TODO: consider implications
-    public User save(User instance) {
-        final boolean update = instance.getId() != null;
-        final String query;
-
-        if (update) {
-            query = "UPDATE user SET email_address = ?, role_id = ?, first_name = ?, last_name = ?, password_hash = ?, enabled = ?, created_at = ?, verified_at = ? WHERE id = ? LIMIT 1;";
-        } else {
-            query = "INSERT INTO user (email_address, role_id, first_name, last_name, password_hash, enabled, created_at, verified_at) values (?, ?, ?, ?, ?, ?, ?, ?);";
-        }
-
-        final ConnectionProvider.SQLFunction<PreparedStatement, Integer> handler = statement -> {
+    public User create(User instance) {
+        final String query = "INSERT INTO user (email_address, role_id, first_name, last_name, password_hash, enabled, created_at, verified_at) values (?, ?, ?, ?, ?, ?, ?, ?);";
+        final Integer id = datasource.useKeyedPreparedStatement(query, statement -> {
             final String[] names = instance.getNameComponents();
 
             statement.setString(1, instance.getUsername());
@@ -75,37 +66,45 @@ public class PersistentUserRepository implements UserRepository {
             statement.setTimestamp(7, instance.getCreated());
             statement.setTimestamp(8, instance.getVerified());
 
-            if (update) {
-                statement.setInt(6, instance.getId());
-            }
+            final int inserted = statement.executeUpdate();
 
-            final int modified = statement.executeUpdate();
-
-            if (modified <= 0) {
+            if (inserted <= 0) {
                 return null;
-            }
-
-            if (update) {
-                return instance.getId();
             }
 
             try (ResultSet keys = statement.getGeneratedKeys()) {
                 if (keys.next()) {
                     return keys.getInt(1);
                 }
+                return null;
             }
-
-            return null;
-        };
-
-        final Integer id = update ? datasource.usePreparedStatement(query, handler) : datasource.useKeyedPreparedStatement(query, handler);
-
-        if (id == null) {
-            return null;
-        }
+        });
 
         instance.setId(id);
-        return instance;
+        return id == null ? null : instance;
+    }
+
+    @Override
+    @SneakyThrows //TODO: consider implications
+    public User update(User instance) {
+        final String query = "UPDATE user SET email_address = ?, role_id = ?, first_name = ?, last_name = ?, password_hash = ?, enabled = ?, created_at = ?, verified_at = ? WHERE id = ? LIMIT 1;";
+        final int modified = datasource.usePreparedStatement(query, statement -> {
+            final String[] names = instance.getNameComponents();
+
+            statement.setString(1, instance.getUsername());
+            statement.setInt(2, instance.getRole().ordinal());
+            statement.setString(3, names[0]);
+            statement.setString(4, names[1]);
+            statement.setString(5, instance.getPassword());
+            statement.setBoolean(6, instance.isEnabled());
+            statement.setTimestamp(7, instance.getCreated());
+            statement.setTimestamp(8, instance.getVerified());
+            statement.setInt(6, instance.getId());
+
+            return statement.executeUpdate();
+        });
+
+        return modified <= 0 ? null : instance;
     }
 
     @Override
@@ -127,6 +126,6 @@ public class PersistentUserRepository implements UserRepository {
             }
             return statement.executeUpdate();
         });
-        return deleted > 0 ? instance : null;
+        return deleted <= 0 ? null : instance;
     }
 }

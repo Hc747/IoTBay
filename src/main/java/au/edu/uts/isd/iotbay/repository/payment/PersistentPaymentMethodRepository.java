@@ -46,77 +46,105 @@ public class PersistentPaymentMethodRepository implements PaymentMethodRepositor
         return datasource.useStatement(statement -> EXTRACTOR.all(statement.executeQuery(query)));
     }
 
+    //TODO: make transactional
     @Override
     @SneakyThrows //TODO: consider implications
-    public PaymentMethod save(PaymentMethod instance) {
-        final Integer id;
+    public PaymentMethod create(PaymentMethod instance) {
         final Type type = instance.type();
+        final String initial = "INSERT INTO payment_method (type) VALUES (?);";
+        final Integer id = datasource.useKeyedPreparedStatement(initial, statement -> {
+            statement.setString(1, type.name());
 
-        //TODO: insert or update
+            final int inserted = statement.executeUpdate();
 
-        if (instance.getId() == null) {
-            final String query = "INSERT INTO payment_method (type) VALUES (?);";
-            id = datasource.useKeyedPreparedStatement(query, statement -> {
-                statement.setString(1, type.name());
+            if (inserted <= 0) {
+                return null;
+            }
 
-                final int affected = statement.executeUpdate();
-
-                if (affected <= 0) {
-                    return null;
-                }
-
-                try (ResultSet keys = statement.getGeneratedKeys()) {
-                    if (keys.next()) {
-                        return keys.getInt(1);
-                    }
+            try (ResultSet keys = statement.getGeneratedKeys()) {
+                if (keys.next()) {
+                    return keys.getInt(1);
                 }
                 return null;
-            });
-        } else {
-            id = instance.getId();
-        }
+            }
+        });
 
         if (id == null) {
             return null;
         }
 
-        final String query;
+        instance.setId(id);
 
         switch (type) {
-            case PAYPAL:
-                query = "INSERT INTO payment_method_paypal (payment_method_id, token) VALUES (?, ?) ON DUPLICATE KEY UPDATE payment_method_id = VALUES(payment_method_id), token = VALUES(token);";
-                break;
-            case CREDIT_CARD:
-                query = "INSERT INTO payment_method_credit_card (payment_method_id, card_number, card_holder_name, card_verification_value, expiration_date) VALUES (?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE payment_method_id = VALUES(payment_method_id), card_number = VALUES(card_number), card_holder_name = VALUES(card_holder_name), card_verification_value = VALUES(card_verification_value), expiration_date = VALUES(expiration_date);";
-                break;
+            case PAYPAL: return doCreate((PaypalPaymentMethod) instance);
+            case CREDIT_CARD: return doCreate((CreditCardPaymentMethod) instance);
             default: return null;
         }
+    }
 
-        final int modified = datasource.usePreparedStatement(query, statement -> {
-           statement.setInt(1, id);
+    @SneakyThrows
+    private PaypalPaymentMethod doCreate(PaypalPaymentMethod paypal) {
+        final String query = "INSERT INTO payment_method_paypal (payment_method_id, token) VALUES (?, ?);";
+        final int inserted = datasource.usePreparedStatement(query, statement -> {
+            statement.setInt(1, paypal.getId());
+            statement.setString(2, paypal.getToken());
 
-           if (type == Type.PAYPAL) {
-               final PaypalPaymentMethod method = (PaypalPaymentMethod) instance;
-               statement.setString(2, method.getToken());
-           } else if (type == Type.CREDIT_CARD) {
-               final CreditCardPaymentMethod method = (CreditCardPaymentMethod) instance;
-               statement.setString(2, method.getNumber());
-               statement.setString(3, method.getHolder());
-               statement.setString(4, method.getCvv());
-               statement.setDate(5, method.getExpiration());
-           } else {
-               return -1;
-           }
-
-           return statement.executeUpdate();
+            return statement.executeUpdate();
         });
+        return inserted <= 0 ? null : paypal;
+    }
 
-        if (modified <= 0) {
-            return null;
+    @SneakyThrows
+    private CreditCardPaymentMethod doCreate(CreditCardPaymentMethod card) {
+        final String query = "INSERT INTO payment_method_credit_card (payment_method_id, card_number, card_holder_name, card_verification_valuepayment_method_credit_card (payment_method_id, card_number, card_holder_name, card_verification_value, expiration_, expiration_date) VALUES (?, ?, ?, ?, ?);";
+        final int inserted = datasource.usePreparedStatement(query, statement -> {
+            statement.setInt(1, card.getId());
+            statement.setString(2, card.getNumber());
+            statement.setString(3, card.getHolder());
+            statement.setString(4, card.getCvv());
+            statement.setDate(5, card.getExpiration());
+
+            return statement.executeUpdate();
+        });
+        return inserted <= 0 ? null : card;
+    }
+
+    @Override
+    @SneakyThrows //TODO: consider implications
+    public PaymentMethod update(PaymentMethod instance) {
+        final Type type = instance.type();
+        switch (type) {
+            case PAYPAL: return doUpdate((PaypalPaymentMethod) instance);
+            case CREDIT_CARD: return doUpdate((CreditCardPaymentMethod) instance);
+            default: return null;
         }
+    }
 
-        instance.setId(id);
-        return instance;
+    @SneakyThrows
+    private PaypalPaymentMethod doUpdate(PaypalPaymentMethod paypal) {
+        final String query = "UPDATE payment_method_paypal SET token = ? WHERE payment_method_id = ?;";
+        final int updated = datasource.usePreparedStatement(query, statement -> {
+            statement.setString(1, paypal.getToken());
+            statement.setInt(2, paypal.getId());
+
+            return statement.executeUpdate();
+        });
+        return updated <= 0 ? null : paypal;
+    }
+
+    @SneakyThrows
+    private CreditCardPaymentMethod doUpdate(CreditCardPaymentMethod card) {
+        final String query = "UPDATE payment_method_credit_card SET card_number = ?, card_holder_name = ?, card_verification_value = ?, expiration_date = ? WHERE payment_method_id = ?;";
+        final int updated = datasource.usePreparedStatement(query, statement -> {
+            statement.setString(1, card.getNumber());
+            statement.setString(2, card.getHolder());
+            statement.setString(3, card.getCvv());
+            statement.setDate(4, card.getExpiration());
+            statement.setInt(5, card.getId());
+
+            return statement.executeUpdate();
+        });
+        return updated <= 0 ? null : card;
     }
 
     @Override
