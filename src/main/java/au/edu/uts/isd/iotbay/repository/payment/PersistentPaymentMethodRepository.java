@@ -15,20 +15,26 @@ import java.util.Objects;
 
 public class PersistentPaymentMethodRepository implements PaymentMethodRepository {
 
-    private static final ResultExtractor<PaymentMethod> EXTRACTOR = r -> {
+    private static final ResultExtractor<PaypalPaymentMethod> PAYPAL_EXTRACTOR = r -> {
         int id = r.getInt("id");
-        Type type = Type.findByName(r.getString("type"));
+        String token = r.getString("token");
+        return new PaypalPaymentMethod(id, token);
+    };
 
+    private static final ResultExtractor<CreditCardPaymentMethod> CREDIT_CARD_EXTRACTOR = r -> {
+        int id = r.getInt("id");
+        String number = r.getString("card_number");
+        String holder = r.getString("card_holder_name");
+        String cvv = r.getString("card_verification_value");
+        Date expiration = r.getDate("expiration_date");
+        return new CreditCardPaymentMethod(id, number, holder, cvv, expiration);
+    };
+
+    private static final ResultExtractor<PaymentMethod> EXTRACTOR = r -> {
+        final Type type = Type.findByName(r.getString("type"));
         switch (type) {
-            case CREDIT_CARD:
-                String number = r.getString("card_number");
-                String holder = r.getString("card_holder_name");
-                String cvv = r.getString("card_verification_value");
-                Date expiration = r.getDate("expiration_date");
-                return new CreditCardPaymentMethod(id, number, holder, cvv, expiration);
-            case PAYPAL:
-                String token = r.getString("token");
-                return new PaypalPaymentMethod(id, token);
+            case PAYPAL: return PAYPAL_EXTRACTOR.extract(r);
+            case CREDIT_CARD: return CREDIT_CARD_EXTRACTOR.extract(r);
             default: return null;
         }
     };
