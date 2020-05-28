@@ -6,9 +6,7 @@ import au.edu.uts.isd.iotbay.model.product.Product;
 import lombok.SneakyThrows;
 
 import java.util.Collection;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Predicate;
 import java.sql.*;
 
 public class PersistantProductRepository implements ProductRepository {
@@ -57,17 +55,66 @@ public class PersistantProductRepository implements ProductRepository {
     }
 
     @Override
+    @SneakyThrows
     public Product create(Product instance) {
-        return null;
+        final String query = "INSERT INTO product (id, name, description, quantity, price) values (?, ?, ?, ?, ?);";
+        final Integer id = datasource.useKeyedPreparedStatement(query, statement -> {
+
+            statement.setInt(1, instance.getId());
+            statement.setString(2, instance.getName());
+            statement.setString(3, instance.getDescription());
+            statement.setInt(4, instance.getQuantity());
+            statement.setDouble(5, instance.getPrice());
+
+            final int inserted = statement.executeUpdate();
+
+            if (inserted <= 0) {
+                return null;
+            }
+
+            try (ResultSet keys = statement.getGeneratedKeys()) {
+                if (keys.next()) {
+                    return keys.getInt(1);
+                }
+                return null;
+            }
+        });
+        instance.setId(id);
+        return id == null ? null : instance;
     }
 
     @Override
+    @SneakyThrows
     public Product update(Product instance) {
-        return null;
+        final String query = "UPDATE product SET name = ?, description = ?, quantity = ?, price = ? WHERE id = ? LIMIT 1;";
+        final int modified = datasource.usePreparedStatement(query, statement -> {
+
+            statement.setInt(1, instance.getId());
+            statement.setString(2, instance.getName());
+            statement.setString(3, instance.getDescription());
+            statement.setInt(4, instance.getQuantity());
+            statement.setDouble(5, instance.getPrice());
+
+            return statement.executeUpdate();
+        });
+        return modified <= 0 ? null : instance;
     }
 
     @Override
+    @SneakyThrows
     public Product delete(Product instance) {
-        return null;
+        final StringBuilder query = new StringBuilder("DELETE FROM user WHERE ");
+        if (instance.getId() != null) {
+            query.append("id = ?;");
+        } else {
+            return null;
+        }
+        final int deleted = datasource.usePreparedStatement(query.toString(), statement -> {
+            if (instance.getId() != null) {
+                statement.setInt(1, instance.getId());
+            }
+            return statement.executeUpdate();
+        });
+        return deleted <= 0 ? null : instance;
     }
 }
