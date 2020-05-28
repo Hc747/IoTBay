@@ -6,14 +6,16 @@ import au.edu.uts.isd.iotbay.model.product.Product;
 import lombok.SneakyThrows;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Optional;
 import java.sql.*;
 
-public class PersistantProductRepository implements ProductRepository {
+public class PersistentProductRepository implements ProductRepository {
+
     private final ConnectionProvider datasource;
 
-    public PersistantProductRepository(ConnectionProvider datasource) {
-        this.datasource = datasource;
+    public PersistentProductRepository(ConnectionProvider datasource) {
+        this.datasource = Objects.requireNonNull(datasource);
     }
 
     private static final ResultExtractor<Product> EXTRACTOR = r -> {
@@ -103,16 +105,9 @@ public class PersistantProductRepository implements ProductRepository {
     @Override
     @SneakyThrows
     public Product delete(Product instance) {
-        final StringBuilder query = new StringBuilder("DELETE FROM user WHERE ");
-        if (instance.getId() != null) {
-            query.append("id = ?;");
-        } else {
-            return null;
-        }
+        final StringBuilder query = new StringBuilder("DELETE FROM product WHERE id = ?;");
         final int deleted = datasource.usePreparedStatement(query.toString(), statement -> {
-            if (instance.getId() != null) {
-                statement.setInt(1, instance.getId());
-            }
+            statement.setInt(1, instance.getId());
             return statement.executeUpdate();
         });
         return deleted <= 0 ? null : instance;
