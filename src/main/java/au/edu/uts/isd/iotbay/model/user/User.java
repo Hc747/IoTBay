@@ -11,7 +11,7 @@ import java.util.StringJoiner;
 public class User {
 
     private Integer id;
-    private String name, username, password;
+    private String name, username, password, phone;
     private Role role;
     private boolean enabled;
     private Timestamp created, verified;

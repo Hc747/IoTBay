@@ -27,14 +27,15 @@ public class RegisterAction extends UnauthenticatedAction {
         String name = request.getParameter("name");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        String phone = request.getParameter("phone");
         
-        if (isNullOrEmpty(name) || isNullOrEmpty(username) || isNullOrEmpty(password)) {
-            reject("You must supply a name, username and password in order to login.");
+        if (isNullOrEmpty(name) || isNullOrEmpty(username) || isNullOrEmpty(password) || isNullOrEmpty(phone)) {
+            reject("You must supply a name, username, password and phone number in order to register.");
         }
 
-        if (!matches(Validator.Patterns.NAME_PATTERN, name) || !matches(Validator.Patterns.USERNAME_PATTERN, username) || !matches(Validator.Patterns.PASSWORD_PATTERN, password)) {
+        if (!matches(Validator.Patterns.NAME_PATTERN, name) || !matches(Validator.Patterns.USERNAME_PATTERN, username) || !matches(Validator.Patterns.PASSWORD_PATTERN, password) || !matches(Validator.Patterns.PHONE_NUMBER_PATTERN, phone)) {
             //TODO: improve UX; provide specific errors
-            reject("Your nominated name, username and / or password do not meet validation requirements.");
+            reject("Your nominated name, username, password and / or phone number do not meet validation requirements.");
         }
 
         final IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);
@@ -46,7 +47,7 @@ public class RegisterAction extends UnauthenticatedAction {
             reject("Sorry, that username is already taken.");
         }
 
-        final User user = ctx.getUsers().create(new User(null, name, username, AuthenticationUtil.hash(password), Role.USER, true, Timestamp.from(Instant.now()), null));
+        final User user = ctx.getUsers().create(new User(null, name, username, AuthenticationUtil.hash(password), phone, Role.USER, true, Timestamp.from(Instant.now()), null));
 
         if (user == null) {
             request.setAttribute("username", username);

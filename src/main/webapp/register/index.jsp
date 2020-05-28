@@ -23,6 +23,12 @@
                     </label>
                     <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                 </div>
+                <div class="form-group">
+                    <label for="phone">
+                        Phone Number
+                    </label>
+                    <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone Number" required>
+                </div>
                 <div class="form-group form-check">
                     <input type="checkbox" class="form-check-input" id="remember" name="remember">
                     <label class="form-check-label" for="remember">Remember me</label>
