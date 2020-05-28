@@ -4,7 +4,7 @@ import au.edu.uts.isd.iotbay.model.shipment.Shipment;
 
 import java.util.Collection;
 
-public class InMemoryShipmentRepository implements ShipmentRepository {
+public class PersistentShipmentRepository implements ShipmentRepository {
 
     @Override
     public Collection<Shipment> all() {
