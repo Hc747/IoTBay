@@ -18,6 +18,12 @@
                     <input type="email" class="form-control" id="username" name="username" placeholder="Enter username / email address" value="${username}" required>
                 </div>
                 <div class="form-group">
+                <label for="phoneNum">
+                    Username / email address
+                </label>
+                <input type="email" class="form-control" id="phoneNum" name="phoneNum" placeholder="Enter Phone number:" value="${phoneNum}" required>
+                </div>
+                <div class="form-group">
                     <label for="password">
                         Password
                     </label>
