@@ -2,6 +2,7 @@ package au.edu.uts.isd.iotbay.action.impl;
 
 import au.edu.uts.isd.iotbay.IoTBayApplicationContext;
 import au.edu.uts.isd.iotbay.action.UnauthenticatedAction;
+import au.edu.uts.isd.iotbay.model.log.UserLog;
 import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.util.AuthenticationUtil;
 
@@ -9,6 +10,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Optional;
 
 import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
@@ -46,6 +49,8 @@ public class LoginAction extends UnauthenticatedAction {
             reject("Incorrect username or password.");
         }
 
+
+        ctx.getUserLogs().create(new UserLog(null, user.getId(), "Login", Timestamp.from(Instant.now())));
         AuthenticationUtil.authenticate(session, user);
         
         message = String.format("Login successful. Welcome, %s", user.getUsername());

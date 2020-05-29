@@ -7,6 +7,7 @@ import au.edu.uts.isd.iotbay.action.impl.LoginAction;
 import au.edu.uts.isd.iotbay.action.impl.LogoutAction;
 import au.edu.uts.isd.iotbay.action.impl.RegisterAction;
 import au.edu.uts.isd.iotbay.database.ConnectionProvider;
+import au.edu.uts.isd.iotbay.repository.log.UserLogRepository;
 import au.edu.uts.isd.iotbay.repository.payment.PaymentMethodRepository;
 import au.edu.uts.isd.iotbay.repository.user.UserRepository;
 import lombok.Getter;
@@ -29,16 +30,18 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
     private final ActionProcessor processor;
     private final UserRepository users;
     private final PaymentMethodRepository payments;
+    private final UserLogRepository userLogs;
     
-    IoTBayApplicationContext(ConnectionProvider datasource, ActionProcessor processor, UserRepository users, PaymentMethodRepository payments) {
+    IoTBayApplicationContext(ConnectionProvider datasource, ActionProcessor processor, UserRepository users, PaymentMethodRepository payments, UserLogRepository userLogs) {
         this.datasource = Objects.requireNonNull(datasource);
         this.processor = Objects.requireNonNull(processor);
         this.users = Objects.requireNonNull(users);
         this.payments = Objects.requireNonNull(payments);
+        this.userLogs = Objects.requireNonNull(userLogs);
     }
 
     IoTBayApplicationContext(ConnectionProvider datasource, ActionProcessor processor) {
-        this(datasource, processor, UserRepository.create(datasource), PaymentMethodRepository.create(datasource));
+        this(datasource, processor, UserRepository.create(datasource), PaymentMethodRepository.create(datasource), UserLogRepository.create(datasource));
     }
     
     //TODO: product repository
