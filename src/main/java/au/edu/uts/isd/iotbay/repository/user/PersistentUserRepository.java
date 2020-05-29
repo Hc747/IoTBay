@@ -19,11 +19,12 @@ public class PersistentUserRepository implements UserRepository {
         String name = r.getString("first_name") + (r.getString("last_name") == null ? "" : " " + r.getString("last_name"));
         String username = r.getString("email_address");
         String password = r.getString("password_hash");
+        String phone = r.getString("phone_number");
         Role role = Role.findByOrdinal(r.getInt("role_id"));
         boolean enabled = r.getBoolean("enabled");
         Timestamp created = r.getTimestamp("created_at");
         Timestamp verified = r.getTimestamp("verified_at");
-        return new User(id, name, username, password, role, enabled, created, verified);
+        return new User(id, name, username, password, phone, role, enabled, created, verified);
     };
 
     private final ConnectionProvider datasource;
@@ -53,7 +54,7 @@ public class PersistentUserRepository implements UserRepository {
     @Override
     @SneakyThrows //TODO: consider implications
     public User create(User instance) {
-        final String query = "INSERT INTO user (email_address, role_id, first_name, last_name, password_hash, enabled, created_at, verified_at) values (?, ?, ?, ?, ?, ?, ?, ?);";
+        final String query = "INSERT INTO user (email_address, role_id, first_name, last_name, password_hash, phone_number, enabled, created_at, verified_at) values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
         final Integer id = datasource.useKeyedPreparedStatement(query, statement -> {
             final String[] names = instance.getNameComponents();
 
@@ -62,9 +63,10 @@ public class PersistentUserRepository implements UserRepository {
             statement.setString(3, names[0]);
             statement.setString(4, names[1]);
             statement.setString(5, instance.getPassword());
-            statement.setBoolean(6, instance.isEnabled());
-            statement.setTimestamp(7, instance.getCreated());
-            statement.setTimestamp(8, instance.getVerified());
+            statement.setString(6, instance.getPhone());
+            statement.setBoolean(7, instance.isEnabled());
+            statement.setTimestamp(8, instance.getCreated());
+            statement.setTimestamp(9, instance.getVerified());
 
             final int inserted = statement.executeUpdate();
 
@@ -87,7 +89,7 @@ public class PersistentUserRepository implements UserRepository {
     @Override
     @SneakyThrows //TODO: consider implications
     public User update(User instance) {
-        final String query = "UPDATE user SET email_address = ?, role_id = ?, first_name = ?, last_name = ?, password_hash = ?, enabled = ?, created_at = ?, verified_at = ? WHERE id = ? LIMIT 1;";
+        final String query = "UPDATE user SET email_address = ?, role_id = ?, first_name = ?, last_name = ?, password_hash = ?, phone_number = ?, enabled = ?, created_at = ?, verified_at = ? WHERE id = ? LIMIT 1;";
         final int modified = datasource.usePreparedStatement(query, statement -> {
             final String[] names = instance.getNameComponents();
 
@@ -96,10 +98,11 @@ public class PersistentUserRepository implements UserRepository {
             statement.setString(3, names[0]);
             statement.setString(4, names[1]);
             statement.setString(5, instance.getPassword());
-            statement.setBoolean(6, instance.isEnabled());
-            statement.setTimestamp(7, instance.getCreated());
-            statement.setTimestamp(8, instance.getVerified());
-            statement.setInt(6, instance.getId());
+            statement.setString(6, instance.getPhone());
+            statement.setBoolean(7, instance.isEnabled());
+            statement.setTimestamp(8, instance.getCreated());
+            statement.setTimestamp(9, instance.getVerified());
+            statement.setInt(10, instance.getId());
 
             return statement.executeUpdate();
         });

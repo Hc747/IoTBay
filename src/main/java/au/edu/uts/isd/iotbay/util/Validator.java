@@ -27,5 +27,6 @@ public class Validator {
         public static final Pattern USERNAME_PATTERN = Pattern.compile("([a-zA-Z0-9]+)(([._-])([a-zA-Z0-9]+))*(@)([a-z]+)(.)([a-z]{3})((([.])[a-z]{0,2})*)");
         public static final Pattern NAME_PATTERN = Pattern.compile("([A-Z][a-z]+[\\s])+[A-Z][a-z]*");
         public static final Pattern PASSWORD_PATTERN = Pattern.compile("[a-zA-Z0-9!@#$%^&*)(+=-]{4,}");
+        public static final Pattern PHONE_NUMBER_PATTERN = Pattern.compile("[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*");
     }
 }
