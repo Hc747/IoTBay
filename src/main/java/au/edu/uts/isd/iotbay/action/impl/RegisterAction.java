@@ -55,7 +55,7 @@ public class RegisterAction extends UnauthenticatedAction {
             reject("Unable to register an account; please try again.");
         }
 
-        //ctx.getUserLogs().create(new UserLog(null, user.getId(), "Register", Timestamp.from(Instant.now())));
+        ctx.getUserLogs().create(new UserLog(null, user.getId(), "Register", Timestamp.from(Instant.now())));
         // Add registration to the user log
 
         AuthenticationUtil.authenticate(session, user);
