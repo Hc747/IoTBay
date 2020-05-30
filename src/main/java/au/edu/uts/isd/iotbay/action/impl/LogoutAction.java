@@ -2,7 +2,6 @@ package au.edu.uts.isd.iotbay.action.impl;
 
 import au.edu.uts.isd.iotbay.IoTBayApplicationContext;
 import au.edu.uts.isd.iotbay.action.AuthenticatedAction;
-import au.edu.uts.isd.iotbay.model.log.UserLog;
 import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.util.AuthenticationUtil;
 
@@ -10,9 +9,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.Optional;
 
 public class LogoutAction extends AuthenticatedAction {
 
@@ -22,7 +18,7 @@ public class LogoutAction extends AuthenticatedAction {
         final IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);
         User user = AuthenticationUtil.user(session);
 
-        ctx.getUserLogs().create(new UserLog(null, user.getId(), "Logout", Timestamp.from(Instant.now())));
+        ctx.log(user, "Logout");
         AuthenticationUtil.unauthenticate(session);
 
         type = MessageType.SUCCESS;

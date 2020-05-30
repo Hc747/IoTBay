@@ -7,6 +7,8 @@ import au.edu.uts.isd.iotbay.action.impl.LoginAction;
 import au.edu.uts.isd.iotbay.action.impl.LogoutAction;
 import au.edu.uts.isd.iotbay.action.impl.RegisterAction;
 import au.edu.uts.isd.iotbay.database.ConnectionProvider;
+import au.edu.uts.isd.iotbay.model.log.UserLog;
+import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.repository.log.UserLogRepository;
 import au.edu.uts.isd.iotbay.repository.payment.PaymentMethodRepository;
 import au.edu.uts.isd.iotbay.repository.product.ProductRepository;
@@ -16,6 +18,8 @@ import lombok.Getter;
 import javax.annotation.PreDestroy;
 import javax.servlet.ServletContext;
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -45,6 +49,10 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
 
     IoTBayApplicationContext(ConnectionProvider datasource, ActionProcessor processor) {
         this(datasource, processor, UserRepository.create(datasource), PaymentMethodRepository.create(datasource), ProductRepository.create(datasource), UserLogRepository.create(datasource));
+    }
+
+    public void log(User user, String type) {
+        userLogs.create(new UserLog(null, user, type, Timestamp.from(Instant.now())));
     }
     
     //TODO: product repository
