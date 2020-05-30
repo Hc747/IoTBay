@@ -28,10 +28,10 @@ public class PersistentCategoryRepository implements CategoryRepository {
 
     @Override
     @SneakyThrows
-    public Optional<Category> findByCategoryId(int category_id) {
+    public Optional<Category> findByCategoryId(int id) {
         final String query = "SELECT * FROM category WHERE id = ? LIMIT 1;";
         final Category category = datasource.usePreparedStatement(query, statement -> {
-            statement.setString(1, String.valueOf(category_id));
+            statement.setInt(1, id);
             return EXTRACTOR.single(statement.executeQuery());
         });
         return Optional.ofNullable(category);
@@ -39,10 +39,10 @@ public class PersistentCategoryRepository implements CategoryRepository {
 
     @Override
     @SneakyThrows
-    public Optional<Category> findByCategoryName(String category_name) {
+    public Optional<Category> findByCategoryName(String name) {
         final String query = "SELECT * FROM category WHERE name = ? LIMIT 1;";
         final Category category = datasource.usePreparedStatement(query, statement -> {
-            statement.setString(1, category_name);
+            statement.setString(1, name);
             return EXTRACTOR.single(statement.executeQuery());
         });
         return Optional.ofNullable(category);
@@ -58,13 +58,12 @@ public class PersistentCategoryRepository implements CategoryRepository {
     @Override
     @SneakyThrows
     public Category create(Category instance) {
-        final String query = "INSERT INTO category (id, name, description, enabled) values (?, ?, ?, ?);";
+        final String query = "INSERT INTO category (name, description, enabled) values (?, ?, ?);";
         final Integer id = datasource.useKeyedPreparedStatement(query, statement -> {
 
-            statement.setInt(1, instance.getId());
-            statement.setString(2, instance.getName());
-            statement.setString(3, instance.getDescription());
-            statement.setBoolean(4, instance.getEnabled());
+            statement.setString(1, instance.getName());
+            statement.setString(2, instance.getDescription());
+            statement.setBoolean(3, instance.isEnabled());
 
             final int inserted = statement.executeUpdate();
 
@@ -89,10 +88,10 @@ public class PersistentCategoryRepository implements CategoryRepository {
         final String query = "UPDATE category SET name = ?, description = ?, enabled = ? WHERE id = ? LIMIT 1;";
         final int modified = datasource.usePreparedStatement(query, statement -> {
 
-            statement.setInt(1, instance.getId());
-            statement.setString(2, instance.getName());
-            statement.setString(3, instance.getDescription());
-            statement.setBoolean(4, instance.getEnabled());
+            statement.setString(1, instance.getName());
+            statement.setString(2, instance.getDescription());
+            statement.setBoolean(3, instance.isEnabled());
+            statement.setInt(4, instance.getId());
 
             return statement.executeUpdate();
         });
@@ -102,8 +101,8 @@ public class PersistentCategoryRepository implements CategoryRepository {
     @Override
     @SneakyThrows
     public Category delete(Category instance) {
-        final StringBuilder query = new StringBuilder("DELETE FROM category WHERE id = ?;");
-        final int deleted = datasource.usePreparedStatement(query.toString(), statement -> {
+        final String query = "DELETE FROM category WHERE id = ?;";
+        final int deleted = datasource.usePreparedStatement(query, statement -> {
             statement.setInt(1, instance.getId());
             return statement.executeUpdate();
         });

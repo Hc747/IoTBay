@@ -18,11 +18,11 @@ public class InMemoryCategoryRepository implements CategoryRepository {
     }
 
     @Override
-    public Optional<Category> findByCategoryId(int category_id) { return Optional.ofNullable(categories.get(category_id)); }
+    public Optional<Category> findByCategoryId(int id) { return Optional.ofNullable(categories.get(id)); }
 
     @Override
-    public Optional<Category> findByCategoryName(String category_name) {
-        return find(category -> category.getName().equalsIgnoreCase(category_name));
+    public Optional<Category> findByCategoryName(String name) {
+        return find(category -> category.getName().equalsIgnoreCase(name));
     }
 
     @Override

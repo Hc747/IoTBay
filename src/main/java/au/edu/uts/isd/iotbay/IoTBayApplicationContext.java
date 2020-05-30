@@ -58,10 +58,6 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
         userLogs.create(new UserLog(null, user, type, Timestamp.from(Instant.now())));
     }
     
-    //TODO: product repository
-    //TODO: order repository
-    //TODO: other repositories
-
     public static IoTBayApplicationContext getInstance(ServletContext application, Supplier<IoTBayApplicationContext> supplier) {
         return getInstance(application, CONTEXT_KEY, supplier);
     }

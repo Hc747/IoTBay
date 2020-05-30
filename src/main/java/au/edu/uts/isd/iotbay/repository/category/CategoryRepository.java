@@ -10,9 +10,9 @@ import au.edu.uts.isd.iotbay.repository.product.ProductRepository;
 import java.util.Optional;
 
 public interface CategoryRepository extends Repository<Category> {
-    Optional<Category> findByCategoryId(int category_id);
+    Optional<Category> findByCategoryId(int id);
 
-    Optional<Category> findByCategoryName(String category_name);
+    Optional<Category> findByCategoryName(String name);
 
     static CategoryRepository create(ConnectionProvider datasource) {
         if (datasource == null) {
