@@ -42,13 +42,14 @@ public class PersistentOrderRepository implements OrderRepository {
 
     @Override
     public Collection<Order> all() {
+
         return null;
     }
 
     @Override
     @SneakyThrows
     public Order create(Order instance) {
-        final String query = "INSERT INTO orders (id) values (?);";
+        final String query = "INSERT INTO order (id) values (?);";
         final Integer id = datasource.useKeyedPreparedStatement(query, statement -> {
             statement.setInt(1, instance.getId());
 
@@ -78,6 +79,11 @@ public class PersistentOrderRepository implements OrderRepository {
     @Override
     @SneakyThrows
     public Order delete(Order instance) {
-        return null;
+        final StringBuilder query = new StringBuilder("DELETE FROM order WHERE id = ?;");
+        final int deleted = datasource.usePreparedStatement(query.toString(), statement -> {
+            statement.setInt(1, instance.getId());
+            return statement.executeUpdate();
+        });
+        return deleted <= 0 ? null : instance;
     }
 }
