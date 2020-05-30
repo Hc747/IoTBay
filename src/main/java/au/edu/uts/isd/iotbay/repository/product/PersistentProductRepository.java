@@ -30,7 +30,7 @@ public class PersistentProductRepository implements ProductRepository {
     @Override
     @SneakyThrows
     public Optional<Product> findByProductId(int product_id) {
-        final String query = "SELECT * FROM products WHERE id = ? LIMIT 1;";
+        final String query = "SELECT * FROM product WHERE id = ? LIMIT 1;";
         final Product product = datasource.usePreparedStatement(query, statement -> {
             statement.setString(1, String.valueOf(product_id));
             return EXTRACTOR.single(statement.executeQuery());
@@ -41,9 +41,9 @@ public class PersistentProductRepository implements ProductRepository {
     @Override
     @SneakyThrows
     public Optional<Product> findByProductName(String product_name) {
-        final String query = "SELECT * FROM products WHERE name = ? LIMIT 1;";
+        final String query = "SELECT * FROM product WHERE name = ? LIMIT 1;";
         final Product product = datasource.usePreparedStatement(query, statement -> {
-            statement.setString(1, product_name);
+            statement.setString(2, product_name);
             return EXTRACTOR.single(statement.executeQuery());
         });
         return Optional.ofNullable(product);
