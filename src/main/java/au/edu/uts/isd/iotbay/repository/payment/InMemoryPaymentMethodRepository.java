@@ -1,6 +1,8 @@
 package au.edu.uts.isd.iotbay.repository.payment;
 
 import au.edu.uts.isd.iotbay.model.payment.PaymentMethod;
+import au.edu.uts.isd.iotbay.model.payment.UserPaymentMethod;
+import au.edu.uts.isd.iotbay.model.user.User;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -51,5 +53,20 @@ public class InMemoryPaymentMethodRepository implements PaymentMethodRepository 
 
     public static InMemoryPaymentMethodRepository unsynchronised() {
         return new InMemoryPaymentMethodRepository(new HashMap<>());
+    }
+
+    @Override
+    public Collection<PaymentMethod> findAllByUser(User user) {
+        return null;
+    }
+
+    @Override
+    public UserPaymentMethod associate(PaymentMethod method, User user) {
+        return null;
+    }
+
+    @Override
+    public UserPaymentMethod disassociate(UserPaymentMethod method) {
+        return null;
     }
 }
