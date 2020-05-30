@@ -11,6 +11,8 @@ import au.edu.uts.isd.iotbay.repository.payment.PersistentPaymentMethodRepositor
 import lombok.SneakyThrows;
 
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
@@ -39,22 +41,74 @@ public class PersistentOrderRepository implements OrderRepository {
             statement.setInt(1, id);
             return EXTRACTOR.single(statement.executeQuery());
         });
-        return Optional.empty();
+        return Optional.ofNullable(order);
     }
 
     @Override
+    @SneakyThrows
     public OrderProduct addProduct(Order order, Product product, int quantity) {
-        return null;
+        final String query = "INSERT INTO order_products (order_id, product_id, quantity) VALUES (?, ?, ?, ?);";
+        final Integer id = datasource.useKeyedPreparedStatement(query, statement -> {
+            statement.setInt(1, order.getId());
+            statement.setInt(2, product.getId());
+            statement.setInt(3, quantity);
+
+            final int inserted = statement.executeUpdate();
+
+            if (inserted <= 0) {
+                return null;
+            }
+
+            try (ResultSet keys = statement.getGeneratedKeys()) {
+                if (keys.next()) {
+                    return keys.getInt(1);
+                }
+                return null;
+            }
+        });
+
+        if (id == null) {
+            return null;
+        }
+        return new OrderProduct(id, order, product, quantity);
     }
 
     @Override
+    @SneakyThrows
     public OrderProduct removeProduct(Order order, Product product, int quantity) {
         return null;
     }
 
     @Override
+    @SneakyThrows
     public OrderStatus addStatus(Order order, String status, String details) {
-        return null;
+        final String query = "INSERT INTO order_status (order_id, status, details, timestamp) VALUES (?, ?, ?, ?);";
+        final Timestamp timestamp = Timestamp.from(Instant.now());
+        final Integer id = datasource.useKeyedPreparedStatement(query, statement -> {
+            statement.setInt(1, order.getId());
+            statement.setString(2, status);
+            statement.setString(3, details);
+            statement.setTimestamp(4, timestamp);
+
+            final int inserted = statement.executeUpdate();
+
+            if (inserted <= 0) {
+                return null;
+            }
+
+            try (ResultSet keys = statement.getGeneratedKeys()) {
+                if (keys.next()) {
+                    return keys.getInt(1);
+                }
+                return null;
+            }
+        });
+
+        if (id == null) {
+            return null;
+        }
+
+        return new OrderStatus(id, order, status, details, timestamp);
     }
 
     @Override
