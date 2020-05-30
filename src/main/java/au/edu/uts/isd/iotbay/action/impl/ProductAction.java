@@ -97,7 +97,6 @@ public class ProductAction extends Action {
     }
     @SneakyThrows
     private void delete(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
-        //Product productObject = request.getParameter("productObject");
         String stringProductId = request.getParameter("productId");
 
         if (isNullOrEmpty(stringProductId)) {
@@ -124,6 +123,79 @@ public class ProductAction extends Action {
         }
         message = "Successfully deleted the product.";
         //TODO::Return to a page.
+    }
+    @SneakyThrows
+    private void update(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
+        String stringProductId = request.getParameter("productId");
+
+        if (isNullOrEmpty(stringProductId)) {
+            reject("No Product Id found");
+        }
+        if (!(matches(WHOLE_NUMBER_PATTERN, stringProductId))) {
+            reject("The Product Id was not a valid whole number");
+        }
+        Integer productId = Integer.valueOf(stringProductId);
+        if (productId < 0) {
+            reject("Product Id was not valid. Can't be a negative value");
+        }
+        final ProductRepository repository = ctx.getProducts();
+        Optional<Product> product = repository.findByProductId(productId);
+
+        if (!(product.isPresent())) {
+            reject("Could not find product to delete. Id may have been incorrect.");
+        }
+
+        String name = request.getParameter("productName");
+        String description = request.getParameter("productDescription");
+        String quantity = request.getParameter("productQuantity");
+        String price = request.getParameter("productPrice");
+
+        if (isNullOrEmpty(name) || isNullOrEmpty(description) || isNullOrEmpty(quantity) || isNullOrEmpty(price)) {
+            reject("One or more inputs was empty.");
+        }
+
+        if (!(matches(DECIMAL_PATTERN, price))) {
+            reject("The input price did not meet the required format.");
+        }
+
+        if (!(matches(WHOLE_NUMBER_PATTERN, quantity))) {
+            reject("The input quantity was not a valid whole number");
+        }
+
+        DecimalFormat priceFormat = new DecimalFormat("##.00");
+        Double productPrice = Double.valueOf(priceFormat.format(request.getParameter("productPrice")));
+        Integer productQuantity = Integer.valueOf(quantity);
+
+        //TODO: get input parameters
+        //TODO: validate input parameters
+
+        if (name.length() < 4) {
+            reject("Product name was not long enough");
+        }
+
+        if (description.length() < 10) {
+            reject("Product description was not long enough");
+        }
+
+        if (productQuantity < 0) {
+            reject("Product Quantity was not valid. Can't be a negative value");
+        }
+
+        if (productPrice < 0) {
+            reject("Product Price was not valid Can't be a negative value");
+        }
+        //TODO: Account for catagory's images, etc.
+
+
+        //TODO: create product
+        final Product updated_product = repository.update(new Product(productId, name, description, productQuantity, productPrice));
+
+
+        if (updated_product == null) {
+            reject("Unable to create product.");
+        }
+        message = "Successfully created product.";
+        //TODO::Return to product page with ProductID
     }
 
 
