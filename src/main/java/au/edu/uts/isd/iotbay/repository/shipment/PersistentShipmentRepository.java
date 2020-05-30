@@ -24,11 +24,11 @@ public class PersistentShipmentRepository implements ShipmentRepository {
     private static final ResultExtractor<Shipment> EXTRACTOR = r -> {
 
         Integer id = r.getInt("id");
-        //Order order = r.getOrder("order");
-        //Address address = r.getAddress("address");
+        /*Order order = r.getOrder("order");
+        Address address = r.getAddress("address");
         String method = r.getString("method");
         Date date = r.getDate("date");
-       // return new Shipment(id, order, address, method, date);
+        return new Shipment(id, order, address, method, date);*/
         return null;
     };
 
