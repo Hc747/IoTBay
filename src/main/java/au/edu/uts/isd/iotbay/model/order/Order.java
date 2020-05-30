@@ -10,7 +10,7 @@ import lombok.*;
 public class Order {
 
     private Integer id;
-    //private PaymentMethod payment;
+    private PaymentMethod payment;
 
 //    private int id, invoiceId, addressId, paymentMethodId, productId;
 //    public enum status

@@ -5,6 +5,7 @@ import au.edu.uts.isd.iotbay.database.ResultExtractor;
 import au.edu.uts.isd.iotbay.model.order.Order;
 import au.edu.uts.isd.iotbay.model.order.OrderProduct;
 import au.edu.uts.isd.iotbay.model.order.OrderStatus;
+import au.edu.uts.isd.iotbay.model.payment.PaymentMethod;
 import au.edu.uts.isd.iotbay.model.product.Product;
 import lombok.SneakyThrows;
 
@@ -17,8 +18,9 @@ public class PersistentOrderRepository implements OrderRepository {
 
     private static final ResultExtractor<Order> EXTRACTOR = r -> {
         int id = r.getInt("id");
+        PaymentMethod paymentID = r.getObject("paymentID");
         //int paymentId = r.getInt("payment_method_id");
-        return new Order(id);
+        return new Order(id, paymentID);
     };
 
     private final ConnectionProvider datasource;
