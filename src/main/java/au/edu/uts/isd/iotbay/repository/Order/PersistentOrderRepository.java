@@ -1,6 +1,7 @@
 package au.edu.uts.isd.iotbay.repository.Order;
 
 import au.edu.uts.isd.iotbay.database.ConnectionProvider;
+import au.edu.uts.isd.iotbay.database.ResultExtractor;
 import au.edu.uts.isd.iotbay.model.order.Order;
 import au.edu.uts.isd.iotbay.model.order.OrderProduct;
 import au.edu.uts.isd.iotbay.model.order.OrderStatus;
@@ -13,6 +14,12 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class PersistentOrderRepository implements OrderRepository {
+
+    private static final ResultExtractor<Order> EXTRACTOR = r -> {
+        int id = r.getInt("id");
+        //int paymentId = r.getInt("payment_method_id");
+        return new Order(id);
+    };
 
     private final ConnectionProvider datasource;
 
@@ -41,9 +48,10 @@ public class PersistentOrderRepository implements OrderRepository {
     }
 
     @Override
+    @SneakyThrows
     public Collection<Order> all() {
-
-        return null;
+        final String query = "SELECT * FROM order;";
+        return datasource.useStatement(statement -> EXTRACTOR.all(statement.executeQuery(query)));
     }
 
     @Override
