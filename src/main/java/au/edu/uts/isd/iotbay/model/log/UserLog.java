@@ -10,15 +10,9 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class UserLog {
 
-    private Integer Id;
+    private Integer id;
     private User user;
     private String type;
     private Timestamp timestamp;
-/*
-private enum type4 {
-    Login,
-    Cancel,
-    Logout,
-    Update,
-    Register;}*/
+
 }
