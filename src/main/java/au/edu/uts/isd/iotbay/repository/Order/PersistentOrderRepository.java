@@ -32,7 +32,13 @@ public class PersistentOrderRepository implements OrderRepository {
     }
 
     @Override
+    @SneakyThrows
     public Optional<Order> findById(int id) {
+        final String query = "SELECT * FROM order WHERE id = ? LIMIT 1;";
+        final Order order = datasource.usePreparedStatement(query, statement -> {
+            statement.setInt(1, id);
+            return EXTRACTOR.single(statement.executeQuery());
+        });
         return Optional.empty();
     }
 
