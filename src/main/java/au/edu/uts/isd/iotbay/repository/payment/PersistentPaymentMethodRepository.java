@@ -6,6 +6,8 @@ import au.edu.uts.isd.iotbay.model.payment.CreditCardPaymentMethod;
 import au.edu.uts.isd.iotbay.model.payment.PaymentMethod;
 import au.edu.uts.isd.iotbay.model.payment.PaymentMethod.Type;
 import au.edu.uts.isd.iotbay.model.payment.PaypalPaymentMethod;
+import au.edu.uts.isd.iotbay.model.payment.UserPaymentMethod;
+import au.edu.uts.isd.iotbay.model.user.User;
 import lombok.SneakyThrows;
 
 import java.sql.Date;
@@ -178,5 +180,20 @@ public class PersistentPaymentMethodRepository implements PaymentMethodRepositor
             return statement.executeUpdate();
         });
         return deleted > 0 ? instance : null;
+    }
+
+    @Override
+    public Collection<PaymentMethod> findAllByUser(User user) {
+        return null;
+    }
+
+    @Override
+    public UserPaymentMethod associate(PaymentMethod method, User user) {
+        return null;
+    }
+
+    @Override
+    public UserPaymentMethod disassociate(UserPaymentMethod method) {
+        return null;
     }
 }
