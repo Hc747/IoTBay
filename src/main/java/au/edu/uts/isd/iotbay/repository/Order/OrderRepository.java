@@ -1,20 +1,28 @@
 package au.edu.uts.isd.iotbay.repository.Order;
 
+import au.edu.uts.isd.iotbay.model.order.OrderProduct;
+import au.edu.uts.isd.iotbay.model.order.OrderStatus;
+import au.edu.uts.isd.iotbay.model.product.Product;
 import au.edu.uts.isd.iotbay.repository.Repository;
 import au.edu.uts.isd.iotbay.model.order.Order;
 import au.edu.uts.isd.iotbay.database.ConnectionProvider;
 
 import java.util.Optional;
 
-public interface OrderRepository extends Repository<Order>{
-    Optional<Order> findByUsername(String username);
+public interface OrderRepository extends Repository<Order> {
+
+    Optional<Order> findById(int id);
+
+    OrderProduct addProduct(Order order, Product product, int quantity);
+
+    OrderProduct removeProduct(Order order, Product product, int quantity);
+
+    OrderStatus addStatus(Order order, String status, String details);
 
     static OrderRepository create(ConnectionProvider datasource) {
         if (datasource == null) {
-            //return in memory implementation
-            return null;
+//            return InMemoryOrderRepository.concurrent();
         }
-        //return persistent implementation
-        return null;
+        return new PersistentOrderRepository(datasource);
     }
 }
