@@ -61,7 +61,7 @@ public class InMemoryPaymentMethodRepository implements PaymentMethodRepository 
     }
 
     @Override
-    public UserPaymentMethod associate(PaymentMethod method, User user) {
+    public UserPaymentMethod associate(User user, PaymentMethod method) {
         return null;
     }
 
