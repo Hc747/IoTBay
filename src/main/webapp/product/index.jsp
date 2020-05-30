@@ -1,14 +1,45 @@
+<%@ page import="au.edu.uts.isd.iotbay.IoTBayApplicationContext" %>
+<%@ page import="javafx.application.Application" %>
+<%@ page import="au.edu.uts.isd.iotbay.repository.product.ProductRepository" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%
+    final IoTBayApplicationContext context = IoTBayApplicationContext.getInstance(application);
+    final ProductRepository repository = context.getProducts();
+%>
 <t:layout>
     <jsp:body>
-        <h1>Product Title</h1>
-        <div>
-            <p>Bordered Image for the product</p>
+        <h1 class="jumbotron-heading" style="text-align: center">Product Title</h1>
+        <div class="html-editor-align-center">
+            <img class="mx-auto d-block" src="https://www.w3schools.com/images/w3schools_green.jpg", alt="productName"/>
         </div>
-        <h2>Product Price</h2>
+        <div class="container p-3 my-3 bg-dark text-white">
+            <div>
+                <h3 style="text-align: left" >$ Product Price</h3>
+            </div>
+            <div style="align-self: end">
+                <button type="button" class="btn btn-primary" style="right: auto">Add To Cart</button>
+                <button type="button" class="btn btn-secondary" style="right: auto">Add To Wishlist</button>
+            </div>
+        </div>
+        <div class="container p-3 my-3 border">
+            <div class="card" style="border: black">
+                <img class="mx-auto d-block" src="https://www.w3schools.com/images/w3schools_green.jpg", alt="productName">
+            </div>
+        </div>
+
         <hr>
-        <p>Product Description: Bordered Box around me</p>
-        <p>Product Catagories: Will implement mechanism to search by catagory.</p>
+        <div class="container p-3 my-3 border">
+            <div class="box">
+                <div class="card">
+                    <pre>Product Description: Bordered Box around me</pre>
+                </div>
+                <br>
+                <div class="card">
+                    <p>Product Catagories: Will implement mechanism to search by catagory.</p>
+                </div>
+            </div>
+        </div>
+
     </jsp:body>
 </t:layout>
