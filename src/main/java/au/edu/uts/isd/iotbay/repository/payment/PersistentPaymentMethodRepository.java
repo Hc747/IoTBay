@@ -13,31 +13,44 @@ import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.Objects;
 
+import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
+
 public class PersistentPaymentMethodRepository implements PaymentMethodRepository {
 
-    private static final ResultExtractor<PaypalPaymentMethod> PAYPAL_EXTRACTOR = r -> {
-        int id = r.getInt("id");
-        String token = r.getString("token");
-        return new PaypalPaymentMethod(id, token);
-    };
+    private static ResultExtractor<PaypalPaymentMethod> paypal(String idField, String prefix) {
+        final String qualifier = isNullOrEmpty(prefix) ? "" : prefix;
+        return r -> {
+            int id = r.getInt(qualifier + idField);
+            String token = r.getString(qualifier + "token");
+            return new PaypalPaymentMethod(id, token);
+        };
+    }
 
-    private static final ResultExtractor<CreditCardPaymentMethod> CREDIT_CARD_EXTRACTOR = r -> {
-        int id = r.getInt("id");
-        String number = r.getString("card_number");
-        String holder = r.getString("card_holder_name");
-        String cvv = r.getString("card_verification_value");
-        Date expiration = r.getDate("expiration_date");
-        return new CreditCardPaymentMethod(id, number, holder, cvv, expiration);
-    };
+    private static ResultExtractor<CreditCardPaymentMethod> creditCard(String idField, String prefix) {
+        final String qualifier = isNullOrEmpty(prefix) ? "" : prefix;
+        return r -> {
+            int id = r.getInt(qualifier + idField);
+            String number = r.getString(qualifier + "card_number");
+            String holder = r.getString(qualifier + "card_holder_name");
+            String cvv = r.getString(qualifier + "card_verification_value");
+            Date expiration = r.getDate(qualifier + "expiration_date");
+            return new CreditCardPaymentMethod(id, number, holder, cvv, expiration);
+        };
+    }
 
-    private static final ResultExtractor<PaymentMethod> EXTRACTOR = r -> {
-        final Type type = Type.findByName(r.getString("type"));
-        switch (type) {
-            case PAYPAL: return PAYPAL_EXTRACTOR.extract(r);
-            case CREDIT_CARD: return CREDIT_CARD_EXTRACTOR.extract(r);
-            default: return null;
-        }
-    };
+    public static ResultExtractor<PaymentMethod> extractor(String idField, String prefix) {
+        final String qualifier = isNullOrEmpty(prefix) ? "" : prefix;
+        return r -> {
+            final Type type = Type.findByName(r.getString(qualifier + "type"));
+            switch (type) {
+                case PAYPAL: return paypal(idField, prefix).extract(r);
+                case CREDIT_CARD: return creditCard(idField, prefix).extract(r);
+                default: return null;
+            }
+        };
+    }
+
+    private static final ResultExtractor<PaymentMethod> EXTRACTOR = extractor("id", null);
 
     private final ConnectionProvider datasource;
 

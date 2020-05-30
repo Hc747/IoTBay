@@ -19,7 +19,7 @@ public class PersistentUserRepository implements UserRepository {
     public static ResultExtractor<User> extractor(String idField, String prefix) {
         final String qualifier = isNullOrEmpty(prefix) ? "" : prefix;
         return r -> {
-            int id = r.getInt(idField);
+            int id = r.getInt(qualifier + idField);
             String name = r.getString(qualifier + "first_name") + (r.getString(qualifier + "last_name") == null ? "" : " " + r.getString(qualifier + "last_name"));
             String username = r.getString(qualifier + "email_address");
             String password = r.getString(qualifier + "password_hash");
