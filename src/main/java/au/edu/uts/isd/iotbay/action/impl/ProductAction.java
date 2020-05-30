@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import java.text.DecimalFormat;
+import java.util.Optional;
 
 import static au.edu.uts.isd.iotbay.util.Validator.Patterns.DECIMAL_PATTERN;
 import static au.edu.uts.isd.iotbay.util.Validator.Patterns.WHOLE_NUMBER_PATTERN;
@@ -74,7 +75,7 @@ public class ProductAction extends Action {
             reject("Product description was not long enough");
         }
 
-        if (quantity.length() < 0) {
+        if (productQuantity < 0) {
             reject("Product Quantity was not valid. Can't be a negative value");
         }
 
@@ -92,7 +93,39 @@ public class ProductAction extends Action {
             reject("Unable to create product.");
         }
         message = "Successfully created product.";
+        //TODO::Return to product page with ProductID
     }
+    @SneakyThrows
+    private void delete(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
+        //Product productObject = request.getParameter("productObject");
+        String stringProductId = request.getParameter("productId");
+
+        if (isNullOrEmpty(stringProductId)) {
+            reject("No Product Id found");
+        }
+        if (!(matches(WHOLE_NUMBER_PATTERN, stringProductId))) {
+            reject("The Product Id was not a valid whole number");
+        }
+        Integer productId = Integer.valueOf(stringProductId);
+        if (productId < 0) {
+            reject("Product Id was not valid. Can't be a negative value");
+        }
+        final ProductRepository repository = ctx.getProducts();
+        Optional<Product> product = repository.findByProductId(productId);
+
+        if (!(product.isPresent())) {
+            reject("Could not find product to delete. Id may have been incorrect.");
+        }
+
+        Product deletedProduct = repository.delete(product.get());
+
+        if (deletedProduct == null) {
+            reject("Unable to delete the product.");
+        }
+        message = "Successfully deleted the product.";
+        //TODO::Return to a page.
+    }
+
 
     @SneakyThrows
     private User authenticate(HttpSession session) {

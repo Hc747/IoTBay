@@ -47,7 +47,7 @@ public class PersistentOrderRepository implements OrderRepository {
     @Override
     @SneakyThrows
     public OrderProduct addProduct(Order order, Product product, int quantity) {
-        final String query = "INSERT INTO order_products (order_id, product_id, quantity) VALUES (?, ?, ?, ?);";
+        final String query = "INSERT INTO order_products (order_id, product_id, quantity) VALUES (?, ?, ?);";
         final Integer id = datasource.useKeyedPreparedStatement(query, statement -> {
             statement.setInt(1, order.getId());
             statement.setInt(2, product.getId());
