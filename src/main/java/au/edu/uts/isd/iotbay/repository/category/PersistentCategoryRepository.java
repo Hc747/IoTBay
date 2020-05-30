@@ -1,72 +1,70 @@
-package au.edu.uts.isd.iotbay.repository.product;
+package au.edu.uts.isd.iotbay.repository.category;
 
 import au.edu.uts.isd.iotbay.database.ConnectionProvider;
 import au.edu.uts.isd.iotbay.database.ResultExtractor;
-import au.edu.uts.isd.iotbay.model.product.Product;
+import au.edu.uts.isd.iotbay.model.category.Category;
 import lombok.SneakyThrows;
 
+import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
-import java.sql.*;
 
-public class PersistentProductRepository implements ProductRepository {
+public class PersistentCategoryRepository implements CategoryRepository {
 
     private final ConnectionProvider datasource;
 
-    public PersistentProductRepository(ConnectionProvider datasource) {
+    public PersistentCategoryRepository(ConnectionProvider datasource) {
         this.datasource = Objects.requireNonNull(datasource);
     }
 
-    private static final ResultExtractor<Product> EXTRACTOR = r -> {
+    private static final ResultExtractor<Category> EXTRACTOR = r -> {
         int id = r.getInt("id");
         String name = r.getString("name");
         String description = r.getString("description");
-        int quantity = r.getInt("quantity");
-        double price = r.getDouble("price");
-        return new Product(id, name, description, quantity, price);
+        boolean enabled = r.getBoolean("enabled");
+        return new Category(id, name, description, enabled);
     };
 
     @Override
     @SneakyThrows
-    public Optional<Product> findByProductId(int product_id) {
-        final String query = "SELECT * FROM product WHERE id = ? LIMIT 1;";
-        final Product product = datasource.usePreparedStatement(query, statement -> {
-            statement.setString(1, String.valueOf(product_id));
+    public Optional<Category> findByCategoryId(int category_id) {
+        final String query = "SELECT * FROM category WHERE id = ? LIMIT 1;";
+        final Category category = datasource.usePreparedStatement(query, statement -> {
+            statement.setString(1, String.valueOf(category_id));
             return EXTRACTOR.single(statement.executeQuery());
         });
-        return Optional.ofNullable(product);
+        return Optional.ofNullable(category);
     }
 
     @Override
     @SneakyThrows
-    public Optional<Product> findByProductName(String product_name) {
-        final String query = "SELECT * FROM product WHERE name = ? LIMIT 1;";
-        final Product product = datasource.usePreparedStatement(query, statement -> {
-            statement.setString(2, product_name);
+    public Optional<Category> findByCategoryName(String category_name) {
+        final String query = "SELECT * FROM category WHERE name = ? LIMIT 1;";
+        final Category category = datasource.usePreparedStatement(query, statement -> {
+            statement.setString(1, category_name);
             return EXTRACTOR.single(statement.executeQuery());
         });
-        return Optional.ofNullable(product);
+        return Optional.ofNullable(category);
     }
 
     @Override
     @SneakyThrows
-    public Collection<Product> all() {
-        final String query = "SELECT * FROM product;";
+    public Collection<Category> all() {
+        final String query = "SELECT * FROM category;";
         return datasource.useStatement(statement -> EXTRACTOR.all(statement.executeQuery(query)));
     }
 
     @Override
     @SneakyThrows
-    public Product create(Product instance) {
-        final String query = "INSERT INTO product (id, name, description, quantity, price) values (?, ?, ?, ?, ?);";
+    public Category create(Category instance) {
+        final String query = "INSERT INTO category (id, name, description, enabled) values (?, ?, ?, ?);";
         final Integer id = datasource.useKeyedPreparedStatement(query, statement -> {
 
             statement.setInt(1, instance.getId());
             statement.setString(2, instance.getName());
             statement.setString(3, instance.getDescription());
-            statement.setInt(4, instance.getQuantity());
-            statement.setDouble(5, instance.getPrice());
+            statement.setBoolean(4, instance.getEnabled());
 
             final int inserted = statement.executeUpdate();
 
@@ -87,15 +85,14 @@ public class PersistentProductRepository implements ProductRepository {
 
     @Override
     @SneakyThrows
-    public Product update(Product instance) {
-        final String query = "UPDATE product SET name = ?, description = ?, quantity = ?, price = ? WHERE id = ? LIMIT 1;";
+    public Category update(Category instance) {
+        final String query = "UPDATE category SET name = ?, description = ?, enabled = ? WHERE id = ? LIMIT 1;";
         final int modified = datasource.usePreparedStatement(query, statement -> {
 
             statement.setInt(1, instance.getId());
             statement.setString(2, instance.getName());
             statement.setString(3, instance.getDescription());
-            statement.setInt(4, instance.getQuantity());
-            statement.setDouble(5, instance.getPrice());
+            statement.setBoolean(4, instance.getEnabled());
 
             return statement.executeUpdate();
         });
@@ -104,8 +101,8 @@ public class PersistentProductRepository implements ProductRepository {
 
     @Override
     @SneakyThrows
-    public Product delete(Product instance) {
-        final StringBuilder query = new StringBuilder("DELETE FROM product WHERE id = ?;");
+    public Category delete(Category instance) {
+        final StringBuilder query = new StringBuilder("DELETE FROM category WHERE id = ?;");
         final int deleted = datasource.usePreparedStatement(query.toString(), statement -> {
             statement.setInt(1, instance.getId());
             return statement.executeUpdate();
