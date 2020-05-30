@@ -2,10 +2,8 @@ package au.edu.uts.isd.iotbay.repository.product;
 
 import au.edu.uts.isd.iotbay.model.product.Product;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class InMemoryProductRepository implements ProductRepository {
@@ -51,5 +49,17 @@ public class InMemoryProductRepository implements ProductRepository {
     @Override
     public Product delete(Product instance) {
         return products.remove(instance.getId(), instance) ? instance : null;
+    }
+
+    public static InMemoryProductRepository concurrent() {
+        return new InMemoryProductRepository(new ConcurrentHashMap<>());
+    }
+
+    public static InMemoryProductRepository synchronised() {
+        return new InMemoryProductRepository(Collections.synchronizedMap(new HashMap<>()));
+    }
+
+    public static InMemoryProductRepository unsynchronised() {
+        return new InMemoryProductRepository(new HashMap<>());
     }
 }
