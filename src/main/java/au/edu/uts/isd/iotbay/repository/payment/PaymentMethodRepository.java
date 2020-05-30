@@ -12,7 +12,7 @@ public interface PaymentMethodRepository extends Repository<PaymentMethod> {
 
     Collection<PaymentMethod> findAllByUser(User user);
 
-    UserPaymentMethod associate(PaymentMethod method, User user);
+    UserPaymentMethod associate(User user, PaymentMethod method);
 
     UserPaymentMethod disassociate(UserPaymentMethod method);
 
