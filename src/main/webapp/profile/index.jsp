@@ -34,7 +34,7 @@
     }
     final IoTBayApplicationContext context = IoTBayApplicationContext.getInstance(application);
     final UserLogRepository repository = context.getUserLogs();
-    final Collection<UserLog> userslogs = repository.findByUser(user);
+    final Collection<UserLog> userlogs = repository.whereDateLessThan(user, date);
     request.setAttribute("date", date);
 %>
 <t:layout>
@@ -94,7 +94,7 @@
         </div>
         <div>
             <c:if test="${not input.isEmpty()}">
-                <c:if test="${not input.isEmpty()}">
+                <c:if test="${not userlogs.isEmpty()}">
                 <div class="container">
                     <div class="row">
                         <div class="col-1">#</div>
@@ -103,10 +103,9 @@
                     </div>
                     <c:forEach var="method" items="${methods}">
                         <div class="row">
-                            <div class="col-1">${method.id}</div>
-                            <div class="col-1">${method.type()}</div>
-                            <div class="col-9">${method.inline()}</div>
-                            <div class="col-1"><a href="?action=payment&type=edit&id=${method.id}">Edit</a> | <a href="?action=payment&type=delete&id=${method.id}">Delete</a></div>
+                            <div class="col-1">${userlogs.id}</div>
+                            <div class="col-1">${userlogs.type}</div>
+                            <div class="col-1">${method.timestamp}</div>
                         </div>
                     </c:forEach>
                 </c:if>
