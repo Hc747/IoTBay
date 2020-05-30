@@ -12,20 +12,27 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 
+import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
+
 public class PersistentUserRepository implements UserRepository {
 
-    private static final ResultExtractor<User> EXTRACTOR = r -> {
-        int id = r.getInt("id");
-        String name = r.getString("first_name") + (r.getString("last_name") == null ? "" : " " + r.getString("last_name"));
-        String username = r.getString("email_address");
-        String password = r.getString("password_hash");
-        String phone = r.getString("phone_number");
-        Role role = Role.findByOrdinal(r.getInt("role_id"));
-        boolean enabled = r.getBoolean("enabled");
-        Timestamp created = r.getTimestamp("created_at");
-        Timestamp verified = r.getTimestamp("verified_at");
-        return new User(id, name, username, password, phone, role, enabled, created, verified);
-    };
+    public static ResultExtractor<User> extractor(String idField, String prefix) {
+        final String qualifier = isNullOrEmpty(prefix) ? "" : prefix;
+        return r -> {
+            int id = r.getInt(idField);
+            String name = r.getString(qualifier + "first_name") + (r.getString(qualifier + "last_name") == null ? "" : " " + r.getString(qualifier + "last_name"));
+            String username = r.getString(qualifier + "email_address");
+            String password = r.getString(qualifier + "password_hash");
+            String phone = r.getString(qualifier + "phone_number");
+            Role role = Role.findByOrdinal(r.getInt(qualifier + "role_id"));
+            boolean enabled = r.getBoolean(qualifier + "enabled");
+            Timestamp created = r.getTimestamp(qualifier + "created_at");
+            Timestamp verified = r.getTimestamp(qualifier + "verified_at");
+            return new User(id, name, username, password, phone, role, enabled, created, verified);
+        };
+    }
+
+    private static final ResultExtractor<User> EXTRACTOR = extractor("id", null);
 
     private final ConnectionProvider datasource;
 

@@ -2,7 +2,6 @@ package au.edu.uts.isd.iotbay.action.impl;
 
 import au.edu.uts.isd.iotbay.IoTBayApplicationContext;
 import au.edu.uts.isd.iotbay.action.UnauthenticatedAction;
-import au.edu.uts.isd.iotbay.model.log.UserLog;
 import au.edu.uts.isd.iotbay.model.user.Role;
 import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.util.AuthenticationUtil;
@@ -56,8 +55,7 @@ public class RegisterAction extends UnauthenticatedAction {
             reject("Unable to register an account; please try again.");
         }
 
-        ctx.getUserLogs().create(new UserLog(null, user.getId(), "Register", Timestamp.from(Instant.now())));
-        // Add registration to the user log
+        ctx.log(user, "Register");
 
         AuthenticationUtil.authenticate(session, user);
         
