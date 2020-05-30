@@ -32,7 +32,7 @@ public class PersistentProductRepository implements ProductRepository {
     public Optional<Product> findByProductId(int product_id) {
         final String query = "SELECT * FROM product WHERE id = ? LIMIT 1;";
         final Product product = datasource.usePreparedStatement(query, statement -> {
-            statement.setString(1, String.valueOf(product_id));
+            statement.setInt(1, product_id);
             return EXTRACTOR.single(statement.executeQuery());
         });
         return Optional.ofNullable(product);
@@ -43,7 +43,7 @@ public class PersistentProductRepository implements ProductRepository {
     public Optional<Product> findByProductName(String product_name) {
         final String query = "SELECT * FROM product WHERE name = ? LIMIT 1;";
         final Product product = datasource.usePreparedStatement(query, statement -> {
-            statement.setString(2, product_name);
+            statement.setString(1, product_name);
             return EXTRACTOR.single(statement.executeQuery());
         });
         return Optional.ofNullable(product);
@@ -59,14 +59,13 @@ public class PersistentProductRepository implements ProductRepository {
     @Override
     @SneakyThrows
     public Product create(Product instance) {
-        final String query = "INSERT INTO product (id, name, description, quantity, price) values (?, ?, ?, ?, ?);";
+        final String query = "INSERT INTO product (name, description, quantity, price) values (?, ?, ?, ?);";
         final Integer id = datasource.useKeyedPreparedStatement(query, statement -> {
 
-            statement.setInt(1, instance.getId());
-            statement.setString(2, instance.getName());
-            statement.setString(3, instance.getDescription());
-            statement.setInt(4, instance.getQuantity());
-            statement.setDouble(5, instance.getPrice());
+            statement.setString(1, instance.getName());
+            statement.setString(2, instance.getDescription());
+            statement.setInt(3, instance.getQuantity());
+            statement.setDouble(4, instance.getPrice());
 
             final int inserted = statement.executeUpdate();
 
@@ -91,11 +90,11 @@ public class PersistentProductRepository implements ProductRepository {
         final String query = "UPDATE product SET name = ?, description = ?, quantity = ?, price = ? WHERE id = ? LIMIT 1;";
         final int modified = datasource.usePreparedStatement(query, statement -> {
 
-            statement.setInt(1, instance.getId());
-            statement.setString(2, instance.getName());
-            statement.setString(3, instance.getDescription());
-            statement.setInt(4, instance.getQuantity());
-            statement.setDouble(5, instance.getPrice());
+            statement.setString(1, instance.getName());
+            statement.setString(2, instance.getDescription());
+            statement.setInt(3, instance.getQuantity());
+            statement.setDouble(4, instance.getPrice());
+            statement.setInt(5, instance.getId());
 
             return statement.executeUpdate();
         });
@@ -105,8 +104,8 @@ public class PersistentProductRepository implements ProductRepository {
     @Override
     @SneakyThrows
     public Product delete(Product instance) {
-        final StringBuilder query = new StringBuilder("DELETE FROM product WHERE id = ?;");
-        final int deleted = datasource.usePreparedStatement(query.toString(), statement -> {
+        final String query = "DELETE FROM product WHERE id = ?;";
+        final int deleted = datasource.usePreparedStatement(query, statement -> {
             statement.setInt(1, instance.getId());
             return statement.executeUpdate();
         });
