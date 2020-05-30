@@ -23,6 +23,11 @@ public class InMemoryUserLogRepository implements UserLogRepository {
     }
 
     @Override
+    public Collection<UserLog> whereDateLessThan(User user, Date date) {
+        return null;
+    }
+
+    @Override
     public Collection<UserLog> all() {
         return new ArrayList<>(userlogs.values());
     }
