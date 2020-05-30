@@ -10,6 +10,7 @@ import lombok.SneakyThrows;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Objects;
 
 public class PersistentUserLogRepository implements UserLogRepository {
@@ -38,6 +39,16 @@ public class PersistentUserLogRepository implements UserLogRepository {
             return EXTRACTOR.all(statement.executeQuery());
         });
     }
+
+/*    @SneakyThrows //TODO: consider implications
+    public Collection<UserLog> whereDateIs(User user, Date date) {
+        final String query = "SELECT * FROM access_log l INNER JOIN user u ON l.user_id = u.id WHERE user_id = ?;";
+        return datasource.usePreparedStatement(query, statement -> {
+            statement.setInt(1, user.getId());
+            statement.setInt(2, date);
+            return EXTRACTOR.all(statement.executeQuery());
+        });
+    }*/
 
     @Override
     @SneakyThrows //TODO: consider implications
