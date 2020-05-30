@@ -4,12 +4,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%
     User user = AuthenticationUtil.user(session);
-    request.setAttribute("name", user.getName());
-    request.setAttribute("email", user.getUsername());
-    request.setAttribute("number", user.getPhone());
-    request.setAttribute("role", user.getRole());
-    request.setAttribute("created", user.getCreated());
-    request.setAttribute("verfied", user.getCreated());
+    request.setAttribute("user", user);
 %>
 <t:layout>
     <jsp:body>
@@ -22,28 +17,28 @@
         <br>
 
         <div class="container d-flex justify-content-between">
-            <form action="?action=update" method="post">
+            <form action="?action=user&type=update" method="post">
                 <div class="form-group">
                     <label for="name">Full Name: </label>
-                    <input type="text" class="form-control" name="name" id="name" value="${name}">
+                    <input type="text" class="form-control" name="name" id="name" value="${user.name}">
                 </div>
                 <div class="form-group">
                     <label for="username">Email Address: </label>
-                    <input type="email" class="form-control" name="username" id="username" value="${email}">
+                    <input type="email" class="form-control" name="username" id="username" value="${user.username}">
                 </div>
                 <div class="form-group">
                     <label for="phone">Phone Number: </label>
-                    <input type="tel" class="form-control" name="phone" id="phone" value="${number}">
+                    <input type="tel" class="form-control" name="phone" id="phone" value="${user.phone}">
                 </div>
                 <div class="form-group">
                     <label for="role">Role: </label>
-                    <input type="tel" class="form-control" id="role" readonly value="${role}">
+                    <input type="tel" class="form-control" id="role" readonly value="${user.role}">
                 </div>
                 <div class="form-group">
-                    <p><small><b>Account created: </b>${created}</small></p>
+                    <p><small><b>Account created: </b>${user.created}</small></p>
                 </div>
                 <div class="form-group">
-                    <p><small><b>Account verified: </b>${verfied}</small></p>
+                    <p><small><b>Account verified: </b>${user.verified}</small></p>
                 </div>
                 <div class="form-group">
                     <label for="disable">Disable account: </label>

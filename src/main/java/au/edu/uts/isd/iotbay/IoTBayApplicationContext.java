@@ -6,6 +6,7 @@ import au.edu.uts.isd.iotbay.action.InMemoryActionRegistry;
 import au.edu.uts.isd.iotbay.action.impl.LoginAction;
 import au.edu.uts.isd.iotbay.action.impl.LogoutAction;
 import au.edu.uts.isd.iotbay.action.impl.RegisterAction;
+import au.edu.uts.isd.iotbay.action.impl.UserAction;
 import au.edu.uts.isd.iotbay.database.ConnectionProvider;
 import au.edu.uts.isd.iotbay.model.log.UserLog;
 import au.edu.uts.isd.iotbay.model.user.User;
@@ -97,6 +98,7 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
         registry.register("login", LoginAction::new);
         registry.register("register", RegisterAction::new);
         registry.register("logout", LogoutAction::new);
+        registry.register("user", UserAction::new);
 
         return registry;
     }
