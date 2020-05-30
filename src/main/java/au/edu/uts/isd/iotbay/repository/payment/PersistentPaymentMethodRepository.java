@@ -171,9 +171,6 @@ public class PersistentPaymentMethodRepository implements PaymentMethodRepositor
     @Override
     @SneakyThrows //TODO: consider implications
     public PaymentMethod delete(PaymentMethod instance) {
-        if (instance.getId() == null) {
-            return null;
-        }
         final String query = "DELETE FROM payment_method WHERE id = ?;";
         final int deleted = datasource.usePreparedStatement(query, statement -> {
             statement.setInt(1, instance.getId());
@@ -183,17 +180,52 @@ public class PersistentPaymentMethodRepository implements PaymentMethodRepositor
     }
 
     @Override
+    @SneakyThrows //TODO: consider implications
     public Collection<PaymentMethod> findAllByUser(User user) {
-        return null;
+        final String query = "SELECT * FROM payment_method pm LEFT JOIN payment_method_credit_card cc on pm.id = cc.payment_method_id LEFT JOIN payment_method_paypal pp ON pm.id = pp.payment_method_id WHERE EXISTS (SELECT * FROM user_payment_method upm WHERE pm.id = upm.payment_method_id AND ump.user_id = ?);";
+        return datasource.usePreparedStatement(query, statement -> {
+            statement.setInt(1, user.getId());
+            return EXTRACTOR.all(statement.executeQuery());
+        });
     }
 
     @Override
-    public UserPaymentMethod associate(PaymentMethod method, User user) {
-        return null;
+    @SneakyThrows //TODO: consider implications
+    public UserPaymentMethod associate(User user, PaymentMethod method) {
+        final String query = "INSERT INTO user_payment_method (user_id, payment_method_id) VALUES (?, ?);";
+        final Integer id = datasource.useKeyedPreparedStatement(query, statement -> {
+            statement.setInt(1, user.getId());
+            statement.setInt(2, method.getId());
+
+            final int inserted = statement.executeUpdate();
+
+            if (inserted <= 0) {
+                return null;
+            }
+
+            try (ResultSet keys = statement.getGeneratedKeys()) {
+                if (keys.next()) {
+                    return keys.getInt(1);
+                }
+                return null;
+            }
+        });
+
+        if (id == null) {
+            return null;
+        }
+
+        return new UserPaymentMethod(id, user, method);
     }
 
     @Override
+    @SneakyThrows //TODO: consider implications
     public UserPaymentMethod disassociate(UserPaymentMethod method) {
-        return null;
+        final String query = "DELETE FROM user_payment_method WHERE id = ? LIMIT 1;";
+        final int deleted = datasource.usePreparedStatement(query, statement -> {
+            statement.setInt(1, method.getId());
+            return statement.executeUpdate();
+        });
+        return deleted <= 0 ? null : method;
     }
 }
