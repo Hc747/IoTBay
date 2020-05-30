@@ -25,15 +25,15 @@
             <form action="?action=update" method="post">
                 <div class="form-group">
                     <label for="name">Full Name: </label>
-                    <input type="text" class="form-control" id="name" value="${name}">
+                    <input type="text" class="form-control" name="name" id="name" value="${name}">
                 </div>
                 <div class="form-group">
-                    <label for="email">Email Address: </label>
-                    <input type="email" class="form-control" id="email" value="${email}">
+                    <label for="username">Email Address: </label>
+                    <input type="email" class="form-control" name="username" id="username" value="${email}">
                 </div>
                 <div class="form-group">
                     <label for="phone">Phone Number: </label>
-                    <input type="tel" class="form-control" id="phone" value="${number}">
+                    <input type="tel" class="form-control" name="phone" id="phone" value="${number}">
                 </div>
                 <div class="form-group">
                     <label for="role">Role: </label>
@@ -44,6 +44,10 @@
                 </div>
                 <div class="form-group">
                     <p><small><b>Account verified: </b>${verfied}</small></p>
+                </div>
+                <div class="form-group">
+                    <label for="disable">Disable account: </label>
+                    <input type="checkbox" name="disable" id="disable">
                 </div>
                 <div class="form-group">
                     <input class="submit" type="submit">
