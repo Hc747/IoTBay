@@ -32,7 +32,7 @@ public class PersistentUserLogRepository implements UserLogRepository {
 
     @SneakyThrows //TODO: consider implications
     public Collection<UserLog> findByUser(User user) {
-        final String query = "SELECT * FROM access_log WHERE user_id = ?;";
+        final String query = "SELECT * FROM access_log l INNER JOIN user u ON l.user_id = u.id WHERE user_id = ?;";
         return datasource.usePreparedStatement(query, statement -> {
             statement.setInt(1, user.getId());
             return EXTRACTOR.all(statement.executeQuery());
@@ -42,7 +42,7 @@ public class PersistentUserLogRepository implements UserLogRepository {
     @Override
     @SneakyThrows //TODO: consider implications
     public Collection<UserLog> all() {
-        final String query = "SELECT * FROM access_log;";
+        final String query = "SELECT * FROM access_log l INNER JOIN user u ON on l.user_id = u.id;";
         return datasource.useStatement(statement -> EXTRACTOR.all(statement.executeQuery(query)));
     }
 
