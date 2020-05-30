@@ -12,12 +12,10 @@
     <jsp:body>
 
         <div class="container p-3 my-3 bg-dark text-white">
-            <h1 class="jumbotron-heading" style="text-align: center">Product Title</h1>
-            <p>ProductId: 123421321</p>
+            <h1 class="jumbotron-heading" style="text-align: center">Create New Product</h1>
             <br>
             <div class="container p-3 my-3 bg-dark text-white">
-                <button type="button" class="btn btn-warning">Confirm Product Edit</button>
-                <button type="button" class="btn btn-danger">Delete Product</button>
+                <button type="button" class="btn btn-warning">Confirm Product Create</button>
                 <button type="button" class="btn btn-light">Cancel</button>
             </div>
         <hr>
@@ -59,7 +57,7 @@
                     </label>
                     <input id="productCategories" name="productCategories" type="text" placeholder="Product Categories">
                 </div>
-                <button type="submit" class="btn btn-warning">Confirm Product Edit</button>
+                <button type="submit" class="btn btn-warning">Confirm Product Create</button>
             </form>
         </div>
     </jsp:body>
