@@ -41,18 +41,41 @@ public class PersistentOrderRepository implements OrderRepository {
             statement.setInt(1, id);
             return EXTRACTOR.single(statement.executeQuery());
         });
-        return Optional.empty();
+        return Optional.ofNullable(order);
     }
 
     @Override
+    @SneakyThrows
     public OrderProduct addProduct(Order order, Product product, int quantity) {
+        final String query = "INSERT INTO order_products (order_id, product_id, quantity) VALUES (?, ?, ?, ?);";
+        final Integer id = datasource.useKeyedPreparedStatement(query, statement -> {
+            statement.setInt(1, order.getId());
+            statement.setInt(2, product.getId());
+            statement.setInt(3, quantity);
 
-        return null;
+            final int inserted = statement.executeUpdate();
+
+            if (inserted <= 0) {
+                return null;
+            }
+
+            try (ResultSet keys = statement.getGeneratedKeys()) {
+                if (keys.next()) {
+                    return keys.getInt(1);
+                }
+                return null;
+            }
+        });
+
+        if (id == null) {
+            return null;
+        }
+        return new OrderProduct(id, order, product, quantity);
     }
 
     @Override
+    @SneakyThrows
     public OrderProduct removeProduct(Order order, Product product, int quantity) {
-
         return null;
     }
 
