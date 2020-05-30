@@ -4,15 +4,18 @@ import au.edu.uts.isd.iotbay.database.ConnectionProvider;
 import au.edu.uts.isd.iotbay.model.shipment.Shipment;
 import au.edu.uts.isd.iotbay.repository.Repository;
 
+
+import java.util.Optional;
+
 public interface ShipmentRepository extends Repository<Shipment> {
+
+    Optional<Shipment> findById (int id);
 
     static ShipmentRepository create(ConnectionProvider datasource) {
         if (datasource == null) {
-            //return in memory implementation
-            return null;
+            return InMemoryShipmentRepository.concurrent();
         }
-        //return persistent implementation
-        return null;
+        return new PersistentShipmentRepository(datasource);
     }
 
 }
