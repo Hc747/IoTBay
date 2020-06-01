@@ -7,8 +7,6 @@ import au.edu.uts.isd.iotbay.model.product.Product;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class InMemoryOrderRepository implements OrderRepository {
 
@@ -28,7 +26,7 @@ public class InMemoryOrderRepository implements OrderRepository {
     }
 
     @Override
-    public OrderStatus addStatus(Order order, String status, String details) {
+    public OrderStatus status(Order order, String status, String details) {
         return null;
     }
 

@@ -44,6 +44,7 @@ public class PersistentOrderRepository implements OrderRepository {
         return Optional.ofNullable(order);
     }
 
+    //TODO: refactor into one method
     @Override
     @SneakyThrows
     public OrderProduct addProduct(Order order, Product product, int quantity) {
@@ -81,7 +82,7 @@ public class PersistentOrderRepository implements OrderRepository {
 
     @Override
     @SneakyThrows
-    public OrderStatus addStatus(Order order, String status, String details) {
+    public OrderStatus status(Order order, String status, String details) {
         final String query = "INSERT INTO order_status (order_id, status, details, timestamp) VALUES (?, ?, ?, ?);";
         final Timestamp timestamp = Timestamp.from(Instant.now());
         final Integer id = datasource.useKeyedPreparedStatement(query, statement -> {
@@ -121,9 +122,10 @@ public class PersistentOrderRepository implements OrderRepository {
     @Override
     @SneakyThrows
     public Order create(Order instance) {
-        final String query = "INSERT INTO order (id) values (?);";
+        //TODO: needs to allow database to generate id
+        final String query = "INSERT INTO order (invoice_id, address_id, payment_method_id) values (?, ?, ?);";
         final Integer id = datasource.useKeyedPreparedStatement(query, statement -> {
-            statement.setInt(1, instance.getId());
+            //TODO: needs to insert invoice_id, address_id, payment_method_id
 
             final int inserted = statement.executeUpdate();
 
@@ -151,8 +153,8 @@ public class PersistentOrderRepository implements OrderRepository {
     @Override
     @SneakyThrows
     public Order delete(Order instance) {
-        final StringBuilder query = new StringBuilder("DELETE FROM order WHERE id = ?;");
-        final int deleted = datasource.usePreparedStatement(query.toString(), statement -> {
+        final String query = "DELETE FROM order WHERE id = ?;";
+        final int deleted = datasource.usePreparedStatement(query, statement -> {
             statement.setInt(1, instance.getId());
             return statement.executeUpdate();
         });

@@ -17,7 +17,7 @@ public interface OrderRepository extends Repository<Order> {
 
     OrderProduct removeProduct(Order order, Product product, int quantity);
 
-    OrderStatus addStatus(Order order, String status, String details);
+    OrderStatus status(Order order, String status, String details);
 
     static OrderRepository create(ConnectionProvider datasource) {
         if (datasource == null) {
