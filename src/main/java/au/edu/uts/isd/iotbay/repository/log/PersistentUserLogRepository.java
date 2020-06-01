@@ -40,6 +40,14 @@ public class PersistentUserLogRepository implements UserLogRepository {
         });
     }
 
+    @Override
+    public Collection<UserLog> findByUserBeforeDate(User user, Date date) {
+        //TODO: add one day to parameterised date
+        //TODO: implement
+        //final String query = "SELECT * FROM access_log l INNER JOIN user u ON l.user_id = u.id WHERE user_id = ? AND timestamp < ?;";
+        return null;
+    }
+
 /*    @SneakyThrows //TODO: consider implications
     public Collection<UserLog> whereDateIs(User user, Date date) {
         final String query = "SELECT * FROM access_log l INNER JOIN user u ON l.user_id = u.id WHERE user_id = ?;";
