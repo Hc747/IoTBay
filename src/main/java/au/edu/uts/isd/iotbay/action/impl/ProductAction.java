@@ -23,6 +23,8 @@ import static au.edu.uts.isd.iotbay.util.Validator.matches;
 
 public class ProductAction extends Action {
 
+    private static final DecimalFormat PRICE_FORMAT = new DecimalFormat("###,##0.00");
+
     @Override
     protected void invoke(ServletContext application, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
         final String type = request.getParameter("type");
@@ -33,11 +35,18 @@ public class ProductAction extends Action {
 
         final IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);
 
+        //TODO(mathew): dispatch the other actions
         switch (type.toLowerCase()) {
             case "create": create(ctx, session, request); break;
             default: break;
         }
     }
+
+    //TODO(mathew): modularise the validation / instance creation / updating logic
+    //TODO(mathew): make the validation messages consistent
+    //TODO(mathew): remove product from the parameter / variable names; just refer to them by their attribute name (productName => name)
+    //TODO(mathew): use primitive types where possible
+
     @SneakyThrows
     private void create(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
         final User user = authenticate(session);
@@ -49,38 +58,37 @@ public class ProductAction extends Action {
         String price = request.getParameter("productPrice");
 
         if (isNullOrEmpty(name) || isNullOrEmpty(description) || isNullOrEmpty(quantity) || isNullOrEmpty(price)) {
-            reject("One or more inputs was empty.");
+            reject("You must supply a name, description, quantity and price in order to create a product.");
         }
 
-        if (!(matches(DECIMAL_PATTERN, price))) {
+        if (!matches(DECIMAL_PATTERN, price)) {
             reject("The input price did not meet the required format.");
         }
 
-        if (!(matches(WHOLE_NUMBER_PATTERN, quantity))) {
+        if (!matches(WHOLE_NUMBER_PATTERN, quantity)) {
             reject("The input quantity was not a valid whole number");
         }
 
-        DecimalFormat priceFormat = new DecimalFormat("##.00");
-        Double productPrice = Double.valueOf(priceFormat.format(request.getParameter("productPrice")));
-        Integer productQuantity = Integer.valueOf(quantity);
+        double productPrice = Double.parseDouble(price);
+        int productQuantity = Integer.parseInt(quantity);
 
         //TODO: get input parameters
         //TODO: validate input parameters
 
         if (name.length() < 4) {
-            reject("Product name was not long enough");
+            reject("Product name must be at least 4 characters.");
         }
 
         if (description.length() < 10) {
-            reject("Product description was not long enough");
+            reject("Product description must be at least 10 characters.");
         }
 
         if (productQuantity < 0) {
-            reject("Product Quantity was not valid. Can't be a negative value");
+            reject("Product quantity cannot be negative.");
         }
 
         if (productPrice < 0) {
-            reject("Product Price was not valid Can't be a negative value");
+            reject("Product price cannot be negative.");
         }
         //TODO: Account for catagory's images, etc.
 
@@ -92,54 +100,66 @@ public class ProductAction extends Action {
         if (product == null) {
             reject("Unable to create product.");
         }
+
         message = "Successfully created product.";
         //TODO::Return to product page with ProductID
     }
+
     @SneakyThrows
     private void delete(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
-        String stringProductId = request.getParameter("productId");
+        final String identifier = request.getParameter("productId");
 
-        if (isNullOrEmpty(stringProductId)) {
+        if (isNullOrEmpty(identifier)) {
             reject("No Product Id found");
         }
-        if (!(matches(WHOLE_NUMBER_PATTERN, stringProductId))) {
+
+        if (!matches(WHOLE_NUMBER_PATTERN, identifier)) {
             reject("The Product Id was not a valid whole number");
         }
-        Integer productId = Integer.valueOf(stringProductId);
-        if (productId < 0) {
+
+        final int id = Integer.parseInt(identifier);
+
+        if (id < 0) {
             reject("Product Id was not valid. Can't be a negative value");
         }
+
         final ProductRepository repository = ctx.getProducts();
-        Optional<Product> product = repository.findByProductId(productId);
+        Optional<Product> product = repository.findByProductId(id);
 
         if (!(product.isPresent())) {
             reject("Could not find product to delete. Id may have been incorrect.");
         }
 
-        Product deletedProduct = repository.delete(product.get());
+        Product deleted = repository.delete(product.get());
 
-        if (deletedProduct == null) {
+        if (deleted == null) {
             reject("Unable to delete the product.");
         }
+
         message = "Successfully deleted the product.";
         //TODO::Return to a page.
     }
+
     @SneakyThrows
     private void update(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
-        String stringProductId = request.getParameter("productId");
+        final String identifier = request.getParameter("productId");
 
-        if (isNullOrEmpty(stringProductId)) {
+        if (isNullOrEmpty(identifier)) {
             reject("No Product Id found");
         }
-        if (!(matches(WHOLE_NUMBER_PATTERN, stringProductId))) {
+
+        if (!matches(WHOLE_NUMBER_PATTERN, identifier)) {
             reject("The Product Id was not a valid whole number");
         }
-        Integer productId = Integer.valueOf(stringProductId);
-        if (productId < 0) {
+
+        final int id = Integer.parseInt(identifier);
+
+        if (id < 0) {
             reject("Product Id was not valid. Can't be a negative value");
         }
+
         final ProductRepository repository = ctx.getProducts();
-        Optional<Product> product = repository.findByProductId(productId);
+        Optional<Product> product = repository.findByProductId(id);
 
         if (!(product.isPresent())) {
             reject("Could not find product to delete. Id may have been incorrect.");
@@ -163,8 +183,8 @@ public class ProductAction extends Action {
         }
 
         DecimalFormat priceFormat = new DecimalFormat("##.00");
-        Double productPrice = Double.valueOf(priceFormat.format(request.getParameter("productPrice")));
-        Integer productQuantity = Integer.valueOf(quantity);
+        double productPrice = Double.parseDouble(priceFormat.format(request.getParameter("productPrice")));
+        int productQuantity = Integer.parseInt(quantity);
 
         //TODO: get input parameters
         //TODO: validate input parameters
@@ -188,7 +208,7 @@ public class ProductAction extends Action {
 
 
         //TODO: create product
-        final Product updated_product = repository.update(new Product(productId, name, description, productQuantity, productPrice));
+        final Product updated_product = repository.update(new Product(id, name, description, productQuantity, productPrice));
 
 
         if (updated_product == null) {
