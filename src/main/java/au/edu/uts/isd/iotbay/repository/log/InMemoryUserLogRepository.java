@@ -23,7 +23,7 @@ public class InMemoryUserLogRepository implements UserLogRepository {
     }
 
     @Override
-    public Collection<UserLog> whereDateLessThan(User user, Date date) {
+    public Collection<UserLog> findByUserBeforeDate(User user, Date date) {
         return null;
     }
 

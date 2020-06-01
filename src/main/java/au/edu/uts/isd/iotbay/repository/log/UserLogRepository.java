@@ -12,7 +12,7 @@ public interface UserLogRepository extends Repository<UserLog> {
 
     Collection<UserLog> findByUser(User user);
 
-    Collection<UserLog> whereDateLessThan(User user, Date date);
+    Collection<UserLog> findByUserBeforeDate(User user, Date date);
 
     static UserLogRepository create(ConnectionProvider datasource) {
         if (datasource == null) {
