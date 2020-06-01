@@ -2,15 +2,12 @@ package au.edu.uts.isd.iotbay.repository.shipment;
 
 import au.edu.uts.isd.iotbay.database.ConnectionProvider;
 import au.edu.uts.isd.iotbay.database.ResultExtractor;
-import au.edu.uts.isd.iotbay.model.order.Order;
 import au.edu.uts.isd.iotbay.model.shipment.Shipment;
-import au.edu.uts.isd.iotbay.model.address.Address;
 import lombok.SneakyThrows;
 
 import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.Objects;
-import java.sql.Date;
 import java.util.Optional;
 
 public class PersistentShipmentRepository implements ShipmentRepository {
@@ -21,6 +18,7 @@ public class PersistentShipmentRepository implements ShipmentRepository {
         this.datasource = Objects.requireNonNull(datasource);
     }
 
+    //TODO(harrison): implement extractor
     private static final ResultExtractor<Shipment> EXTRACTOR = r -> {
 
         Integer id = r.getInt("id");
@@ -35,7 +33,7 @@ public class PersistentShipmentRepository implements ShipmentRepository {
     @Override
     @SneakyThrows
     public Optional<Shipment> findById(int id) {
-        final String query = "SELECT * FROM product WHERE id = ? LIMIT 1;";
+        final String query = "SELECT * FROM shipment WHERE id = ? LIMIT 1;";
         final Shipment shipment = datasource.usePreparedStatement(query, statement -> {
             statement.setInt(1, id);
             return EXTRACTOR.single(statement.executeQuery());
@@ -54,7 +52,7 @@ public class PersistentShipmentRepository implements ShipmentRepository {
     @Override
     @SneakyThrows
     public Shipment create(Shipment instance) {
-        final String query = "INSERT INTO shipment(order_id, address_id, method, date) value (?, ?, ?, ?);";
+        final String query = "INSERT INTO shipment (order_id, address_id, method, date) value (?, ?, ?, ?);";
         final Integer id = datasource.useKeyedPreparedStatement(query, statement -> {
 
             statement.setInt(1, instance.getOrder().getId());

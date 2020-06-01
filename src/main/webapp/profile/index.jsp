@@ -34,7 +34,7 @@
     }
     final IoTBayApplicationContext context = IoTBayApplicationContext.getInstance(application);
     final UserLogRepository repository = context.getUserLogs();
-    final Collection<UserLog> userlogs = repository.whereDateLessThan(user, date);
+    final Collection<UserLog> userlogs = repository.findByUserBeforeDate(user, date);
     request.setAttribute("date", date);
 %>
 <t:layout>
