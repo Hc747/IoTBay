@@ -1,4 +1,4 @@
-package au.edu.uts.isd.iotbay.repository.Order;
+package au.edu.uts.isd.iotbay.repository.order;
 
 import au.edu.uts.isd.iotbay.database.ConnectionProvider;
 import au.edu.uts.isd.iotbay.database.ResultExtractor;

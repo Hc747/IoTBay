@@ -1,4 +1,4 @@
-package au.edu.uts.isd.iotbay.repository.Order;
+package au.edu.uts.isd.iotbay.repository.order;
 
 import au.edu.uts.isd.iotbay.model.order.OrderProduct;
 import au.edu.uts.isd.iotbay.model.order.OrderStatus;
