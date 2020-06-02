@@ -63,7 +63,7 @@
                 </div>
                 <div class="form-group">
                     <label for="role">Role: </label>
-                    <input type="tel" class="form-control" id="role" readonly value="${user.role}">
+                    <input type="text" class="form-control" id="role" readonly value="${user.role}">
                 </div>
                 <div class="form-group">
                     <p><small><b>Account created: </b>${user.created}</small></p>
