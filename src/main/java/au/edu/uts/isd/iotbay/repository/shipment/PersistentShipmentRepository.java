@@ -2,9 +2,13 @@ package au.edu.uts.isd.iotbay.repository.shipment;
 
 import au.edu.uts.isd.iotbay.database.ConnectionProvider;
 import au.edu.uts.isd.iotbay.database.ResultExtractor;
+import au.edu.uts.isd.iotbay.model.address.Address;
+import au.edu.uts.isd.iotbay.model.order.Order;
 import au.edu.uts.isd.iotbay.model.shipment.Shipment;
+import au.edu.uts.isd.iotbay.repository.address.PersistentAddressRepository;
 import lombok.SneakyThrows;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.Objects;
@@ -18,22 +22,22 @@ public class PersistentShipmentRepository implements ShipmentRepository {
         this.datasource = Objects.requireNonNull(datasource);
     }
 
+    private static final ResultExtractor<Address> ADDRESS_EXTRACTOR = PersistentAddressRepository.extractor("address_id", null);
+
     //TODO(harrison): implement extractor
     private static final ResultExtractor<Shipment> EXTRACTOR = r -> {
-
-        Integer id = r.getInt("id");
-        /*Order order = r.getOrder("order");
-        Address address = r.getAddress("address");
+        int id = r.getInt("id");
+        Order order = null; //TODO: get order
+        Address address = ADDRESS_EXTRACTOR.extract(r);
         String method = r.getString("method");
         Date date = r.getDate("date");
-        return new Shipment(id, order, address, method, date);*/
-        return null;
+        return new Shipment(id, order, address, method, date);
     };
 
     @Override
     @SneakyThrows
     public Optional<Shipment> findById(int id) {
-        final String query = "SELECT * FROM shipment WHERE id = ? LIMIT 1;";
+        final String query = "SELECT * FROM shipment INNER JOIN address a ON a.id = address_id WHERE id = ? LIMIT 1;";
         final Shipment shipment = datasource.usePreparedStatement(query, statement -> {
             statement.setInt(1, id);
             return EXTRACTOR.single(statement.executeQuery());
@@ -45,7 +49,7 @@ public class PersistentShipmentRepository implements ShipmentRepository {
     @Override
     @SneakyThrows
     public Collection<Shipment> all() {
-        final String query = "SELECT * FROM shipment;";
+        final String query = "SELECT * FROM shipment INNER JOIN address a ON a.id = address_id;";
         return datasource.useStatement(statement -> EXTRACTOR.all(statement.executeQuery(query)));
     }
 

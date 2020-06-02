@@ -19,16 +19,17 @@ public class PersistentAddressRepository implements AddressRepository {
         this.datasource = Objects.requireNonNull(datasource);
     }
 
-    private static final ResultExtractor<Address> EXTRACTOR = r -> {
+    public static ResultExtractor<Address> extractor(String idField, String prefix) {
+        final String qualifier = isNullOrEmpty(prefix) ? "" : prefix;
+        return r -> {
+            int id = r.getInt(qualifier + idField);
+            String address = r.getString(qualifier + "address");
+            int postcode = r.getInt(qualifier + "postcode");
+            return new Address(id, address, postcode);
+        };
+    }
 
-        Integer id = r.getInt("id");
-        String address = r.getString("address");
-        Integer postcode = r.getInt("postcode");
-
-        return new Address(id, address, postcode);
-    };
-
-
+    private static final ResultExtractor<Address> EXTRACTOR = extractor("id", null);
 
     @Override
     @SneakyThrows
@@ -40,12 +41,11 @@ public class PersistentAddressRepository implements AddressRepository {
     @Override
     @SneakyThrows
     public Address create(Address instance) {
-        final String query = "INSERT INTO address(id, address, postcode) value (?, ?, ?);";
+        final String query = "INSERT INTO address (address, postcode) value (?, ?);";
         final Integer id = datasource.useKeyedPreparedStatement(query, statement -> {
 
-           statement.setInt(1, instance.getId());
-           statement.setString(2, instance.getAddress());
-           statement.setInt(3, instance.getPostcode());
+           statement.setString(1, instance.getAddress());
+           statement.setInt(2, instance.getPostcode());
 
             final int inserted = statement.executeUpdate();
 
@@ -71,9 +71,10 @@ public class PersistentAddressRepository implements AddressRepository {
         final String query = "UPDATE address SET address = ?, postcode = ? WHERE id = ? LIMIT 1";
         final int updated = datasource.usePreparedStatement(query, statement -> {
 
-            statement.setInt(1, instance.getId());
-            statement.setString(2, instance.getAddress());
-            statement.setInt(3, instance.getPostcode());
+            statement.setString(1, instance.getAddress());
+            statement.setInt(2, instance.getPostcode());
+            statement.setInt(3, instance.getId());
+
 
             return statement.executeUpdate();
         });
