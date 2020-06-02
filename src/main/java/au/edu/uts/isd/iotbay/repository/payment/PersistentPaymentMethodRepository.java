@@ -182,7 +182,7 @@ public class PersistentPaymentMethodRepository implements PaymentMethodRepositor
     @Override
     @SneakyThrows //TODO: consider implications
     public Collection<PaymentMethod> findAllByUser(User user) {
-        final String query = "SELECT * FROM payment_method pm LEFT JOIN payment_method_credit_card cc on pm.id = cc.payment_method_id LEFT JOIN payment_method_paypal pp ON pm.id = pp.payment_method_id WHERE EXISTS (SELECT * FROM user_payment_method upm WHERE pm.id = upm.payment_method_id AND ump.user_id = ?);";
+        final String query = "SELECT * FROM payment_method pm LEFT JOIN payment_method_credit_card cc on pm.id = cc.payment_method_id LEFT JOIN payment_method_paypal pp ON pm.id = pp.payment_method_id WHERE EXISTS (SELECT * FROM user_payment_method upm WHERE pm.id = upm.payment_method_id AND upm.user_id = ?);";
         return datasource.usePreparedStatement(query, statement -> {
             statement.setInt(1, user.getId());
             return EXTRACTOR.all(statement.executeQuery());
