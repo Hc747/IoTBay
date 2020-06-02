@@ -117,7 +117,7 @@ public class PersistentPaymentMethodRepository implements PaymentMethodRepositor
 
     @SneakyThrows
     private CreditCardPaymentMethod doCreate(CreditCardPaymentMethod card) {
-        final String query = "INSERT INTO payment_method_credit_card (payment_method_id, card_number, card_holder_name, card_verification_valuepayment_method_credit_card (payment_method_id, card_number, card_holder_name, card_verification_value, expiration_, expiration_date) VALUES (?, ?, ?, ?, ?);";
+        final String query = "INSERT INTO payment_method_credit_card (payment_method_id, card_number, card_holder_name, card_verification_value, expiration_date) VALUES (?, ?, ?, ?, ?);";
         final int inserted = datasource.usePreparedStatement(query, statement -> {
             statement.setInt(1, card.getId());
             statement.setString(2, card.getNumber());
