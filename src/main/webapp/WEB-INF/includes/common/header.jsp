@@ -1,5 +1,6 @@
 <%@page import="au.edu.uts.isd.iotbay.Constants"%>
 <%@page import="au.edu.uts.isd.iotbay.util.AuthenticationUtil"%>
+<%@ page import="java.util.*" %>
 <%
     final boolean authenticated = AuthenticationUtil.isAuthenticated(session);
     final String template = authenticated ? "authenticated" : "unauthenticated";
@@ -8,20 +9,36 @@
 <header>
     <div class="navbar navbar-dark bg-dark box-shadow">
         <div class="container d-flex justify-content-between">
-            <a href="<%= Constants.path(false) %>" class="navbar-brand d-flex align-items-center">
-                <strong>
-                    <%
-                        final StringBuilder location = new StringBuilder(Constants.APPLICATION_NAME);
-                        final String current = request.getServletPath().replace(Constants.path(false), "");
-                        final String[] segments = current.split("/");
-                        
-                        for (int index = 1; index < segments.length - 1; index++) {
-                            location.append(" > ").append(segments[index]);
-                        }
-                    %>
-                    <%= location %>
-                </strong>
-            </a>
+    <%
+        final Map<String, String> paths = new LinkedHashMap<>();
+
+        paths.put(Constants.APPLICATION_NAME, Constants.path(false));
+
+        final String current = request.getServletPath().replace(Constants.path(false), "");
+        final String[] segments = current.split("/");
+
+        for (int index = 1; index < segments.length - 1; index++) {
+            final String segment = segments[index];
+            final String[] components = new ArrayList<>(Arrays.asList(segments).subList(1, index + 1)).toArray(new String[0]);
+            final String path = Constants.path(false, components);
+            paths.put(segment, path);
+        }
+    %>
+    <div>
+        <%
+            final Iterator<Map.Entry<String, String>> entries = paths.entrySet().iterator();
+
+            while (entries.hasNext()) {
+                final Map.Entry<String, String> entry = entries.next();
+                final String title = entry.getKey();
+                final String url = entry.getValue();
+                final boolean end = !entries.hasNext();
+        %>
+            <a href="<%= url %>" class="navbar-brand align-items-center"><strong><%= title %></strong></a><span class="text-white"><%= end ? "" : "&gt;"%></span>
+        <%
+            }
+        %>
+    </div>
             <div class="text-white">
                 <jsp:include page="<%= header %>"/>
             </div>
