@@ -18,9 +18,8 @@ public interface PaymentMethodRepository extends Repository<PaymentMethod> {
 
     static PaymentMethodRepository create(MongoDatabaseProvider datasource) {
         if (datasource == null) {
-            return InMemoryPaymentMethodRepository.concurrent();
+            return new InMemoryPaymentMethodRepository();
         }
-        return null; //TODO: implement
-//        return new PersistentPaymentMethodRepository(datasource);
+        return new MongoPaymentMethodRepository(datasource);
     }
 }

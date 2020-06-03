@@ -5,11 +5,8 @@ import org.bson.types.ObjectId;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class InMemoryUserRepository implements UserRepository {
-
-    private static final AtomicInteger SEQUENCE = new AtomicInteger(1);
 
     private final Map<String, User> users;
 

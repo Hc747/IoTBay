@@ -4,14 +4,13 @@ import au.edu.uts.isd.iotbay.model.order.Order;
 import au.edu.uts.isd.iotbay.model.order.OrderProduct;
 import au.edu.uts.isd.iotbay.model.order.OrderStatus;
 import au.edu.uts.isd.iotbay.model.product.Product;
-import au.edu.uts.isd.iotbay.repository.InMemoryRepository;
-import org.bson.types.ObjectId;
+import au.edu.uts.isd.iotbay.persistence.mongo.MongoDatabaseProvider;
+import au.edu.uts.isd.iotbay.repository.MongoRepository;
 
-public class InMemoryOrderRepository extends InMemoryRepository<Order> implements OrderRepository {
+public class MongoOrderRepository extends MongoRepository<Order> implements OrderRepository {
 
-    @Override
-    public Order findById(ObjectId id) {
-        return elements.get(id);
+    protected MongoOrderRepository(MongoDatabaseProvider datasource) {
+        super(datasource, Order.class);
     }
 
     @Override

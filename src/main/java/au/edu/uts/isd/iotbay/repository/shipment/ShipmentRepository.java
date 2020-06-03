@@ -8,7 +8,7 @@ public interface ShipmentRepository extends Repository<Shipment> {
 
     static ShipmentRepository create(MongoDatabaseProvider datasource) {
         if (datasource == null) {
-            return InMemoryShipmentRepository.concurrent();
+            return new InMemoryShipmentRepository();
         }
         return new MongoShipmentRepository(datasource);
     }

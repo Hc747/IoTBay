@@ -9,9 +9,8 @@ public interface AddressRepository extends Repository<Address> {
 
     static AddressRepository create(MongoDatabaseProvider datasource) {
         if (datasource == null) {
-            return InMemoryAddressRepository.concurrent();
+            return new InMemoryAddressRepository();
         }
-        return null; //TODO: implement
-//        return new PersistentAddressRepository(datasource);
+        return new MongoAddressRepository(datasource);
     }
 }

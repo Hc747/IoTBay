@@ -16,9 +16,8 @@ public interface UserLogRepository extends Repository<UserLog> {
 
     static UserLogRepository create(MongoDatabaseProvider datasource) {
         if (datasource == null) {
-            return InMemoryUserLogRepository.concurrent();
+            return new InMemoryUserLogRepository();
         }
-        return null; //TODO: implement
-//        return new PersistentUserLogRepository(datasource);
+        return new MongoUserLogRepository(datasource);
     }
 }

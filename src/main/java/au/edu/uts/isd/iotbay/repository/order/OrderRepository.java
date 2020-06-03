@@ -6,12 +6,12 @@ import au.edu.uts.isd.iotbay.model.order.OrderStatus;
 import au.edu.uts.isd.iotbay.model.product.Product;
 import au.edu.uts.isd.iotbay.persistence.mongo.MongoDatabaseProvider;
 import au.edu.uts.isd.iotbay.repository.Repository;
-
-import java.util.Optional;
+import org.bson.types.ObjectId;
 
 public interface OrderRepository extends Repository<Order> {
 
-    Optional<Order> findById(int id);
+    //TODO: refactor
+    Order findById(ObjectId id);
 
     OrderProduct addProduct(Order order, Product product, int quantity);
 
@@ -21,9 +21,8 @@ public interface OrderRepository extends Repository<Order> {
 
     static OrderRepository create(MongoDatabaseProvider datasource) {
         if (datasource == null) {
-//            return InMemoryOrderRepository.concurrent();
+            return new InMemoryOrderRepository();
         }
-        return null; //TODO: implement
-//        return new PersistentOrderRepository(datasource);
+        return new MongoOrderRepository(datasource);
     }
 }

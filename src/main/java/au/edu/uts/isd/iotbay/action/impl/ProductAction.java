@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.DecimalFormat;
-import java.util.Optional;
 
 import static au.edu.uts.isd.iotbay.util.Validator.Patterns.DECIMAL_PATTERN;
 import static au.edu.uts.isd.iotbay.util.Validator.Patterns.WHOLE_NUMBER_PATTERN;
@@ -124,13 +123,13 @@ public class ProductAction extends Action {
         final ObjectId id = new ObjectId(identifier);
 
         final ProductRepository repository = ctx.getProducts();
-        Optional<Product> product = repository.findByProductId(id);
+        final Product product = repository.findById(id);
 
-        if (!(product.isPresent())) {
+        if (product == null) {
             reject("Could not find product to delete. Id may have been incorrect.");
         }
 
-        Product deleted = repository.delete(product.get());
+        Product deleted = repository.delete(product);
 
         if (deleted == null) {
             reject("Unable to delete the product.");
@@ -159,9 +158,9 @@ public class ProductAction extends Action {
         final ObjectId id = new ObjectId(identifier);
 
         final ProductRepository repository = ctx.getProducts();
-        Optional<Product> product = repository.findByProductId(id);
+        final Product product = repository.findById(id);
 
-        if (!(product.isPresent())) {
+        if (product == null) {
             reject("Could not find product to delete. Id may have been incorrect.");
         }
 
