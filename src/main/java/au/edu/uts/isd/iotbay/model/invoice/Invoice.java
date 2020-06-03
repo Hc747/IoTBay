@@ -1,14 +1,16 @@
 package au.edu.uts.isd.iotbay.model.invoice;
 
 
+import au.edu.uts.isd.iotbay.model.Identifiable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.bson.types.ObjectId;
 
 @Data
 @AllArgsConstructor
-public abstract class Invoice {
+public abstract class Invoice implements Identifiable {
 
-    protected Integer id;
+    protected ObjectId id;
     protected double amount;
 
     public abstract Type type();

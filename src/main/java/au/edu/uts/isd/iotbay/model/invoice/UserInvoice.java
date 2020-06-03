@@ -1,7 +1,9 @@
 package au.edu.uts.isd.iotbay.model.invoice;
 
 import au.edu.uts.isd.iotbay.model.user.User;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import org.bson.types.ObjectId;
 
 import java.util.Objects;
 
@@ -11,7 +13,7 @@ public class UserInvoice extends Invoice {
 
     protected final User user;
 
-    public UserInvoice(Integer id, double amount, User user) {
+    public UserInvoice(ObjectId id, double amount, User user) {
         super(id, amount);
         this.user = Objects.requireNonNull(user);
     }
@@ -28,12 +30,12 @@ public class UserInvoice extends Invoice {
 
     @Override
     public String getFirstName() {
-        return user.getNameComponents()[0];
+        return user.names()[0];
     }
 
     @Override
     public String getLastName() {
-        final String name = user.getNameComponents()[1];
+        final String name = user.names()[1];
         return name == null ? "" : name;
     }
 }

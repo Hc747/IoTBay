@@ -1,22 +1,26 @@
 package au.edu.uts.isd.iotbay.model.user;
 
+import au.edu.uts.isd.iotbay.model.Identifiable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 
-import java.sql.Timestamp;
 import java.util.StringJoiner;
 
 @Data
 @AllArgsConstructor
-public class User {
+@NoArgsConstructor
+public class User implements Identifiable {
 
-    private Integer id;
+    private ObjectId id;
     private String name, username, password, phone;
     private Role role;
     private boolean enabled;
-    private Timestamp created, verified;
+    //TODO: implement timestamps
+//    private Timestamp created, verified;
 
-    public String[] getNameComponents() {
+    public String[] names() {
         final String[] components = name.split(" +");
         final StringJoiner joiner = new StringJoiner(" ");
         for (int index = 1; index < components.length; index++) {

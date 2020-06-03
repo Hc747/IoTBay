@@ -1,13 +1,15 @@
 package au.edu.uts.isd.iotbay.model.product;
 
+import au.edu.uts.isd.iotbay.model.Identifiable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.bson.types.ObjectId;
 
 @Data
 @AllArgsConstructor
-public class Product {
+public class Product implements Identifiable {
 
-    private Integer id;
+    private ObjectId id;
     private String name;
     private String description;
     private int quantity;

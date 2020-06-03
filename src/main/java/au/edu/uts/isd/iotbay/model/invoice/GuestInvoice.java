@@ -1,6 +1,9 @@
 package au.edu.uts.isd.iotbay.model.invoice;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Setter;
+import lombok.ToString;
+import org.bson.types.ObjectId;
 
 @Setter
 @ToString
@@ -9,7 +12,7 @@ public class GuestInvoice extends Invoice {
 
     protected String firstName, lastName, email;
 
-    public GuestInvoice(Integer id, double amount, String firstName, String lastName, String email) {
+    public GuestInvoice(ObjectId id, double amount, String firstName, String lastName, String email) {
         super(id, amount);
         this.firstName = firstName;
         this.lastName = lastName;
