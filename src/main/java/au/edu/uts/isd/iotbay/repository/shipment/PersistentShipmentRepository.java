@@ -1,10 +1,10 @@
 package au.edu.uts.isd.iotbay.repository.shipment;
 
-import au.edu.uts.isd.iotbay.database.ConnectionProvider;
-import au.edu.uts.isd.iotbay.database.ResultExtractor;
 import au.edu.uts.isd.iotbay.model.address.Address;
 import au.edu.uts.isd.iotbay.model.order.Order;
 import au.edu.uts.isd.iotbay.model.shipment.Shipment;
+import au.edu.uts.isd.iotbay.persistence.jdbc.ConnectionProvider;
+import au.edu.uts.isd.iotbay.persistence.jdbc.ResultExtractor;
 import au.edu.uts.isd.iotbay.repository.address.PersistentAddressRepository;
 import lombok.SneakyThrows;
 

@@ -1,8 +1,8 @@
 package au.edu.uts.isd.iotbay.repository.category;
 
-import au.edu.uts.isd.iotbay.database.ConnectionProvider;
-import au.edu.uts.isd.iotbay.database.ResultExtractor;
 import au.edu.uts.isd.iotbay.model.category.Category;
+import au.edu.uts.isd.iotbay.persistence.jdbc.ConnectionProvider;
+import au.edu.uts.isd.iotbay.persistence.jdbc.ResultExtractor;
 import lombok.SneakyThrows;
 
 import java.sql.ResultSet;

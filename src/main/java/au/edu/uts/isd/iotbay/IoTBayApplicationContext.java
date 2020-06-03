@@ -4,9 +4,9 @@ import au.edu.uts.isd.iotbay.action.ActionProcessor;
 import au.edu.uts.isd.iotbay.action.ActionRegistry;
 import au.edu.uts.isd.iotbay.action.InMemoryActionRegistry;
 import au.edu.uts.isd.iotbay.action.impl.*;
-import au.edu.uts.isd.iotbay.database.ConnectionProvider;
 import au.edu.uts.isd.iotbay.model.log.UserLog;
 import au.edu.uts.isd.iotbay.model.user.User;
+import au.edu.uts.isd.iotbay.persistence.jdbc.ConnectionProvider;
 import au.edu.uts.isd.iotbay.repository.category.CategoryRepository;
 import au.edu.uts.isd.iotbay.repository.log.UserLogRepository;
 import au.edu.uts.isd.iotbay.repository.payment.PaymentMethodRepository;
@@ -22,7 +22,7 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import static au.edu.uts.isd.iotbay.database.ConnectionProviderFactory.hikari;
+import static au.edu.uts.isd.iotbay.persistence.jdbc.ConnectionProviderFactory.hikari;
 
 @Getter
 public final class IoTBayApplicationContext implements Serializable, AutoCloseable {

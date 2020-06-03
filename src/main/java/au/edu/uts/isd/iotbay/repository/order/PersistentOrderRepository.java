@@ -1,12 +1,12 @@
 package au.edu.uts.isd.iotbay.repository.order;
 
-import au.edu.uts.isd.iotbay.database.ConnectionProvider;
-import au.edu.uts.isd.iotbay.database.ResultExtractor;
 import au.edu.uts.isd.iotbay.model.order.Order;
 import au.edu.uts.isd.iotbay.model.order.OrderProduct;
 import au.edu.uts.isd.iotbay.model.order.OrderStatus;
 import au.edu.uts.isd.iotbay.model.payment.PaymentMethod;
 import au.edu.uts.isd.iotbay.model.product.Product;
+import au.edu.uts.isd.iotbay.persistence.jdbc.ConnectionProvider;
+import au.edu.uts.isd.iotbay.persistence.jdbc.ResultExtractor;
 import au.edu.uts.isd.iotbay.repository.payment.PersistentPaymentMethodRepository;
 import lombok.SneakyThrows;
 

@@ -1,4 +1,4 @@
-package au.edu.uts.isd.iotbay.database;
+package au.edu.uts.isd.iotbay.persistence.jdbc;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

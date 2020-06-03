@@ -1,4 +1,4 @@
-package au.edu.uts.isd.iotbay.database;
+package au.edu.uts.isd.iotbay.persistence.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

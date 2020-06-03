@@ -1,8 +1,8 @@
 package au.edu.uts.isd.iotbay.repository.log;
 
-import au.edu.uts.isd.iotbay.database.ConnectionProvider;
 import au.edu.uts.isd.iotbay.model.log.UserLog;
 import au.edu.uts.isd.iotbay.model.user.User;
+import au.edu.uts.isd.iotbay.persistence.jdbc.ConnectionProvider;
 import au.edu.uts.isd.iotbay.repository.Repository;
 
 import java.util.Collection;

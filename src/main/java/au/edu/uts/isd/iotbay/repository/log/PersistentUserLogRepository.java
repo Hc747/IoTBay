@@ -1,9 +1,9 @@
 package au.edu.uts.isd.iotbay.repository.log;
 
-import au.edu.uts.isd.iotbay.database.ConnectionProvider;
-import au.edu.uts.isd.iotbay.database.ResultExtractor;
 import au.edu.uts.isd.iotbay.model.log.UserLog;
 import au.edu.uts.isd.iotbay.model.user.User;
+import au.edu.uts.isd.iotbay.persistence.jdbc.ConnectionProvider;
+import au.edu.uts.isd.iotbay.persistence.jdbc.ResultExtractor;
 import au.edu.uts.isd.iotbay.repository.user.PersistentUserRepository;
 import lombok.SneakyThrows;
 

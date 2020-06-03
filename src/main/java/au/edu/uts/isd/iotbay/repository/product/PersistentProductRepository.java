@@ -1,14 +1,14 @@
 package au.edu.uts.isd.iotbay.repository.product;
 
-import au.edu.uts.isd.iotbay.database.ConnectionProvider;
-import au.edu.uts.isd.iotbay.database.ResultExtractor;
 import au.edu.uts.isd.iotbay.model.product.Product;
+import au.edu.uts.isd.iotbay.persistence.jdbc.ConnectionProvider;
+import au.edu.uts.isd.iotbay.persistence.jdbc.ResultExtractor;
 import lombok.SneakyThrows;
 
+import java.sql.ResultSet;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
-import java.sql.*;
 
 public class PersistentProductRepository implements ProductRepository {
 

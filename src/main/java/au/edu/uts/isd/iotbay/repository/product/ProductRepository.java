@@ -1,7 +1,7 @@
 package au.edu.uts.isd.iotbay.repository.product;
 
-import au.edu.uts.isd.iotbay.database.ConnectionProvider;
 import au.edu.uts.isd.iotbay.model.product.Product;
+import au.edu.uts.isd.iotbay.persistence.jdbc.ConnectionProvider;
 import au.edu.uts.isd.iotbay.repository.Repository;
 
 import java.util.Optional;

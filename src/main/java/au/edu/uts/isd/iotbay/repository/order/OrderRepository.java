@@ -1,11 +1,11 @@
 package au.edu.uts.isd.iotbay.repository.order;
 
+import au.edu.uts.isd.iotbay.model.order.Order;
 import au.edu.uts.isd.iotbay.model.order.OrderProduct;
 import au.edu.uts.isd.iotbay.model.order.OrderStatus;
 import au.edu.uts.isd.iotbay.model.product.Product;
+import au.edu.uts.isd.iotbay.persistence.jdbc.ConnectionProvider;
 import au.edu.uts.isd.iotbay.repository.Repository;
-import au.edu.uts.isd.iotbay.model.order.Order;
-import au.edu.uts.isd.iotbay.database.ConnectionProvider;
 
 import java.util.Optional;
 
