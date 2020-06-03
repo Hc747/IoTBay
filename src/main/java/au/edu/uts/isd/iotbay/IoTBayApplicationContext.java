@@ -4,6 +4,7 @@ import au.edu.uts.isd.iotbay.action.ActionProcessor;
 import au.edu.uts.isd.iotbay.action.ActionRegistry;
 import au.edu.uts.isd.iotbay.action.InMemoryActionRegistry;
 import au.edu.uts.isd.iotbay.action.impl.*;
+import au.edu.uts.isd.iotbay.model.log.UserLog;
 import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.persistence.mongo.MongoDatabaseProvider;
 import au.edu.uts.isd.iotbay.persistence.mongo.MongoDatabaseProviderFactory;
@@ -17,6 +18,8 @@ import lombok.Getter;
 import javax.annotation.PreDestroy;
 import javax.servlet.ServletContext;
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -38,10 +41,10 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
         this.datasource = datasource;
         this.processor = Objects.requireNonNull(processor);
         this.users = Objects.requireNonNull(users);
-        this.payments = payments;//Objects.requireNonNull(payments);
-        this.products = products;//Objects.requireNonNull(products);
-        this.categories = categories;//Objects.requireNonNull(categories);
-        this.userLogs = userLogs;//Objects.requireNonNull(userLogs);
+        this.payments = Objects.requireNonNull(payments);
+        this.products = Objects.requireNonNull(products);
+        this.categories = Objects.requireNonNull(categories);
+        this.userLogs = Objects.requireNonNull(userLogs);
     }
 
     IoTBayApplicationContext(MongoDatabaseProvider datasource, ActionProcessor processor) {
@@ -49,8 +52,7 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
     }
 
     public void log(User user, String type) {
-        //TODO: implement
-//        userLogs.create(new UserLog(null, user, type, Timestamp.from(Instant.now())));
+        userLogs.create(new UserLog(null, user, type, Timestamp.from(Instant.now())));
     }
     
     public static IoTBayApplicationContext getInstance(ServletContext application, Supplier<IoTBayApplicationContext> supplier) {
