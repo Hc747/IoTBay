@@ -6,7 +6,6 @@ import au.edu.uts.isd.iotbay.persistence.mongo.MongoDatabaseProvider;
 import au.edu.uts.isd.iotbay.repository.MongoRepository;
 import com.mongodb.client.model.Filters;
 
-import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
 
@@ -27,9 +26,6 @@ public class MongoUserLogRepository extends MongoRepository<UserLog> implements 
 
     @Override
     public Collection<UserLog> findByUserBeforeDate(User user, Date date) {
-        //TODO: user.id
-        //TODO: timestamp
-        final Timestamp timestamp = Timestamp.from(date.toInstant());
-        return findAll(Filters.and(eq("user", user), lt("timestamp", timestamp)));
+        return findAll(Filters.and(eq("user", user), lt("date", date)));
     }
 }

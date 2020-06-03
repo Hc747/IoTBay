@@ -94,7 +94,7 @@ public class ProductAction extends Action {
 
         final ProductRepository repository = ctx.getProducts();
         //TODO: create product
-        final Product product = repository.create(new Product(null, name, description, productQuantity, productPrice));
+        final Product product = repository.create(new Product(name, description, productQuantity, productPrice));
 
         if (product == null) {
             reject("Unable to create product.");
@@ -205,15 +205,17 @@ public class ProductAction extends Action {
         }
         //TODO: Account for catagory's images, etc.
 
+        product.setName(name);
+        product.setDescription(description);
+        product.setQuantity(productQuantity);
+        product.setPrice(productPrice);
 
-        //TODO: create product
-        final Product updated_product = repository.update(new Product(id, name, description, productQuantity, productPrice));
+        final Product updated = repository.update(product);
 
-
-        if (updated_product == null) {
-            reject("Unable to create product.");
+        if (updated == null) {
+            reject("Unable to update product.");
         }
-        message = "Successfully created product.";
+        message = "Successfully updated product.";
         //TODO::Return to product page with ProductID
     }
 

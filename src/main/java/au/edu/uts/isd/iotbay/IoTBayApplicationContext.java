@@ -18,8 +18,7 @@ import lombok.Getter;
 import javax.annotation.PreDestroy;
 import javax.servlet.ServletContext;
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -52,7 +51,7 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
     }
 
     public void log(User user, String type) {
-        userLogs.create(new UserLog(null, user, type, Timestamp.from(Instant.now())));
+        userLogs.create(new UserLog(user, type, LocalDate.now()));
     }
     
     public static IoTBayApplicationContext getInstance(ServletContext application, Supplier<IoTBayApplicationContext> supplier) {

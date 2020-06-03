@@ -5,7 +5,6 @@ import au.edu.uts.isd.iotbay.action.Action;
 import au.edu.uts.isd.iotbay.model.payment.CreditCardPaymentMethod;
 import au.edu.uts.isd.iotbay.model.payment.PaymentMethod;
 import au.edu.uts.isd.iotbay.model.payment.PaypalPaymentMethod;
-import au.edu.uts.isd.iotbay.model.payment.UserPaymentMethod;
 import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.repository.payment.PaymentMethodRepository;
 import au.edu.uts.isd.iotbay.util.AuthenticationUtil;
@@ -15,7 +14,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import java.sql.Date;
 
 import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
@@ -76,11 +74,12 @@ public class PaymentAction extends Action {
             reject("Unable to create payment method.");
         }
 
-        final UserPaymentMethod association = repository.associate(user, record);
+        //TODO: implement
+//        final UserPaymentMethod association = repository.associate(user, record);
 
-        if (association == null) {
-            reject("Unable to link payment method to your account.");
-        }
+//        if (association == null) {
+//            reject("Unable to link payment method to your account.");
+//        }
 
         message = "Successfully created payment method.";
     }
