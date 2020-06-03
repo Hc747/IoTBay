@@ -2,18 +2,16 @@ package au.edu.uts.isd.iotbay.repository.log;
 
 import au.edu.uts.isd.iotbay.model.log.UserLog;
 import au.edu.uts.isd.iotbay.model.user.User;
+import org.bson.types.ObjectId;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class InMemoryUserLogRepository implements UserLogRepository {
 
-    private static final AtomicInteger SEQUENCE = new AtomicInteger(1);
+    private final Map<ObjectId, UserLog> userlogs;
 
-    private final Map<Integer, UserLog> userlogs;
-
-    private InMemoryUserLogRepository(Map<Integer, UserLog> userlogs) {
+    private InMemoryUserLogRepository(Map<ObjectId, UserLog> userlogs) {
         this.userlogs = Objects.requireNonNull(userlogs);
     }
 
@@ -34,7 +32,7 @@ public class InMemoryUserLogRepository implements UserLogRepository {
 
     @Override
     public UserLog create(UserLog instance) {
-        final Integer id = SEQUENCE.getAndIncrement();
+        final ObjectId id = new ObjectId();
         return userlogs.compute(id, (k, v) -> {
             instance.setId(id);
             return instance;

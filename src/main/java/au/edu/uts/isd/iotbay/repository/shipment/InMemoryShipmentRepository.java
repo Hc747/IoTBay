@@ -2,19 +2,16 @@ package au.edu.uts.isd.iotbay.repository.shipment;
 
 
 import au.edu.uts.isd.iotbay.model.shipment.Shipment;
-
+import org.bson.types.ObjectId;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class InMemoryShipmentRepository implements ShipmentRepository {
 
-    private static final AtomicInteger SEQUENCE = new AtomicInteger(1);
+    private final Map<ObjectId, Shipment> shipment;
 
-    private final Map<Integer, Shipment> shipment;
-
-    private InMemoryShipmentRepository(Map<Integer, Shipment> shipment) {
+    private InMemoryShipmentRepository(Map<ObjectId, Shipment> shipment) {
         this.shipment = Objects.requireNonNull(shipment);
     }
 
@@ -30,7 +27,7 @@ public class InMemoryShipmentRepository implements ShipmentRepository {
 
     @Override
     public Shipment create(Shipment instance) {
-        final Integer id = SEQUENCE.getAndIncrement();
+        final ObjectId id = new ObjectId();
         return shipment.compute(id, (k, v) -> {
             instance.setId(id);
             return instance;

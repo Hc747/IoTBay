@@ -4,7 +4,7 @@ import au.edu.uts.isd.iotbay.model.order.Order;
 import au.edu.uts.isd.iotbay.model.order.OrderProduct;
 import au.edu.uts.isd.iotbay.model.order.OrderStatus;
 import au.edu.uts.isd.iotbay.model.product.Product;
-import au.edu.uts.isd.iotbay.persistence.jdbc.ConnectionProvider;
+import au.edu.uts.isd.iotbay.persistence.mongo.MongoDatabaseProvider;
 import au.edu.uts.isd.iotbay.repository.Repository;
 
 import java.util.Optional;
@@ -19,10 +19,11 @@ public interface OrderRepository extends Repository<Order> {
 
     OrderStatus status(Order order, String status, String details);
 
-    static OrderRepository create(ConnectionProvider datasource) {
+    static OrderRepository create(MongoDatabaseProvider datasource) {
         if (datasource == null) {
 //            return InMemoryOrderRepository.concurrent();
         }
-        return new PersistentOrderRepository(datasource);
+        return null; //TODO: implement
+//        return new PersistentOrderRepository(datasource);
     }
 }

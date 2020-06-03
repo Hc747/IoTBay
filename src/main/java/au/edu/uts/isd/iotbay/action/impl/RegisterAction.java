@@ -11,8 +11,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.Optional;
 
 import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
@@ -47,7 +45,8 @@ public class RegisterAction extends UnauthenticatedAction {
             reject("Sorry, that username is already taken.");
         }
 
-        final User user = ctx.getUsers().create(new User(null, name, username, AuthenticationUtil.hash(password), phone, Role.USER, true, Timestamp.from(Instant.now()), null));
+        //TODO: implement timestamps
+        final User user = ctx.getUsers().create(new User(null, name, username, AuthenticationUtil.hash(password), phone, Role.USER, true));//, Timestamp.from(Instant.now()), null));
 
         if (user == null) {
             request.setAttribute("username", username);

@@ -1,24 +1,22 @@
 package au.edu.uts.isd.iotbay.repository.product;
 
 import au.edu.uts.isd.iotbay.model.product.Product;
+import org.bson.types.ObjectId;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class InMemoryProductRepository implements ProductRepository {
 
-    private static final AtomicInteger SEQUENCE = new AtomicInteger(1);
+    private final Map<ObjectId, Product> products;
 
-    private final Map<Integer, Product> products;
-
-    public InMemoryProductRepository(Map<Integer, Product> products) {
+    public InMemoryProductRepository(Map<ObjectId, Product> products) {
         this.products = products;
     }
 
     @Override
-    public Optional<Product> findByProductId(int product_id) {
-        return Optional.ofNullable(products.get(product_id));
+    public Optional<Product> findByProductId(ObjectId id) {
+        return Optional.ofNullable(products.get(id));
     }
 
     @Override
@@ -33,7 +31,7 @@ public class InMemoryProductRepository implements ProductRepository {
 
     @Override
     public Product create(Product instance) {
-        final Integer id = SEQUENCE.getAndIncrement();
+        final ObjectId id = new ObjectId();
         return products.compute(id, (k, v) -> {
             instance.setId(id);
             return instance;

@@ -1,17 +1,16 @@
 package au.edu.uts.isd.iotbay.repository.address;
 
 import au.edu.uts.isd.iotbay.model.address.Address;
+import org.bson.types.ObjectId;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class InMemoryAddressRepository implements AddressRepository {
-    private static final AtomicInteger SEQUENCE = new AtomicInteger(1);
 
-    private final Map<Integer, Address> address;
+    private final Map<ObjectId, Address> address;
 
-    private InMemoryAddressRepository(Map<Integer, Address> address) {
+    private InMemoryAddressRepository(Map<ObjectId, Address> address) {
         this.address = Objects.requireNonNull(address);
     }
 
@@ -22,7 +21,7 @@ public class InMemoryAddressRepository implements AddressRepository {
 
     @Override
     public Address create(Address instance) {
-        final Integer id = SEQUENCE.getAndIncrement();
+        final ObjectId id = new ObjectId();
         return address.compute(id, (k, v) -> {
             instance.setId(id);
             return instance;

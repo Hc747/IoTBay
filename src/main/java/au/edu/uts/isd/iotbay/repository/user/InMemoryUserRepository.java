@@ -1,6 +1,7 @@
 package au.edu.uts.isd.iotbay.repository.user;
 
 import au.edu.uts.isd.iotbay.model.user.User;
+import org.bson.types.ObjectId;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,7 +30,7 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public User create(User instance) {
         return users.compute(instance.getUsername(), (String k, User v) -> {
-            instance.setId(SEQUENCE.getAndIncrement());
+            instance.setId(new ObjectId());
             return instance;
         });
     }

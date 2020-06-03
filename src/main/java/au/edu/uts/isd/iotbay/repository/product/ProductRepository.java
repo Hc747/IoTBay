@@ -1,20 +1,23 @@
 package au.edu.uts.isd.iotbay.repository.product;
 
 import au.edu.uts.isd.iotbay.model.product.Product;
-import au.edu.uts.isd.iotbay.persistence.jdbc.ConnectionProvider;
+import au.edu.uts.isd.iotbay.persistence.mongo.MongoDatabaseProvider;
 import au.edu.uts.isd.iotbay.repository.Repository;
+import org.bson.types.ObjectId;
 
 import java.util.Optional;
 
 public interface ProductRepository extends Repository<Product> {
-    Optional<Product> findByProductId(int product_id);
 
-    Optional<Product> findByProductName(String product_name);
+    Optional<Product> findByProductId(ObjectId id);
 
-    static ProductRepository create(ConnectionProvider datasource) {
+    Optional<Product> findByProductName(String name);
+
+    static ProductRepository create(MongoDatabaseProvider datasource) {
         if (datasource == null) {
             return InMemoryProductRepository.concurrent();
         }
-        return new PersistentProductRepository(datasource);
+        return null; //TODO: implement
+//        return new PersistentProductRepository(datasource);
     }
 }

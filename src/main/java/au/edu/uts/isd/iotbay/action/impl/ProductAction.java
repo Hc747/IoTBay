@@ -7,12 +7,12 @@ import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.repository.product.ProductRepository;
 import au.edu.uts.isd.iotbay.util.AuthenticationUtil;
 import lombok.SneakyThrows;
+import org.bson.types.ObjectId;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import java.text.DecimalFormat;
 import java.util.Optional;
 
@@ -117,11 +117,11 @@ public class ProductAction extends Action {
             reject("The Product Id was not a valid whole number");
         }
 
-        final int id = Integer.parseInt(identifier);
-
-        if (id < 0) {
-            reject("Product Id was not valid. Can't be a negative value");
+        if (!ObjectId.isValid(identifier)) {
+            reject("Product Id was not valid.");
         }
+
+        final ObjectId id = new ObjectId(identifier);
 
         final ProductRepository repository = ctx.getProducts();
         Optional<Product> product = repository.findByProductId(id);
@@ -152,11 +152,11 @@ public class ProductAction extends Action {
             reject("The Product Id was not a valid whole number");
         }
 
-        final int id = Integer.parseInt(identifier);
-
-        if (id < 0) {
-            reject("Product Id was not valid. Can't be a negative value");
+        if (!ObjectId.isValid(identifier)) {
+            reject("Product Id was not valid.");
         }
+
+        final ObjectId id = new ObjectId(identifier);
 
         final ProductRepository repository = ctx.getProducts();
         Optional<Product> product = repository.findByProductId(id);

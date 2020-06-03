@@ -1,19 +1,16 @@
 package au.edu.uts.isd.iotbay.repository.category;
 
 import au.edu.uts.isd.iotbay.model.category.Category;
-import au.edu.uts.isd.iotbay.repository.product.InMemoryProductRepository;
+import org.bson.types.ObjectId;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Predicate;
 
 public class InMemoryCategoryRepository implements CategoryRepository {
-    private static final AtomicInteger SEQUENCE = new AtomicInteger(1);
 
-    private final Map<Integer, Category> categories;
+    private final Map<ObjectId, Category> categories;
 
-    public InMemoryCategoryRepository(Map<Integer, Category> categories) {
+    public InMemoryCategoryRepository(Map<ObjectId, Category> categories) {
         this.categories = categories;
     }
 
@@ -32,7 +29,7 @@ public class InMemoryCategoryRepository implements CategoryRepository {
 
     @Override
     public Category create(Category instance) {
-        final Integer id  = SEQUENCE.getAndIncrement();
+        final ObjectId id = new ObjectId();
         return categories.compute(id, (k, v) -> {
            instance.setId(id);
            return instance;

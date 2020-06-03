@@ -3,18 +3,16 @@ package au.edu.uts.isd.iotbay.repository.payment;
 import au.edu.uts.isd.iotbay.model.payment.PaymentMethod;
 import au.edu.uts.isd.iotbay.model.payment.UserPaymentMethod;
 import au.edu.uts.isd.iotbay.model.user.User;
+import org.bson.types.ObjectId;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class InMemoryPaymentMethodRepository implements PaymentMethodRepository {
 
-    private static final AtomicInteger SEQUENCE = new AtomicInteger(1);
+    private final Map<ObjectId, PaymentMethod> methods;
 
-    private final Map<Integer, PaymentMethod> methods;
-
-    private InMemoryPaymentMethodRepository(Map<Integer, PaymentMethod> methods) {
+    private InMemoryPaymentMethodRepository(Map<ObjectId, PaymentMethod> methods) {
         this.methods = Objects.requireNonNull(methods);
     }
 
@@ -25,8 +23,8 @@ public class InMemoryPaymentMethodRepository implements PaymentMethodRepository 
 
     @Override
     public PaymentMethod create(PaymentMethod instance) {
-        final Integer id = SEQUENCE.getAndIncrement();
-        return methods.compute(id, (Integer k, PaymentMethod v) -> {
+        final ObjectId id = new ObjectId();
+        return methods.compute(id, (ObjectId k, PaymentMethod v) -> {
             instance.setId(id);
             return instance;
         });
