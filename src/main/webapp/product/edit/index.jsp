@@ -7,21 +7,20 @@
 --%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%//TODO: Add actions to buttons%>
 <t:layout>
-    <%//TODO: Add actions to buttons%>
     <jsp:body>
-
         <div class="container p-3 my-3 bg-dark text-white">
             <h1 class="jumbotron-heading" style="text-align: center">Product Title</h1>
             <p>ProductId: 123421321</p>
-            <br>
             <div class="container p-3 my-3 bg-dark text-white">
-                <button type="button" class="btn btn-warning">Confirm Product Edit</button>
-                <button type="button" class="btn btn-danger">Delete Product</button>
-                <button type="button" class="btn btn-light">Cancel</button>
+                <button style="float: right" type="button" class="btn btn-warning">Confirm Product Edit</button>
+                <button style="float: right" type="button" class="btn btn-danger">Delete Product</button>
+                <button style="float: right" type="button" class="btn btn-light">Cancel</button>
             </div>
+        </div>
         <hr>
-        <div class="container p-3 my-3 bg-dark text-white">
+        <div class="container p-3 my-3 border" >
             <form method="post">
                 <div class="form-group">
                     <label for="productName">
