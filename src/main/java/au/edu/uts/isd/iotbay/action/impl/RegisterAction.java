@@ -11,7 +11,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
 
 import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
 import static au.edu.uts.isd.iotbay.util.Validator.matches;
@@ -37,9 +36,9 @@ public class RegisterAction extends UnauthenticatedAction {
         }
 
         final IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);
-        final Optional<User> existing = ctx.getUsers().findByUsername(username);
+        final User existing = ctx.getUsers().findByUsername(username);
         
-        if (existing.isPresent()) {
+        if (existing != null) {
             request.setAttribute("username", username);
             request.setAttribute("name", name);
             reject("Sorry, that username is already taken.");
