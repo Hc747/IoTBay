@@ -18,8 +18,8 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByUsername(String username) {
-        return Optional.ofNullable(users.get(username));
+    public User findByUsername(String username) {
+        return users.get(username);
     }
 
     @Override

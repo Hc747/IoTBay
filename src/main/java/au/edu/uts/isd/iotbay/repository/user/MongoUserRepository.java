@@ -4,8 +4,6 @@ import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.persistence.mongo.MongoDatabaseProvider;
 import au.edu.uts.isd.iotbay.repository.MongoRepository;
 
-import java.util.Optional;
-
 import static com.mongodb.client.model.Filters.eq;
 
 public class MongoUserRepository extends MongoRepository<User> implements UserRepository {
@@ -15,7 +13,7 @@ public class MongoUserRepository extends MongoRepository<User> implements UserRe
     }
 
     @Override
-    public Optional<User> findByUsername(String username) {
-        return Optional.ofNullable(find(eq("username", username)));
+    public User findByUsername(String username) {
+        return find(eq("username", username));
     }
 }
