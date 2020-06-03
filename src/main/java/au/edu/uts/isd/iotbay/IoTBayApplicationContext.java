@@ -39,7 +39,7 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
     private final UserLogRepository userLogs;
     
     IoTBayApplicationContext(ConnectionProvider datasource, ActionProcessor processor, UserRepository users, PaymentMethodRepository payments, ProductRepository products, CategoryRepository categories, UserLogRepository userLogs) {
-        this.datasource = Objects.requireNonNull(datasource);
+        this.datasource = datasource;
         this.processor = Objects.requireNonNull(processor);
         this.users = Objects.requireNonNull(users);
         this.payments = Objects.requireNonNull(payments);
