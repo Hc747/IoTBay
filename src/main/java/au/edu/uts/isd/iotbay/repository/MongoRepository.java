@@ -65,11 +65,11 @@ public abstract class MongoRepository<T extends Identifiable> implements Reposit
 
     @Override
     public T update(T instance) {
-        return this.collection.findOneAndReplace(identity(instance), instance);
+        return collection.findOneAndReplace(identity(instance), instance);
     }
 
     @Override
     public T delete(T instance) {
-        return this.collection.findOneAndDelete(identity(instance));
+        return collection.findOneAndDelete(identity(instance));
     }
 }

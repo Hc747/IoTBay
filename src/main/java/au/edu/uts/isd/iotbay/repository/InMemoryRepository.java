@@ -30,7 +30,7 @@ public abstract class InMemoryRepository<T extends Identifiable> implements Repo
     public T create(T instance) {
         if (instance.getId() == null) {
             instance.setId(new ObjectId());
-            this.elements.put(instance.getId(), instance);
+            elements.put(instance.getId(), instance);
             return instance;
         }
         return update(instance);
@@ -38,11 +38,11 @@ public abstract class InMemoryRepository<T extends Identifiable> implements Repo
 
     @Override
     public T update(T instance) {
-        return this.elements.compute(instance.getId(), (k, v) -> instance);
+        return elements.compute(instance.getId(), (k, v) -> instance);
     }
 
     @Override
     public T delete(T instance) {
-        return this.elements.remove(instance.getId());
+        return elements.remove(instance.getId());
     }
 }
