@@ -134,7 +134,7 @@ public class ProductAction extends Action {
         final Product product = repository.findById(id);
 
         if (product == null) {
-            reject("Could not find product to delete. Id may have been incorrect.");
+            reject("Could not find product to delete.");
         }
 
         Product deleted = repository.delete(product);
@@ -144,12 +144,12 @@ public class ProductAction extends Action {
         }
 
         message = "Successfully deleted the product.";
-        //TODO::Return to a page. Indicate the status of the
+        //TODO::Return to a page. Indicate the status of the deletion
     }
 
     @SneakyThrows
     private void update(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
-        final String identifier = request.getParameter("productId");
+        final String identifier = request.getParameter("id");
 
         if (isNullOrEmpty(identifier)) {
             reject("No Product Id found");
@@ -169,7 +169,7 @@ public class ProductAction extends Action {
         final Product product = repository.findById(id);
 
         if (product == null) {
-            reject("Could not find product to delete. Id may have been incorrect.");
+            reject("Could not find product to delete.");
         }
         //Get the input parameters
         String name = request.getParameter("name");
