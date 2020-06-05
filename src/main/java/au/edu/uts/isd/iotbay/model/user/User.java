@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
@@ -21,7 +20,7 @@ public class User extends IdentifiableModel {
     private Role role;
     private boolean enabled;
     private LocalDate created, verified;
-    private List<PaymentMethod> payments = new ArrayList<>();
+    private List<PaymentMethod> payments;
     private List<Order> orders;
 
     public String[] names() {
