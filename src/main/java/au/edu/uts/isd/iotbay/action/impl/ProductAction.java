@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.DecimalFormat;
 
-import static au.edu.uts.isd.iotbay.util.Validator.Patterns.DECIMAL_PATTERN;
-import static au.edu.uts.isd.iotbay.util.Validator.Patterns.WHOLE_NUMBER_PATTERN;
+import static au.edu.uts.isd.iotbay.util.Validator.Patterns.*;
+import static au.edu.uts.isd.iotbay.util.Validator.Patterns.OBJECT_DESCRIPTION_PATTERN;
 import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
 import static au.edu.uts.isd.iotbay.util.Validator.matches;
 
@@ -67,7 +67,15 @@ public class ProductAction extends Action {
         }
 
         if (!matches(WHOLE_NUMBER_PATTERN, quantityString)) {
-            reject("The input quantity was not a valid whole number");
+            reject("The input quantity was not a valid whole number.");
+        }
+
+        if (!(matches(OBJECT_NAME_PATTERN, name))) {
+            reject("The input name was not a valid name for the product.");
+        }
+
+        if (!(matches(OBJECT_DESCRIPTION_PATTERN, description))) {
+            reject("The input description was not a valid description for the product.");
         }
 
         double price = Double.parseDouble(priceString);
@@ -180,6 +188,14 @@ public class ProductAction extends Action {
 
         if (!(matches(WHOLE_NUMBER_PATTERN, quantityString))) {
             reject("The input quantity was not a valid whole number");
+        }
+
+        if (!(matches(OBJECT_NAME_PATTERN, name))) {
+            reject("The input name was not a valid name for the product.");
+        }
+
+        if (!(matches(OBJECT_DESCRIPTION_PATTERN, description))) {
+            reject("The input description was not a valid description for the product.");
         }
 
         DecimalFormat priceFormat = new DecimalFormat("##.00");
