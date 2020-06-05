@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -16,7 +18,8 @@ public class Order extends IdentifiableModel {
 
     private Invoice invoice;
     private PaymentMethod payment;
-    private List<OrderProduct> products;
-    private List<OrderStatus> statuses;
+    private List<OrderProduct> products = new ArrayList<>();
+    private List<OrderStatus> statuses = new ArrayList<>();
+    private LocalDate date;
 
 }

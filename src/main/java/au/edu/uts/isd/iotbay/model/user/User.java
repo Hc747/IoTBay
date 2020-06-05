@@ -1,11 +1,14 @@
 package au.edu.uts.isd.iotbay.model.user;
 
 import au.edu.uts.isd.iotbay.model.IdentifiableModel;
+import au.edu.uts.isd.iotbay.model.payment.PaymentMethod;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringJoiner;
 
 @Data
@@ -17,6 +20,7 @@ public class User extends IdentifiableModel {
     private Role role;
     private boolean enabled;
     private LocalDate created, verified;
+    private List<PaymentMethod> payments = new ArrayList<>();
 
     public String[] names() {
         final String[] components = name.split(" +");
