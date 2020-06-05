@@ -56,7 +56,7 @@ public class ProductAction extends Action {
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         String quantityString = request.getParameter("quantity");
-        String priceString = request.getParameter("priceString");
+        String priceString = request.getParameter("price");
 
         if (isNullOrEmpty(name) || isNullOrEmpty(description) || isNullOrEmpty(quantityString) || isNullOrEmpty(priceString)) {
             reject("You must supply a name, description, quantity and priceString in order to create a product.");
@@ -164,10 +164,10 @@ public class ProductAction extends Action {
             reject("Could not find product to delete. Id may have been incorrect.");
         }
         //Get the input parameters
-        String name = request.getParameter("productName");
-        String description = request.getParameter("productDescription");
-        String quantityString = request.getParameter("productQuantity");
-        String priceString = request.getParameter("productPrice");
+        String name = request.getParameter("name");
+        String description = request.getParameter("description");
+        String quantityString = request.getParameter("quantity");
+        String priceString = request.getParameter("price");
 
         //Validate the input parameters
         if (isNullOrEmpty(name) || isNullOrEmpty(description) || isNullOrEmpty(quantityString) || isNullOrEmpty(priceString)) {

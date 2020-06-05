@@ -23,40 +23,40 @@
         <div class="container p-3 my-3 border" >
             <form method="post">
                 <div class="form-group">
-                    <label for="productName">
+                    <label for="name">
                         Product Name
                     </label>
-                    <input id="productName" name="productName"type="text" placeholder="Product Name" required>
+                    <input id="name" name="name"type="text" placeholder="Product Name" required>
                 </div>
                 <div class="form-group">
-                    <label for="productDescription">
+                    <label for="description">
                         Product Description
                     </label>
-                    <input id="productDescription" name="productDescription" type="text" placeholder="Product Description" required>
+                    <input id="description" name="description" type="text" placeholder="Product Description" required>
                 </div>
                 <div class="form-group">
-                    <label for="productQuantity">
+                    <label for="quantity">
                         Product Quantity
                     </label>
-                    <input id="productQuantity" name="productQuantity"type="number" placeholder="0" required>
+                    <input id="quantity" name="quantity"type="number" placeholder="0" required>
                 </div>
                 <div class="form-group">
-                    <label for="productName">
-                        Product Quantity: $
+                    <label for="price">
+                        Product Price: $
                     </label>
-                    <input id="productPrice" name="productPrice" type="number" placeholder="$0.00" required>
+                    <input id="price" name="price" type="number" placeholder="$0.00" required>
                 </div>
                 <div class="form-group">
-                    <label for="productImageURL">
+                    <label for="imageURL">
                         Product Image URL
                     </label>
-                    <input id="productImageURL" name="productImageURL" type="url" placeholder="Product Image URL's">
+                    <input id="imageURL" name="imageURL" type="url" placeholder="Product Image URL's">
                 </div>
                 <div class="form-group">
-                    <label for="productCategories">
+                    <label for="categories">
                         Product Categories
                     </label>
-                    <input id="productCategories" name="productCategories" type="text" placeholder="Product Categories">
+                    <input id="categories" name="categories" type="text" placeholder="Product Categories">
                 </div>
                 <button type="submit" class="btn btn-warning">Confirm Product Edit</button>
             </form>
