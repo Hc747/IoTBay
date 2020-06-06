@@ -46,7 +46,6 @@ public class RegisterAction extends UnauthenticatedAction {
             reject("Sorry, that username is already taken.");
         }
 
-        //TODO: replace with factory method.
         final User user = ctx.getUsers().create(new User(name, username, AuthenticationUtil.hash(password), phone, Role.USER, true, LocalDate.now(), null, new ArrayList<>(), new ArrayList<>()));
 
         if (user == null) {
