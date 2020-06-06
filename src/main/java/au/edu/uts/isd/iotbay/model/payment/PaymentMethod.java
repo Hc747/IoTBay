@@ -7,6 +7,10 @@ import org.bson.types.ObjectId;
 @Data
 public abstract class PaymentMethod extends IdentifiableModel {
 
+    public PaymentMethod() {
+        this(null);
+    }
+
     protected PaymentMethod(ObjectId id) {
         super(id);
     }

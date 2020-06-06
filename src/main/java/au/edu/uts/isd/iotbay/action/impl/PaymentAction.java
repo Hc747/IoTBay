@@ -14,7 +14,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.sql.Date;
+import java.time.LocalDate;
 
 import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
 
@@ -58,7 +58,7 @@ public class PaymentAction extends Action {
                 String holder = request.getParameter("holder");
                 String cvv = request.getParameter("cvv");
                 String date = request.getParameter("date"); //TODO: convert to date
-                method = new CreditCardPaymentMethod(null, number, holder, cvv, new Date(System.currentTimeMillis())); //TODO: use converted date
+                method = new CreditCardPaymentMethod(null, number, holder, cvv, LocalDate.now()); //TODO: use converted date
                 break;
             case PAYPAL:
                 String token = request.getParameter("token");

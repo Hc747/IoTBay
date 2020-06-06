@@ -1,13 +1,24 @@
 package au.edu.uts.isd.iotbay.persistence.mongo;
 
+import au.edu.uts.isd.iotbay.model.address.Address;
+import au.edu.uts.isd.iotbay.model.category.Category;
+import au.edu.uts.isd.iotbay.model.invoice.Invoice;
+import au.edu.uts.isd.iotbay.model.log.UserLog;
+import au.edu.uts.isd.iotbay.model.order.Order;
+import au.edu.uts.isd.iotbay.model.payment.CreditCardPaymentMethod;
+import au.edu.uts.isd.iotbay.model.payment.PaymentMethod;
+import au.edu.uts.isd.iotbay.model.payment.PaypalPaymentMethod;
+import au.edu.uts.isd.iotbay.model.product.Product;
+import au.edu.uts.isd.iotbay.model.shipment.Shipment;
+import au.edu.uts.isd.iotbay.model.user.User;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import de.bild.codec.PojoCodecProvider;
 import org.bson.codecs.configuration.CodecRegistry;
-import org.bson.codecs.pojo.PojoCodecProvider;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,12 +30,16 @@ import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 public class MongoDatabaseProviderFactory {
 
     public static MongoDatabaseProvider mongo(String connectionString, String database) {
-        //TODO: validate inputs
-//        final MongoClientURI uri = uri(user, password, role, database, clusters);
-//        final MongoClient client = new MongoClient(uri);
-//        final MongoCredential credentials = MongoCredential.createCredential(user, database, password.toCharArray()); //TODO: necessity of credentials
         final MongoClient client = MongoClients.create(connectionString);
-        final CodecRegistry registry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), fromProviders(PojoCodecProvider.builder().automatic(true).build()));
+        final PojoCodecProvider provider = PojoCodecProvider.builder()
+                .register(
+                        Address.class, Category.class, Invoice.class, UserLog.class, Order.class,
+                        PaymentMethod.class, PaypalPaymentMethod.class, CreditCardPaymentMethod.class,
+                        Product.class,
+                        Shipment.class,
+                        User.class
+                ).build();
+        final CodecRegistry registry = fromRegistries(MongoClientSettings.getDefaultCodecRegistry(), fromProviders(provider));
         final MongoDatabase db = client.getDatabase(database).withCodecRegistry(registry);
         return new MongoDatabaseProviderImpl(client, db);
     }
