@@ -21,7 +21,7 @@
     <jsp:body>
         <div class="container">
             <form action="?action=login" method="POST">
-                <div>Login to your account</div>
+                <h1 class="jumbotron-heading" style="text-align: center">Login to your account</h1>
                 <div class="form-group">
                     <label for="username">
                         Username
