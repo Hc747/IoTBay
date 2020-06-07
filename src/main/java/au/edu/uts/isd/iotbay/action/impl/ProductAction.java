@@ -153,10 +153,8 @@ public class ProductAction extends Action {
             reject("Product Id was not valid.");
         }
 
-        final ObjectId id = new ObjectId(identifier);
-
         final ProductRepository repository = ctx.getProducts();
-        final Product product = repository.findById(id);
+        final Product product = repository.findById(identifier);
 
         if (product == null) {
             reject("Could not find product to delete.");
@@ -180,8 +178,7 @@ public class ProductAction extends Action {
             reject("The input quantity was not a valid whole number");
         }
 
-        DecimalFormat priceFormat = new DecimalFormat("##.00");
-        double price = Double.parseDouble(priceFormat.format(request.getParameter("productPrice")));
+        double price = Double.parseDouble(priceString);
         int quantity = Integer.parseInt(quantityString);
 
 
@@ -214,7 +211,7 @@ public class ProductAction extends Action {
             reject("Unable to update product.");
         }
         message = "Successfully updated product.";
-        session.setAttribute("updatedProduct", updated);
+//        session.setAttribute("updatedProduct", updated);
         //TODO::Return to product page.
     }
 
