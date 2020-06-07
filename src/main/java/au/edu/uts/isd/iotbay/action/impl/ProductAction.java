@@ -105,6 +105,9 @@ public class ProductAction extends Action {
 
     @SneakyThrows
     private void delete(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
+        final User user = authenticate(session);
+        validate(user);
+
         final String identifier = request.getParameter("productId");
 
         if (isNullOrEmpty(identifier)) {
@@ -137,6 +140,9 @@ public class ProductAction extends Action {
 
     @SneakyThrows
     private void update(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
+        final User user = authenticate(session);
+        validate(user);
+
         final String identifier = request.getParameter("id");
 
         if (isNullOrEmpty(identifier)) {
