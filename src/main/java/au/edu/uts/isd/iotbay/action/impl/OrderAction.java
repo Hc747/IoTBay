@@ -2,6 +2,7 @@ package au.edu.uts.isd.iotbay.action.impl;
 
 import au.edu.uts.isd.iotbay.IoTBayApplicationContext;
 import au.edu.uts.isd.iotbay.action.Action;
+import au.edu.uts.isd.iotbay.action.UnauthenticatedAction;
 import au.edu.uts.isd.iotbay.model.order.Order;
 import au.edu.uts.isd.iotbay.model.order.OrderProduct;
 import au.edu.uts.isd.iotbay.model.order.OrderStatus;
@@ -22,6 +23,6 @@ import static au.edu.uts.isd.iotbay.util.Validator.Patterns.OBJECT_DESCRIPTION_P
 import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
 import static au.edu.uts.isd.iotbay.util.Validator.matches;
 
-public class OrderAction{
+public class OrderAction extends UnauthenticatedAction {
 
 }
