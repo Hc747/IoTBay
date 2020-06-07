@@ -5,12 +5,13 @@
   Time: 6:07 pm
   To change this template use File | Settings | File Templates.
 --%>
+<%@ page import="au.edu.uts.isd.iotbay.action.Action" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <t:layout>
     <jsp:body>
         <div class="container">
-            <form action="?action=shipment" method="POST">
+            <form action="?action=shipment&type=create" method="POST">
                 <div class="form-group">
                     <label>
                         Name
@@ -39,13 +40,7 @@
                     </label>
                     <input type="text" class="form-control" id="postcode" name="postcode" placeholder="Enter postcode" required>
                 </div>
-            <div class="form-group">
-                <label>
-                    Date
-                </label>
-                <input type="date" class="form-control" id="date" name="date" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Save</button>
             </form>
         </div>
     </jsp:body>
