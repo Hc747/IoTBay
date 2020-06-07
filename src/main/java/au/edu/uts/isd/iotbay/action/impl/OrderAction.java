@@ -23,6 +23,41 @@ import static au.edu.uts.isd.iotbay.util.Validator.Patterns.OBJECT_DESCRIPTION_P
 import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
 import static au.edu.uts.isd.iotbay.util.Validator.matches;
 
-public class OrderAction extends UnauthenticatedAction {
+public class OrderAction extends Action {
+    @Override
+    protected void invoke(ServletContext application, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String identifier = request.getParameter("id");
 
+        if (isNullOrEmpty(identifier)) {
+            reject("The Order ID was not found");
+        }
+
+        IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);
+        OrderRepository orders = ctx.getOrders();
+        Order order = orders.findById(identifier);
+        //do business logic here
+        orders.update(order);
+
+    }
+
+    @SneakyThrows
+    private void delete(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request)
+    {
+        final String identifier = request.getParameter("id");
+        if (isNullOrEmpty(identifier)) {
+            reject("Order Id not found");
+        }
+        if (!ObjectId.isValid(identifier)) {
+            reject("Order Id invalid.");
+        }
+        final OrderRepository repository= ctx.getOrders();
+        final Order order = repository.findById(identifier);
+
+        if(order == null) {
+            reject("Order Id Invalid.");
+        }
+
+        repository.delete(order);
+        message = "Order was successfully  deleted";
+    }
 }
