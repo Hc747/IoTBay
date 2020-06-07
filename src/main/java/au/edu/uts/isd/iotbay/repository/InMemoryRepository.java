@@ -22,6 +22,11 @@ public abstract class InMemoryRepository<T extends Identifiable> implements Repo
     }
 
     @Override
+    public T findById(ObjectId id) {
+        return elements.get(id);
+    }
+
+    @Override
     public Collection<T> all() {
         return new ArrayList<>(elements.values());
     }

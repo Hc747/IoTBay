@@ -1,15 +1,13 @@
 package au.edu.uts.isd.iotbay.model;
 
-import lombok.Data;
 import org.bson.types.ObjectId;
 
-@Data
 public class IdentifiableModel implements Identifiable {
 
-    protected ObjectId id;
+    protected ObjectId _id;
 
     protected IdentifiableModel(ObjectId id) {
-        this.id = id;
+        this._id = id;
     }
 
     public IdentifiableModel() {
@@ -18,11 +16,11 @@ public class IdentifiableModel implements Identifiable {
 
     @Override
     public ObjectId getId() {
-        return id;
+        return _id;
     }
 
     @Override
     public void setId(ObjectId id) {
-        this.id = id;
+        this._id = id;
     }
 }

@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.ToString;
 import org.bson.types.ObjectId;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Data
@@ -12,9 +12,13 @@ import java.util.Objects;
 public class CreditCardPaymentMethod extends PaymentMethod {
 
     private String number, holder, cvv;
-    private Date expiration;
+    private LocalDate expiration;
 
-    public CreditCardPaymentMethod(ObjectId id, String number, String holder, String cvv, Date expiration) {
+    public CreditCardPaymentMethod() {
+        super(null);
+    }
+
+    public CreditCardPaymentMethod(ObjectId id, String number, String holder, String cvv, LocalDate expiration) {
         super(id);
         this.number = Objects.requireNonNull(number);
         this.holder = Objects.requireNonNull(holder);
@@ -23,7 +27,7 @@ public class CreditCardPaymentMethod extends PaymentMethod {
     }
 
     public boolean hasExpired() {
-        return expiration.before(new Date(System.currentTimeMillis()));
+        return expiration.isBefore(LocalDate.now());
     }
 
     @Override
