@@ -75,7 +75,8 @@ public class CategoryAction extends Action {
             reject("Unable to create the category.");
         }
         message = "Successfully created product.";
-        //TODO::Return the category id to caller.
+        //TODO::Return to a page.
+        session.setAttribute("newCategory", category);
     }
 
     @SneakyThrows
@@ -104,7 +105,6 @@ public class CategoryAction extends Action {
         }
 
         //TODO: Account for products with Category Assigned to them. Do we delete categories with products assigned to the category?
-
         Category deleted = repository.delete(category);
 
         if (deleted == null) {
@@ -112,7 +112,8 @@ public class CategoryAction extends Action {
         }
 
         message = "Successfully deleted the product.";
-        //TODO::Return to a page. Indicate the status of the deletion
+        //TODO::Return to a page.
+        session.setAttribute("deletedCategory", deleted);
     }
 
     @SneakyThrows
@@ -172,7 +173,8 @@ public class CategoryAction extends Action {
             reject("Unable to update category.");
         }
         message = "Successfully updated category.";
-        //TODO::Return the category with category Id
+        //TODO::Return to a page.
+        session.setAttribute("updatedCategory", updated);
     }
 
     @SneakyThrows

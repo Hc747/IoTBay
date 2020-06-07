@@ -83,9 +83,6 @@ public class ProductAction extends Action {
         double price = Double.parseDouble(priceString);
         int quantity = Integer.parseInt(quantityString);
 
-        //TODO: get input parameters
-        //TODO: validate input parameters
-
         if (name.length() < 4) {
             reject("Product name must be at least 4 characters.");
         }
@@ -110,8 +107,9 @@ public class ProductAction extends Action {
         }
 
         message = "Successfully created product.";
+        session.setAttribute("product", product);
         //TODO: Account for catagory's images, etc.
-        //TODO::Return to product page with ProductID
+        //TODO::Return to product page.
     }
 
     @SneakyThrows
@@ -146,7 +144,8 @@ public class ProductAction extends Action {
         }
 
         message = "Successfully deleted the product.";
-        //TODO::Return to a page. Indicate the status of the deletion
+        session.setAttribute("deletedProduct", deleted);
+        //TODO::Return to a page.
     }
 
     @SneakyThrows
@@ -234,7 +233,8 @@ public class ProductAction extends Action {
             reject("Unable to update product.");
         }
         message = "Successfully updated product.";
-        //TODO::Return to product page with ProductID
+        session.setAttribute("updatedProduct", updated);
+        //TODO::Return to product page.
     }
 
 
