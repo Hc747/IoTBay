@@ -13,12 +13,15 @@
         <div class="container">
             <form action="?action=order&" method="POST">
             <div class="form-group">
-                <input type="text" name="string" id="quantity" required>
+                <label for="invoiceId">Invoice Id:</label>
+                <input type="text" name="invoiceId" id="invoiceId" required><br>
+                <label for="shipmentId">Choose Payment Method:</label>
+                <input type="text" name="shipmentId" id="shipmentId" required><br>
                 <label for="payment">Choose Payment Method:</label>
                 <select name="payment" id="payment" required>
                     <option value="paypal">Paypal</option>
                     <option value="credit card">Credit Card</option>
-                </select>
+                </select><br>
                 <label for="products">Choose Payment Method:</label>
                 <select name="product" id="products" required>
                     <option value="google home">Google Home</option>
@@ -27,9 +30,9 @@
                     <option value="smart sensors">Smart Sensor</option>
                     <option value="Home hub">Home Hub</option>
                     <option value="smart display">smart display</option>
-                </select>
+                </select><br>
                 <label for="quantity">Quantity</label>
-                <input type="numbers" name="quantity" id="quantity" required>
+                <input type="numbers" name="quantity" id="quantity" required><br>
                 <button type="submit" class="btn btn-primary">Submit Order</button>
             </div>
             </form>
