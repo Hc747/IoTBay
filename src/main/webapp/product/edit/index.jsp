@@ -17,7 +17,7 @@
                 <button type="button" class="btn btn-danger">Delete Product</button>
             </div>
         </div>
-        <div class="container p-3 my-3 border" >
+        <div class="container p-3 my-3 bg-dark text-white" >
             <h1 class="jumbotron-heading" style="text-align: center">Update Product Details</h1>
             <form method="post">
                 <div class="form-group">
@@ -58,7 +58,7 @@
                 </div>
                 <div>
                     <button type="button" class="btn btn-warning">Confirm Product Edit</button>
-                    <button type="button" class="btn btn-light">Cancel</button>
+                    <a type="button" href="${home}" class="btn btn-light">Cancel</a>
                 </div>
             </form>
         </div>
