@@ -5,6 +5,7 @@
   Time: 6:07 pm
   To change this template use File | Settings | File Templates.
 --%>
+<%@ page import="au.edu.uts.isd.iotbay.action.Action" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <t:layout>
