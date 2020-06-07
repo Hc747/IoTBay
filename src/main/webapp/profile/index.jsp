@@ -1,17 +1,14 @@
-<%@ page import="au.edu.uts.isd.iotbay.model.user.User" %>
-<%@ page import="au.edu.uts.isd.iotbay.util.AuthenticationUtil" %>
-<%@ page import="java.util.Date" %>
-<%@ page import="java.sql.Time" %>
-<%@ page import="java.sql.Timestamp" %>
-<%@ page import="java.time.Instant" %>
-<%@ page import="static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty" %>
-<%@ page import="java.text.DateFormat" %>
-<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="au.edu.uts.isd.iotbay.IoTBayApplicationContext" %>
-<%@ page import="au.edu.uts.isd.iotbay.repository.log.UserLogRepository" %>
 <%@ page import="au.edu.uts.isd.iotbay.model.log.UserLog" %>
+<%@ page import="au.edu.uts.isd.iotbay.model.user.User" %>
+<%@ page import="au.edu.uts.isd.iotbay.repository.log.UserLogRepository" %>
+<%@ page import="au.edu.uts.isd.iotbay.util.AuthenticationUtil" %>
+<%@ page import="java.text.DateFormat" %>
+<%@ page import="static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.time.Instant" %>
 <%@ page import="java.util.Collection" %>
-<%@ page import="java.util.Optional" %>
+<%@ page import="java.util.Date" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%
@@ -41,9 +38,8 @@
     <jsp:body>
         <div class="container d-flex justify-content-between">
             <a href="payment/">View payment details.</a>
-        </div>
-        <div class="container d-flex justify-content-between">
-            <a href="userlogs/">Your logs.</a>
+            <a href="payment/history/">View payment history.</a>
+<%--            <a href="userlogs/">View your activity logs.</a>--%>
         </div>
         <br>
 

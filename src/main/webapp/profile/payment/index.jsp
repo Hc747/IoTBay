@@ -11,14 +11,16 @@
     final List<PaymentMethod> payments = user.getPayments();
     request.setAttribute("methods", payments);
     request.setAttribute("create", Constants.path(true, "profile", "payment", "create"));
+    request.setAttribute("history", Constants.path(true, "profile", "payment", "history"));
 %>
 <t:layout>
     <jsp:body>
         <div class="container">
             <c:if test="${(methods == null) or (methods.isEmpty())}">
-                You don't have any payment methods.
+                <h1 class="jumbotron-heading" style="text-align: center">You don't have any payment methods associated with your account.</h1>
             </c:if>
             <c:if test="${not (methods == null) and (not methods.isEmpty())}">
+                <h1 class="jumbotron-heading" style="text-align: center">Your payment methods</h1>
                 <table class="table table-bordered" style="text-align: center">
                     <thead>
                         <tr>
@@ -63,7 +65,10 @@
                     </tbody>
                 </table>
             </c:if>
-            <a href="${create}" type="button">Create a new payment method.</a>
+            <div class="container d-flex justify-content-between">
+                <a href="${create}" type="button">Create a new payment method</a>
+                <a href="${history}" type="button">View Payment History</a>
+            </div>
         </div>
     </jsp:body>
 </t:layout>

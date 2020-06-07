@@ -21,16 +21,17 @@
 
     request.setAttribute("method", method);
     request.setAttribute("endpoint", Constants.path(true, "profile", "payment"));
+    request.setAttribute("back", Constants.path(true, "profile", "payment"));
 %>
 <t:layout>
     <jsp:body>
         <div class="container">
             <c:if test="${method == null}">
-                Unable to find selected payment details.
+                <h1 class="jumbotron-heading" style="text-align: center">Unable to find selected payment method details.</h1>
             </c:if>
             <c:if test="${method != null}">
                 <form action="${endpoint}?action=payment&type=update" method="POST">
-                    <div>Edit Payment Method</div>
+                    <h1 class="jumbotron-heading" style="text-align: center">Edit Payment Method</h1>
                     <input type="hidden" name="id" value="${method.id}"/>
                     <input type="hidden" name="impl" value="${method.type()}"/>
                     <c:if test="${method.type().name().equalsIgnoreCase('PAYPAL')}">

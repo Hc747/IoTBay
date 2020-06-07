@@ -5,12 +5,13 @@
 <%
     request.setAttribute("user", AuthenticationUtil.user(session));
     request.setAttribute("endpoint", Constants.path(true, "profile", "payment"));
+    request.setAttribute("back", Constants.path(true, "profile", "payment"));
 %>
 <t:layout>
     <jsp:body>
         <div class="container d-flex justify-content-between">
             <form action="${endpoint}?action=payment&type=create" method="post">
-                <div>Create Credit Card Payment Method</div>
+                <h1 class="jumbotron-heading" style="text-align: center">Create Credit Card Payment Method</h1>
                 <input type="hidden" name="impl" value="CREDIT_CARD"/>
                 <div class="form-group">
                     <label for="number">Card Number: </label>
@@ -34,7 +35,7 @@
             </form>
 
             <form action="${endpoint}?action=payment&type=create" method="post">
-                <div>Create Paypal Payment Method</div>
+                <h1 class="jumbotron-heading" style="text-align: center">Create PayPal Payment Method</h1>
                 <input type="hidden" name="impl" value="PAYPAL"/>
                 <div class="form-group">
                     <label for="token">Paypal Token: </label>
@@ -44,6 +45,9 @@
                     <input class="submit" type="submit">
                 </div>
             </form>
+        </div>
+        <div class="container d-flex justify-content-between">
+            <a href="${back}" type="button">View Payment Methods</a>
         </div>
     </jsp:body>
 </t:layout>
