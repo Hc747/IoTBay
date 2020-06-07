@@ -38,7 +38,7 @@ public class Product extends IdentifiableModel {
     }
 
     public static String formatPrice(String price) {
-        return new DecimalFormat("###.##0.00").format(price);
+        return new DecimalFormat("###,##0.00").format(price);
     }
 
 }
