@@ -111,10 +111,6 @@ public class ProductAction extends Action {
             reject("No Product Id found");
         }
 
-        if (!matches(WHOLE_NUMBER_PATTERN, identifier)) {
-            reject("The Product Id was not a valid whole number");
-        }
-
         if (!ObjectId.isValid(identifier)) {
             reject("Product Id was not valid.");
         }
@@ -145,10 +141,6 @@ public class ProductAction extends Action {
 
         if (isNullOrEmpty(identifier)) {
             reject("No Product Id found");
-        }
-
-        if (!matches(WHOLE_NUMBER_PATTERN, identifier)) {
-            reject("The Product Id was not a valid whole number");
         }
 
         if (!ObjectId.isValid(identifier)) {

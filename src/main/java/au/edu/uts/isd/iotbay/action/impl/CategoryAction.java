@@ -80,10 +80,6 @@ public class CategoryAction extends Action {
             reject("No Category Id found");
         }
 
-        if (!matches(WHOLE_NUMBER_PATTERN, identifier)) {
-            reject("The Category Id was not a valid whole number");
-        }
-
         if (!ObjectId.isValid(identifier)) {
             reject(" Category Id was not valid.");
         }
@@ -115,10 +111,6 @@ public class CategoryAction extends Action {
 
         if (isNullOrEmpty(identifier)) {
             reject("No Category Id found");
-        }
-
-        if (!matches(WHOLE_NUMBER_PATTERN, identifier)) {
-            reject("The Category Id was not a valid whole number");
         }
 
         if (!ObjectId.isValid(identifier)) {
