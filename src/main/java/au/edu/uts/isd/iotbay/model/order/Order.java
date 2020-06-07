@@ -22,4 +22,6 @@ public class Order extends IdentifiableModel {
     private List<OrderProduct> products;
     private List<OrderStatus> statuses;
     private LocalDate date;
+
+
 }

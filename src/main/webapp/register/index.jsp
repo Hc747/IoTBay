@@ -1,4 +1,3 @@
-<%@page import="au.edu.uts.isd.iotbay.Constants"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <t:layout>
@@ -28,10 +27,6 @@
                         Phone Number
                     </label>
                     <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone Number" required>
-                </div>
-                <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                    <label class="form-check-label" for="remember">Remember me</label>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
