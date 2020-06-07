@@ -17,12 +17,13 @@
     <jsp:body>
         <jsp:include page="/WEB-INF/includes/common/banner.jsp"/>
             <div class="container">
-                <div class="box">
+                <div class="card-columns">
+                    <div></div>
                     <c:forEach var="product" items="${products}">
                         <div class="card">
-                            <a href="/iotbay/product/?id=${product.id}">
-                                    <h4>${product.name}</h4>
-                                    <p>$${product.price}</p>
+                            <a href="/iotbay/product/?id=${product.id}" style="align-content: center">
+                                    <h4 style="text-align: center; color: black">${product.name}</h4>
+                                    <p style="text-align: center; color: black">$${product.price}</p>
                             </a>
                         </div>
                     </c:forEach>
