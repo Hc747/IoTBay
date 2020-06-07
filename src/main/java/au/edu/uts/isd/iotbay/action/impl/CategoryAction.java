@@ -7,6 +7,7 @@ import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.repository.category.CategoryRepository;
 import au.edu.uts.isd.iotbay.util.AuthenticationUtil;
 import lombok.SneakyThrows;
+import org.bson.types.ObjectId;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -68,7 +69,7 @@ public class CategoryAction extends Action {
         }
         boolean enabled = Boolean.getBoolean(enabledString);
         final CategoryRepository repository = ctx.getCategories();
-        final Category category = repository.create(new Category(name, description, enabled));
+        final Category category = repository.create(new Category().create(name, description));
 
         if (category == null) {
             reject("Unable to create the category.");
@@ -76,12 +77,104 @@ public class CategoryAction extends Action {
         message = "Successfully created product.";
         //TODO::Return the category id to caller.
     }
-    private void update(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
 
-    }
+    @SneakyThrows
     private void delete(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
+        final String identifier = request.getParameter("productId");
 
+        if (isNullOrEmpty(identifier)) {
+            reject("No Category Id found");
+        }
+
+        if (!matches(WHOLE_NUMBER_PATTERN, identifier)) {
+            reject("The Category Id was not a valid whole number");
+        }
+
+        if (!ObjectId.isValid(identifier)) {
+            reject(" Category Id was not valid.");
+        }
+
+        final ObjectId id = new ObjectId(identifier);
+
+        final CategoryRepository repository = ctx.getCategories();
+        final Category category = repository.findById(id);
+
+        if (category == null) {
+            reject("Could not find category to delete.");
+        }
+
+        //TODO: Account for products with Category Assigned to them. Do we delete categories with products assigned to the category?
+
+        Category deleted = repository.delete(category);
+
+        if (deleted == null) {
+            reject("Unable to delete the category.");
+        }
+
+        message = "Successfully deleted the product.";
+        //TODO::Return to a page. Indicate the status of the deletion
     }
+
+    @SneakyThrows
+    private void update(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
+        final String identifier = request.getParameter("id");
+
+        if (isNullOrEmpty(identifier)) {
+            reject("No Category Id found");
+        }
+
+        if (!matches(WHOLE_NUMBER_PATTERN, identifier)) {
+            reject("The Category Id was not a valid whole number");
+        }
+
+        if (!ObjectId.isValid(identifier)) {
+            reject(" Category Id was not valid.");
+        }
+
+        final ObjectId id = new ObjectId(identifier);
+
+        final CategoryRepository repository = ctx.getCategories();
+        final Category category = repository.findById(id);
+
+        if (category == null) {
+            reject("Could not find category to delete.");
+        }
+        //TODO: Account for products with Category Assigned to them. If the category is being changed to disabled. How will this affect products with this category?
+        String name = request.getParameter("name");
+        String description = request.getParameter("description");
+        String enabledString = request.getParameter("enabled").toLowerCase();
+
+        if (isNullOrEmpty(name) || isNullOrEmpty(description) || isNullOrEmpty(enabledString)) {
+            reject("You must supply a name, description and an enable status in order to create a category.");
+        }
+
+        if (!(matches(OBJECT_NAME_PATTERN, name))) {
+            reject("The input name was not a valid name for the category.");
+        }
+        if (!(matches(OBJECT_DESCRIPTION_PATTERN, description))) {
+            reject("The input description was not a valid description for the category.");
+        }
+        if (name.length() < 4) {
+            reject("Product name must be at least 4 characters.");
+        }
+
+        if (description.length() < 10) {
+            reject("Product description must be at least 10 characters.");
+        }
+
+        if (!(enabledString.equals("false")) || (enabledString.equals("true"))) {
+            reject("The input enabled status was not a valid boolean.");
+        }
+        boolean enabled = Boolean.getBoolean(enabledString);
+        final Category updated = repository.update(category);
+
+        if (updated == null) {
+            reject("Unable to update category.");
+        }
+        message = "Successfully updated category.";
+        //TODO::Return the category with category Id
+    }
+
     @SneakyThrows
     private User authenticate(HttpSession session) {
         User user = AuthenticationUtil.user(session);
