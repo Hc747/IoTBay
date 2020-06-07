@@ -105,6 +105,6 @@ public class OrderAction extends Action {
         final Order order = repository.create(new Order(shipmentId, invoiceId, payment, product, status));
         session.setAttribute("Order", order);
 
-        message = "Shipment has been saved";
+        message = "Order has been saved";
     }
 }
