@@ -14,13 +14,11 @@
             <h1 class="jumbotron-heading" style="text-align: center">Product Title</h1>
             <p>ProductId: 123421321</p>
             <div class="container p-3 my-3 bg-dark text-white">
-                <button style="float: right" type="button" class="btn btn-warning">Confirm Product Edit</button>
-                <button style="float: right" type="button" class="btn btn-danger">Delete Product</button>
-                <button style="float: right" type="button" class="btn btn-light">Cancel</button>
+                <button type="button" class="btn btn-danger">Delete Product</button>
             </div>
         </div>
-        <hr>
         <div class="container p-3 my-3 border" >
+            <h1 class="jumbotron-heading" style="text-align: center">Update Product Details</h1>
             <form method="post">
                 <div class="form-group">
                     <label for="name">
@@ -58,7 +56,10 @@
                     </label>
                     <input id="categories" name="categories" type="text" placeholder="Product Categories">
                 </div>
-                <button type="submit" class="btn btn-warning">Confirm Product Edit</button>
+                <div>
+                    <button type="button" class="btn btn-warning">Confirm Product Edit</button>
+                    <button type="button" class="btn btn-light">Cancel</button>
+                </div>
             </form>
         </div>
     </jsp:body>

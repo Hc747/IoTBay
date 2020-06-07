@@ -14,6 +14,7 @@ import au.edu.uts.isd.iotbay.repository.order.OrderRepository;
 import au.edu.uts.isd.iotbay.repository.payment.PaymentMethodRepository;
 import au.edu.uts.isd.iotbay.repository.product.ProductRepository;
 import au.edu.uts.isd.iotbay.repository.user.UserRepository;
+import au.edu.uts.isd.iotbay.repository.order.OrderRepository;
 import lombok.Getter;
 
 import javax.annotation.PreDestroy;

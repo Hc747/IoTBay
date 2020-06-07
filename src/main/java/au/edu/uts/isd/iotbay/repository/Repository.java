@@ -20,6 +20,10 @@ public interface Repository<T extends Identifiable> {
     //TODO(harrison): documentation
     T findById(ObjectId id);
 
+    default T findById(String id) {
+        return findById(new ObjectId(id));
+    }
+
     /**
      * Retrieves all elements from the underlying data store.
      *
