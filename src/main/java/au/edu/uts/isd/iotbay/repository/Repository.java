@@ -1,5 +1,8 @@
 package au.edu.uts.isd.iotbay.repository;
 
+import au.edu.uts.isd.iotbay.model.Identifiable;
+import org.bson.types.ObjectId;
+
 import java.util.Collection;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -12,7 +15,10 @@ import java.util.stream.Collectors;
  * @param <T>
  *     The type of element contained within this repository.
  */
-public interface Repository<T> {
+public interface Repository<T extends Identifiable> {
+
+    //TODO(harrison): documentation
+    T findById(ObjectId id);
 
     /**
      * Retrieves all elements from the underlying data store.

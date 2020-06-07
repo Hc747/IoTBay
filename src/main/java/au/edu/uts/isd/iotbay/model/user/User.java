@@ -1,22 +1,29 @@
 package au.edu.uts.isd.iotbay.model.user;
 
+import au.edu.uts.isd.iotbay.model.IdentifiableModel;
+import au.edu.uts.isd.iotbay.model.order.Order;
+import au.edu.uts.isd.iotbay.model.payment.PaymentMethod;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.StringJoiner;
 
 @Data
 @AllArgsConstructor
-public class User {
+@NoArgsConstructor
+public class User extends IdentifiableModel {
 
-    private Integer id;
     private String name, username, password, phone;
     private Role role;
     private boolean enabled;
-    private Timestamp created, verified;
+    private LocalDate created, verified;
+    private List<PaymentMethod> payments;
+    private List<Order> orders;
 
-    public String[] getNameComponents() {
+    public String[] names() {
         final String[] components = name.split(" +");
         final StringJoiner joiner = new StringJoiner(" ");
         for (int index = 1; index < components.length; index++) {

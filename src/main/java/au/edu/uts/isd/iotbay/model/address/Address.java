@@ -1,13 +1,15 @@
 package au.edu.uts.isd.iotbay.model.address;
 
+import au.edu.uts.isd.iotbay.model.IdentifiableModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-public class Address {
+@NoArgsConstructor
+public class Address extends IdentifiableModel {
 
-    private Integer id;
     private String address;
     private Integer postcode;
 

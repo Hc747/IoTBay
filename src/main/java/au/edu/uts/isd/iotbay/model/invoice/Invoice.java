@@ -1,31 +1,30 @@
 package au.edu.uts.isd.iotbay.model.invoice;
 
 
+import au.edu.uts.isd.iotbay.model.IdentifiableModel;
+import au.edu.uts.isd.iotbay.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 
 @Data
 @AllArgsConstructor
-public abstract class Invoice {
+@NoArgsConstructor
+public class Invoice extends IdentifiableModel {
 
-    protected Integer id;
-    protected double amount;
+    private double amount;
+    private String emailAddress, firstName, lastName;
 
-    public abstract Type type();
+    public Invoice(ObjectId id, User user, double amount) {
+        final String[] names = user.names();
+        this.emailAddress = user.getUsername();
+        this.firstName = names[0];
+        this.lastName = names[1];
+        this.amount = amount;
+    }
 
-    public abstract String getEmailAddress();
-
-    public abstract String getFirstName();
-
-    public abstract String getLastName();
-
-    public enum Type {
-        GUEST,
-        USER
-        ;
-
-        public static Type findByName(String name) {
-            return valueOf(name);
-        }
+    public Invoice(User user, double amount) {
+        this(null, user, amount);
     }
 }

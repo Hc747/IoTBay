@@ -1,18 +1,20 @@
 package au.edu.uts.isd.iotbay.model.log;
 
+import au.edu.uts.isd.iotbay.model.IdentifiableModel;
 import au.edu.uts.isd.iotbay.model.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
-public class UserLog {
+@NoArgsConstructor
+public class UserLog extends IdentifiableModel {
 
-    private Integer id;
     private User user;
     private String type;
-    private Timestamp timestamp;
+    private LocalDate date;
 
 }

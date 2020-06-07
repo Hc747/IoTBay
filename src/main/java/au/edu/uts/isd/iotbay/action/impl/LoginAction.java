@@ -9,7 +9,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
 
 import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
 
@@ -27,14 +26,12 @@ public class LoginAction extends UnauthenticatedAction {
         }
         
         final IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);
-        final Optional<User> candidate = ctx.getUsers().findByUsername(username);
+        final User user = ctx.getUsers().findByUsername(username);
 
-        if (!candidate.isPresent()) {
+        if (user == null) {
             request.setAttribute("username", username);
             reject("Incorrect username or password");
         }
-
-        final User user = candidate.get();
 
         if (!user.isEnabled()) {
             request.setAttribute("username", username);

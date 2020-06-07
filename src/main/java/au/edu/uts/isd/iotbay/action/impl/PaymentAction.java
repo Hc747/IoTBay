@@ -5,7 +5,6 @@ import au.edu.uts.isd.iotbay.action.Action;
 import au.edu.uts.isd.iotbay.model.payment.CreditCardPaymentMethod;
 import au.edu.uts.isd.iotbay.model.payment.PaymentMethod;
 import au.edu.uts.isd.iotbay.model.payment.PaypalPaymentMethod;
-import au.edu.uts.isd.iotbay.model.payment.UserPaymentMethod;
 import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.repository.payment.PaymentMethodRepository;
 import au.edu.uts.isd.iotbay.util.AuthenticationUtil;
@@ -15,8 +14,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import java.sql.Date;
+import java.time.LocalDate;
 
 import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
 
@@ -60,7 +58,7 @@ public class PaymentAction extends Action {
                 String holder = request.getParameter("holder");
                 String cvv = request.getParameter("cvv");
                 String date = request.getParameter("date"); //TODO: convert to date
-                method = new CreditCardPaymentMethod(null, number, holder, cvv, new Date(System.currentTimeMillis())); //TODO: use converted date
+                method = new CreditCardPaymentMethod(null, number, holder, cvv, LocalDate.now()); //TODO: use converted date
                 break;
             case PAYPAL:
                 String token = request.getParameter("token");
@@ -76,11 +74,12 @@ public class PaymentAction extends Action {
             reject("Unable to create payment method.");
         }
 
-        final UserPaymentMethod association = repository.associate(user, record);
+        //TODO: implement
+//        final UserPaymentMethod association = repository.associate(user, record);
 
-        if (association == null) {
-            reject("Unable to link payment method to your account.");
-        }
+//        if (association == null) {
+//            reject("Unable to link payment method to your account.");
+//        }
 
         message = "Successfully created payment method.";
     }

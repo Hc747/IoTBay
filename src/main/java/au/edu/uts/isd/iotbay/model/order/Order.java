@@ -1,23 +1,25 @@
 package au.edu.uts.isd.iotbay.model.order;
 
-import java.util.*;
-
+import au.edu.uts.isd.iotbay.model.IdentifiableModel;
+import au.edu.uts.isd.iotbay.model.invoice.Invoice;
 import au.edu.uts.isd.iotbay.model.payment.PaymentMethod;
-import lombok.*;
+import au.edu.uts.isd.iotbay.model.shipment.Shipment;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class Order {
+@NoArgsConstructor
+public class Order extends IdentifiableModel {
 
-    private Integer id;
+    private Shipment shipment;
+    private Invoice invoice;
     private PaymentMethod payment;
-
-//    private int id, invoiceId, addressId, paymentMethodId, productId;
-//    public enum status
-//    {
-//        SAVED,
-//        SUBMITTED,
-//        CANCELLED
-//        ;
-//    }
+    private List<OrderProduct> products;
+    private List<OrderStatus> statuses;
+    private LocalDate date;
 }

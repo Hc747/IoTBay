@@ -7,17 +7,16 @@ import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.repository.product.ProductRepository;
 import au.edu.uts.isd.iotbay.util.AuthenticationUtil;
 import lombok.SneakyThrows;
+import org.bson.types.ObjectId;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import java.text.DecimalFormat;
-import java.util.Optional;
 
-import static au.edu.uts.isd.iotbay.util.Validator.Patterns.DECIMAL_PATTERN;
-import static au.edu.uts.isd.iotbay.util.Validator.Patterns.WHOLE_NUMBER_PATTERN;
+import static au.edu.uts.isd.iotbay.util.Validator.Patterns.*;
+import static au.edu.uts.isd.iotbay.util.Validator.Patterns.OBJECT_DESCRIPTION_PATTERN;
 import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
 import static au.edu.uts.isd.iotbay.util.Validator.matches;
 
@@ -38,6 +37,8 @@ public class ProductAction extends Action {
         //TODO(mathew): dispatch the other actions
         switch (type.toLowerCase()) {
             case "create": create(ctx, session, request); break;
+            case "delete": delete(ctx, session, request); break;
+            case "update": update(ctx, session, request); break;
             default: break;
         }
     }
@@ -52,25 +53,33 @@ public class ProductAction extends Action {
         final User user = authenticate(session);
         validate(user);
 
-        String name = request.getParameter("productName");
-        String description = request.getParameter("productDescription");
-        String quantity = request.getParameter("productQuantity");
-        String price = request.getParameter("productPrice");
+        String name = request.getParameter("name");
+        String description = request.getParameter("description");
+        String quantityString = request.getParameter("quantity");
+        String priceString = request.getParameter("price");
 
-        if (isNullOrEmpty(name) || isNullOrEmpty(description) || isNullOrEmpty(quantity) || isNullOrEmpty(price)) {
-            reject("You must supply a name, description, quantity and price in order to create a product.");
+        if (isNullOrEmpty(name) || isNullOrEmpty(description) || isNullOrEmpty(quantityString) || isNullOrEmpty(priceString)) {
+            reject("You must supply a name, description, quantity and priceString in order to create a product.");
         }
 
-        if (!matches(DECIMAL_PATTERN, price)) {
-            reject("The input price did not meet the required format.");
+        if (!matches(DECIMAL_PATTERN, priceString)) {
+            reject("The input priceString did not meet the required format.");
         }
 
-        if (!matches(WHOLE_NUMBER_PATTERN, quantity)) {
-            reject("The input quantity was not a valid whole number");
+        if (!matches(WHOLE_NUMBER_PATTERN, quantityString)) {
+            reject("The input quantity was not a valid whole number.");
         }
 
-        double productPrice = Double.parseDouble(price);
-        int productQuantity = Integer.parseInt(quantity);
+        if (!(matches(OBJECT_NAME_PATTERN, name))) {
+            reject("The input name was not a valid name for the product.");
+        }
+
+        if (!(matches(OBJECT_DESCRIPTION_PATTERN, description))) {
+            reject("The input description was not a valid description for the product.");
+        }
+
+        double price = Double.parseDouble(priceString);
+        int quantity = Integer.parseInt(quantityString);
 
         //TODO: get input parameters
         //TODO: validate input parameters
@@ -83,25 +92,23 @@ public class ProductAction extends Action {
             reject("Product description must be at least 10 characters.");
         }
 
-        if (productQuantity < 0) {
+        if (quantity < 0) {
             reject("Product quantity cannot be negative.");
         }
 
-        if (productPrice < 0) {
-            reject("Product price cannot be negative.");
+        if (price < 0) {
+            reject("Product priceString cannot be negative.");
         }
-        //TODO: Account for catagory's images, etc.
-
 
         final ProductRepository repository = ctx.getProducts();
-        //TODO: create product
-        final Product product = repository.create(new Product(null, name, description, productQuantity, productPrice));
+        final Product product = repository.create(new Product(name, description, quantity, price));
 
         if (product == null) {
             reject("Unable to create product.");
         }
 
         message = "Successfully created product.";
+        //TODO: Account for catagory's images, etc.
         //TODO::Return to product page with ProductID
     }
 
@@ -117,27 +124,27 @@ public class ProductAction extends Action {
             reject("The Product Id was not a valid whole number");
         }
 
-        final int id = Integer.parseInt(identifier);
-
-        if (id < 0) {
-            reject("Product Id was not valid. Can't be a negative value");
+        if (!ObjectId.isValid(identifier)) {
+            reject("Product Id was not valid.");
         }
 
-        final ProductRepository repository = ctx.getProducts();
-        Optional<Product> product = repository.findByProductId(id);
+        final ObjectId id = new ObjectId(identifier);
 
-        if (!(product.isPresent())) {
+        final ProductRepository repository = ctx.getProducts();
+        final Product product = repository.findById(id);
+
+        if (product == null) {
             reject("Could not find product to delete. Id may have been incorrect.");
         }
 
-        Product deleted = repository.delete(product.get());
+        Product deleted = repository.delete(product);
 
         if (deleted == null) {
             reject("Unable to delete the product.");
         }
 
         message = "Successfully deleted the product.";
-        //TODO::Return to a page.
+        //TODO::Return to a page. Indicate the status of the
     }
 
     @SneakyThrows
@@ -152,42 +159,49 @@ public class ProductAction extends Action {
             reject("The Product Id was not a valid whole number");
         }
 
-        final int id = Integer.parseInt(identifier);
-
-        if (id < 0) {
-            reject("Product Id was not valid. Can't be a negative value");
+        if (!ObjectId.isValid(identifier)) {
+            reject("Product Id was not valid.");
         }
+
+        final ObjectId id = new ObjectId(identifier);
 
         final ProductRepository repository = ctx.getProducts();
-        Optional<Product> product = repository.findByProductId(id);
+        final Product product = repository.findById(id);
 
-        if (!(product.isPresent())) {
+        if (product == null) {
             reject("Could not find product to delete. Id may have been incorrect.");
         }
+        //Get the input parameters
+        String name = request.getParameter("name");
+        String description = request.getParameter("description");
+        String quantityString = request.getParameter("quantity");
+        String priceString = request.getParameter("price");
 
-        String name = request.getParameter("productName");
-        String description = request.getParameter("productDescription");
-        String quantity = request.getParameter("productQuantity");
-        String price = request.getParameter("productPrice");
-
-        if (isNullOrEmpty(name) || isNullOrEmpty(description) || isNullOrEmpty(quantity) || isNullOrEmpty(price)) {
+        //Validate the input parameters
+        if (isNullOrEmpty(name) || isNullOrEmpty(description) || isNullOrEmpty(quantityString) || isNullOrEmpty(priceString)) {
             reject("One or more inputs was empty.");
         }
 
-        if (!(matches(DECIMAL_PATTERN, price))) {
+        if (!(matches(DECIMAL_PATTERN, priceString))) {
             reject("The input price did not meet the required format.");
         }
 
-        if (!(matches(WHOLE_NUMBER_PATTERN, quantity))) {
+        if (!(matches(WHOLE_NUMBER_PATTERN, quantityString))) {
             reject("The input quantity was not a valid whole number");
         }
 
-        DecimalFormat priceFormat = new DecimalFormat("##.00");
-        double productPrice = Double.parseDouble(priceFormat.format(request.getParameter("productPrice")));
-        int productQuantity = Integer.parseInt(quantity);
+        if (!(matches(OBJECT_NAME_PATTERN, name))) {
+            reject("The input name was not a valid name for the product.");
+        }
 
-        //TODO: get input parameters
-        //TODO: validate input parameters
+        if (!(matches(OBJECT_DESCRIPTION_PATTERN, description))) {
+            reject("The input description was not a valid description for the product.");
+        }
+
+        DecimalFormat priceFormat = new DecimalFormat("##.00");
+        double price = Double.parseDouble(priceFormat.format(request.getParameter("productPrice")));
+        int quantity = Integer.parseInt(quantityString);
+
 
         if (name.length() < 4) {
             reject("Product name was not long enough");
@@ -197,24 +211,27 @@ public class ProductAction extends Action {
             reject("Product description was not long enough");
         }
 
-        if (productQuantity < 0) {
+        if (quantity < 0) {
             reject("Product Quantity was not valid. Can't be a negative value");
         }
 
-        if (productPrice < 0) {
+        if (price < 0) {
             reject("Product Price was not valid Can't be a negative value");
         }
+
         //TODO: Account for catagory's images, etc.
+        
+        product.setName(name);
+        product.setDescription(description);
+        product.setQuantity(quantity);
+        product.setPrice(price);
 
+        final Product updated = repository.update(product);
 
-        //TODO: create product
-        final Product updated_product = repository.update(new Product(id, name, description, productQuantity, productPrice));
-
-
-        if (updated_product == null) {
-            reject("Unable to create product.");
+        if (updated == null) {
+            reject("Unable to update product.");
         }
-        message = "Successfully created product.";
+        message = "Successfully updated product.";
         //TODO::Return to product page with ProductID
     }
 

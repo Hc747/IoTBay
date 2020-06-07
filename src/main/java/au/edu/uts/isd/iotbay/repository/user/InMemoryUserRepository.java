@@ -1,14 +1,12 @@
 package au.edu.uts.isd.iotbay.repository.user;
 
 import au.edu.uts.isd.iotbay.model.user.User;
+import org.bson.types.ObjectId;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class InMemoryUserRepository implements UserRepository {
-
-    private static final AtomicInteger SEQUENCE = new AtomicInteger(1);
 
     private final Map<String, User> users;
 
@@ -17,8 +15,13 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByUsername(String username) {
-        return Optional.ofNullable(users.get(username));
+    public User findByUsername(String username) {
+        return users.get(username);
+    }
+
+    @Override
+    public User findById(ObjectId id) {
+        return find(user -> user.getId().equals(id)).orElse(null);
     }
 
     @Override
@@ -29,7 +32,7 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public User create(User instance) {
         return users.compute(instance.getUsername(), (String k, User v) -> {
-            instance.setId(SEQUENCE.getAndIncrement());
+            instance.setId(new ObjectId());
             return instance;
         });
     }

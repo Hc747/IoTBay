@@ -1,14 +1,18 @@
 package au.edu.uts.isd.iotbay.model.payment;
 
+import au.edu.uts.isd.iotbay.model.IdentifiableModel;
 import lombok.Data;
+import org.bson.types.ObjectId;
 
 @Data
-public abstract class PaymentMethod {
+public abstract class PaymentMethod extends IdentifiableModel {
 
-    protected Integer id;
+    public PaymentMethod() {
+        this(null);
+    }
 
-    protected PaymentMethod(Integer id) {
-        this.id = id;
+    protected PaymentMethod(ObjectId id) {
+        super(id);
     }
 
     public abstract Type type();

@@ -6,9 +6,11 @@ import au.edu.uts.isd.iotbay.action.InMemoryActionRegistry;
 import au.edu.uts.isd.iotbay.action.impl.*;
 import au.edu.uts.isd.iotbay.model.log.UserLog;
 import au.edu.uts.isd.iotbay.model.user.User;
-import au.edu.uts.isd.iotbay.persistence.jdbc.ConnectionProvider;
+import au.edu.uts.isd.iotbay.persistence.mongo.MongoDatabaseProvider;
+import au.edu.uts.isd.iotbay.persistence.mongo.MongoDatabaseProviderFactory;
 import au.edu.uts.isd.iotbay.repository.category.CategoryRepository;
 import au.edu.uts.isd.iotbay.repository.log.UserLogRepository;
+import au.edu.uts.isd.iotbay.repository.order.OrderRepository;
 import au.edu.uts.isd.iotbay.repository.payment.PaymentMethodRepository;
 import au.edu.uts.isd.iotbay.repository.product.ProductRepository;
 import au.edu.uts.isd.iotbay.repository.user.UserRepository;
@@ -17,12 +19,9 @@ import lombok.Getter;
 import javax.annotation.PreDestroy;
 import javax.servlet.ServletContext;
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.function.Supplier;
-
-import static au.edu.uts.isd.iotbay.persistence.jdbc.ConnectionProviderFactory.hikari;
 
 @Getter
 public final class IoTBayApplicationContext implements Serializable, AutoCloseable {
@@ -30,30 +29,32 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
     private static final String CONTEXT_KEY = "application-context";
     private static final String PROPERTIES_PATH = "WEB-INF/database.properties";
 
-    private final ConnectionProvider datasource;
+    private final MongoDatabaseProvider datasource;
     private final ActionProcessor processor;
     private final UserRepository users;
     private final PaymentMethodRepository payments;
     private final ProductRepository products;
     private final CategoryRepository categories;
+    private final OrderRepository orders;
     private final UserLogRepository userLogs;
     
-    IoTBayApplicationContext(ConnectionProvider datasource, ActionProcessor processor, UserRepository users, PaymentMethodRepository payments, ProductRepository products, CategoryRepository categories, UserLogRepository userLogs) {
+    IoTBayApplicationContext(MongoDatabaseProvider datasource, ActionProcessor processor, UserRepository users, PaymentMethodRepository payments, ProductRepository products, CategoryRepository categories, OrderRepository orders, UserLogRepository userLogs) {
         this.datasource = datasource;
         this.processor = Objects.requireNonNull(processor);
         this.users = Objects.requireNonNull(users);
         this.payments = Objects.requireNonNull(payments);
         this.products = Objects.requireNonNull(products);
         this.categories = Objects.requireNonNull(categories);
+        this.orders = Objects.requireNonNull(orders);
         this.userLogs = Objects.requireNonNull(userLogs);
     }
 
-    IoTBayApplicationContext(ConnectionProvider datasource, ActionProcessor processor) {
-        this(datasource, processor, UserRepository.create(datasource), PaymentMethodRepository.create(datasource), ProductRepository.create(datasource), CategoryRepository.create(datasource), UserLogRepository.create(datasource));
+    IoTBayApplicationContext(MongoDatabaseProvider datasource, ActionProcessor processor) {
+        this(datasource, processor, UserRepository.create(datasource), PaymentMethodRepository.create(datasource), ProductRepository.create(datasource), CategoryRepository.create(datasource), OrderRepository.create(datasource), UserLogRepository.create(datasource));
     }
 
     public void log(User user, String type) {
-        userLogs.create(new UserLog(null, user, type, Timestamp.from(Instant.now())));
+        userLogs.create(new UserLog(user, type, LocalDate.now()));
     }
     
     public static IoTBayApplicationContext getInstance(ServletContext application, Supplier<IoTBayApplicationContext> supplier) {
@@ -63,10 +64,12 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
     public static IoTBayApplicationContext getInstance(ServletContext application) {
         return getInstance(application, () -> {
             final ActionProcessor processor = new ActionProcessor(createRegistry());
-            final ConnectionProvider datasource;
+            final MongoDatabaseProvider datasource;
             if (Constants.PERSISTENCE_ENABLED) {
-                final String properties = application.getRealPath(PROPERTIES_PATH);
-                datasource = hikari(properties);
+//                final String properties = application.getRealPath(PROPERTIES_PATH);
+//                datasource = hikari(properties);
+                //TODO: don't hardcode
+                datasource = MongoDatabaseProviderFactory.mongo("mongodb+srv://isd:isd@isd-2020-rorov.mongodb.net/test?retryWrites=true&w=majority", "isd");
             } else {
                 datasource = null;
             }
