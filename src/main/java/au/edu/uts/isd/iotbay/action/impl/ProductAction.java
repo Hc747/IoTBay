@@ -18,7 +18,6 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import static au.edu.uts.isd.iotbay.util.Validator.Patterns.*;
-import static au.edu.uts.isd.iotbay.util.Validator.Patterns.OBJECT_DESCRIPTION_PATTERN;
 import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
 import static au.edu.uts.isd.iotbay.util.Validator.matches;
 
@@ -65,19 +64,11 @@ public class ProductAction extends Action {
         }
 
         if (!matches(DECIMAL_PATTERN, priceString)) {
-            reject("The input priceString did not meet the required format.");
+            reject("The input price did not meet the required format.");
         }
 
         if (!matches(WHOLE_NUMBER_PATTERN, quantityString)) {
             reject("The input quantity was not a valid whole number.");
-        }
-
-        if (!(matches(OBJECT_NAME_PATTERN, name))) {
-            reject("The input name was not a valid name for the product.");
-        }
-
-        if (!(matches(OBJECT_DESCRIPTION_PATTERN, description))) {
-            reject("The input description was not a valid description for the product.");
         }
 
         double price = Double.parseDouble(priceString);
@@ -189,14 +180,6 @@ public class ProductAction extends Action {
 
         if (!(matches(WHOLE_NUMBER_PATTERN, quantityString))) {
             reject("The input quantity was not a valid whole number");
-        }
-
-        if (!(matches(OBJECT_NAME_PATTERN, name))) {
-            reject("The input name was not a valid name for the product.");
-        }
-
-        if (!(matches(OBJECT_DESCRIPTION_PATTERN, description))) {
-            reject("The input description was not a valid description for the product.");
         }
 
         DecimalFormat priceFormat = new DecimalFormat("##.00");

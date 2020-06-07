@@ -28,10 +28,10 @@ public class Validator {
         public static final Pattern NAME_PATTERN = Pattern.compile("([A-Z][a-z]+[\\s])+[A-Z][a-z]*");
         public static final Pattern PASSWORD_PATTERN = Pattern.compile("[a-zA-Z0-9!@#$%^&*)(+=-]{4,}");
         public static final Pattern PHONE_NUMBER_PATTERN = Pattern.compile("[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*");
-        public static final Pattern DECIMAL_PATTERN = Pattern.compile("(\\d(\\.\\d)?)");
-        public static final Pattern WHOLE_NUMBER_PATTERN = Pattern.compile("\\d");
-        public static final Pattern OBJECT_NAME_PATTERN = Pattern.compile("(\\w+ ?)+");
-        public static final Pattern OBJECT_DESCRIPTION_PATTERN = Pattern.compile("([A-Z])(\\w+\\s+)+([A-z]\\w+\\.)");
+        public static final Pattern DECIMAL_PATTERN = Pattern.compile("(\\d+(\\.\\d+)?)");
+        public static final Pattern WHOLE_NUMBER_PATTERN = Pattern.compile("\\d+");
+//        public static final Pattern OBJECT_NAME_PATTERN = Pattern.compile("(\\w+ ?)+");
+//        public static final Pattern OBJECT_DESCRIPTION_PATTERN = Pattern.compile("[\\w ]");
 
     }
 }
