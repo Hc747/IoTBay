@@ -35,6 +35,7 @@ public abstract class MongoRepository<T extends Identifiable> implements Reposit
         return eq("_id", id);
     }
 
+    @Override
     public T findById(ObjectId id) {
         return find(identity(id));
     }

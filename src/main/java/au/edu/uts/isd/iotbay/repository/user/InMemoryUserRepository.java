@@ -20,6 +20,11 @@ public class InMemoryUserRepository implements UserRepository {
     }
 
     @Override
+    public User findById(ObjectId id) {
+        return find(user -> user.getId().equals(id)).orElse(null);
+    }
+
+    @Override
     public Collection<User> all() {
         return new ArrayList<>(users.values());
     }

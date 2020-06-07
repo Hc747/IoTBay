@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -12,6 +12,6 @@ import java.sql.Timestamp;
 public class OrderStatus {
 
     private String status, details;
-    private Timestamp timestamp;
+    private LocalDate timestamp;
 
 }
