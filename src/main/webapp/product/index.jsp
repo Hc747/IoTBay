@@ -9,8 +9,9 @@
 %>
 <t:layout>
     <jsp:body>
-        <h1 class="jumbotron-heading" style="text-align: center">Product Title</h1>
+        <br>
         <div class="container p-3 my-3 bg-dark text-white">
+        <h1 style="text-align: center">Product Title</h1>
             <div>
                 <h3 style="text-align: left" >$ Product Price</h3>
             </div>
@@ -19,15 +20,16 @@
             </div>
         </div>
 
-        <hr>
-        <div class="container p-3 my-3 border">
+        <div class="container p-3 my-3 bg-dark text-white">
             <div class="box">
+                <h4>Product Description:</h4>
                 <div class="card">
-                    <pre>Product Description: Bordered Box around me</pre>
+                    <p class="text-body">Bordered Box around me</p>
                 </div>
                 <br>
+                <h4>Product Categories:</h4>
                 <div class="card">
-                    <p>Product Catagories: Will implement mechanism to search by catagory.</p>
+                    <p class="text-body">Will implement mechanism to search by catagory.</p>
                 </div>
             </div>
         </div>

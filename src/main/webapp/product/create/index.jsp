@@ -15,7 +15,7 @@
         <br>
 
         <div class="container p-3 my-3 bg-dark text-white">
-            <h1 class="jumbotron-heading" style="text-align: center">Create New Product</h1>
+            <h1 style="text-align: center">Create New Product</h1>
             <br>
             <form action="?action=product&type=create" method="post">
                 <div class="form-group">

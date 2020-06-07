@@ -11,7 +11,7 @@
 <t:layout>
     <jsp:body>
         <div class="container p-3 my-3 bg-dark text-white">
-            <h1 class="jumbotron-heading" style="text-align: center">Product Title</h1>
+            <h1 style="text-align: center">Product Title</h1>
             <p>ProductId: 123421321</p>
             <div class="container p-3 my-3 bg-dark text-white">
                 <button type="button" class="btn btn-danger">Delete Product</button>
