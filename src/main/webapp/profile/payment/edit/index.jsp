@@ -1,5 +1,6 @@
-<%@ page import="au.edu.uts.isd.iotbay.model.payment.PaymentMethod" %>
+<%@ page import="au.edu.uts.isd.iotbay.Constants" %>
 <%@ page import="static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty" %>
+<%@ page import="au.edu.uts.isd.iotbay.model.payment.PaymentMethod" %>
 <%@ page import="au.edu.uts.isd.iotbay.model.user.User" %>
 <%@ page import="au.edu.uts.isd.iotbay.util.AuthenticationUtil" %>
 <%@ page import="au.edu.uts.isd.iotbay.util.Misc" %>
@@ -19,7 +20,7 @@
     }
 
     request.setAttribute("method", method);
-
+    request.setAttribute("endpoint", Constants.path(true, "profile", "payment"));
 %>
 <t:layout>
     <jsp:body>
@@ -28,7 +29,8 @@
                 Unable to find selected payment details.
             </c:if>
             <c:if test="${method != null}">
-                <form action="?action=payment&type=edit" method="POST">
+                <form action="${endpoint}?action=payment&type=update" method="POST">
+                    <div>Edit Payment Method</div>
                     <input type="hidden" name="id" value="${method.id}"/>
                     <input type="hidden" name="impl" value="${method.type()}"/>
                     <c:if test="${method.type().name().equalsIgnoreCase('PAYPAL')}">
@@ -56,7 +58,7 @@
                         </div>
                     </c:if>
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    <button type="button" class="btn btn-primary">Cancel</button>
+                    <a href="${endpoint}" type="button" class="btn btn-primary">Cancel</a>
                 </form>
             </c:if>
         </div>
