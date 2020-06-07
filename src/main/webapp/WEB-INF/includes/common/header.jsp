@@ -43,7 +43,14 @@
                     }
                 %>
             </div>
-            <div class="text-white">Cart: <%= cart.totalItems() %>x Item(s) - $<%= new DecimalFormat("###,##0.00").format(cart.totalCost()) %></div>
+            <div class="text-white">
+                <span>Cart: <%= cart.totalItems() %>x Item(s) - $<%= new DecimalFormat("###,##0.00").format(cart.totalCost()) %></span>
+                <%
+                    if (!cart.isEmpty()) {
+                %>
+                    <span><a href="<%= Constants.path(true, "order", "create") %>">Checkout</a></span>
+                <% } %>
+            </div>
             <div class="text-white">
                 <jsp:include page="<%= header %>"/>
             </div>

@@ -89,15 +89,14 @@ public class OrderAction extends Action {
             reject("Your cart is empty.");
         }
 
-        final Invoice invoice;
+        //TODO: validate input
+        final Invoice invoice = ShoppingCartUtil.invoice(cart, request.getParameter("email"), request.getParameter("name"));
+
         final PaymentMethod payment;
 
         if (guest) {
-            //TODO: validate input
-            invoice = ShoppingCartUtil.invoice(cart, request.getParameter("email"), request.getParameter("firstname"), request.getParameter("lastname"));
             payment = ctx.getPayments().findById(request.getParameter("payment_method"));//TODO: validate input
         } else {
-            invoice = ShoppingCartUtil.invoice(cart, user);
             payment = Misc.findById(user.getPayments(), request.getParameter("payment_method"));//TODO: validate input
         }
 

@@ -21,15 +21,15 @@
         <filter-name>unauthenticated</filter-name>
         <filter-class>au.edu.uts.isd.iotbay.servlet.filter.UnauthenticatedFilter</filter-class>
     </filter>
-<!--    <filter-mapping>-->
-<!--        <filter-name>staff</filter-name>-->
-<!--    </filter-mapping>-->
+    <filter-mapping>
+        <filter-name>staff</filter-name>
+        <url-pattern>/product/create/*</url-pattern>
+        <url-pattern>/product/edit/*</url-pattern>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>authenticated</filter-name>
         <url-pattern>/profile/*</url-pattern>
         <url-pattern>/payment/*</url-pattern>
-        <url-pattern>/product/create</url-pattern>
-        <url-pattern>/product/edit</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>unauthenticated</filter-name>

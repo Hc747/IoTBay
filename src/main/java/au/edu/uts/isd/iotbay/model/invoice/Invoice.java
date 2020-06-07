@@ -14,13 +14,11 @@ import org.bson.types.ObjectId;
 public class Invoice extends IdentifiableModel {
 
     private double amount;
-    private String emailAddress, firstName, lastName;
+    private String emailAddress, name;
 
     public Invoice(ObjectId id, User user, double amount) {
-        final String[] names = user.names();
         this.emailAddress = user.getUsername();
-        this.firstName = names[0];
-        this.lastName = names[1];
+        this.name = user.getName();
         this.amount = amount;
     }
 

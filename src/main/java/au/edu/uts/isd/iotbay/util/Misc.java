@@ -5,9 +5,14 @@ import org.bson.types.ObjectId;
 
 import java.util.Collection;
 
+import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
+
 public class Misc {
 
     public static <T extends Identifiable> T findById(Collection<T> elements, String id) {
+        if (isNullOrEmpty(id) || !ObjectId.isValid(id)) {
+            return null;
+        }
         return findById(elements, new ObjectId(id));
     }
 
