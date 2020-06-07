@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,10 @@ public class Product extends IdentifiableModel {
     public boolean removeCategories(Category... categories) {
         return this.categories.removeAll(Arrays.asList(categories));
 
+    }
+
+    public static String formatPrice(String price) {
+        return new DecimalFormat("###.##0.00").format(price);
     }
 
 }
