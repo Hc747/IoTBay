@@ -12,6 +12,10 @@ public class PaypalPaymentMethod extends PaymentMethod {
 
     private String token;
 
+    public PaypalPaymentMethod() {
+        super(null);
+    }
+
     public PaypalPaymentMethod(ObjectId id, String token) {
         super(id);
         this.token = Objects.requireNonNull(token);
