@@ -1,14 +1,9 @@
+<%@ page import="au.edu.uts.isd.iotbay.Constants" %>
 <%@ page import="au.edu.uts.isd.iotbay.IoTBayApplicationContext" %>
-<%@ page import="javafx.application.Application" %>
-<%@ page import="au.edu.uts.isd.iotbay.repository.product.ProductRepository" %>
-<%@ page import="au.edu.uts.isd.iotbay.model.user.User" %>
-<%@ page import="au.edu.uts.isd.iotbay.util.AuthenticationUtil" %>
 <%@ page import="static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty" %>
 <%@ page import="au.edu.uts.isd.iotbay.model.product.Product" %>
-<%@ page import="au.edu.uts.isd.iotbay.util.Misc" %>
+<%@ page import="au.edu.uts.isd.iotbay.repository.product.ProductRepository" %>
 <%@ page import="org.bson.types.ObjectId" %>
-<%@ page import="au.edu.uts.isd.iotbay.Constants" %>
-<%@ page import="au.edu.uts.isd.iotbay.model.category.Category" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -24,6 +19,10 @@
     } else {
         product = repository.findById(id);
     }
+
+//    final ShoppingCart cart = ShoppingCartUtil.get(session);
+//    request.setAttribute("disable_add", product == null || product.getQuantity() <= 0 || cart.quantity(product) >= product.getQuantity());
+//    request.setAttribute("disable_remove", product == null || !cart.contains(product));
 
     request.setAttribute("product", product);
 %>
@@ -45,7 +44,18 @@
                         <h3 style="text-align: left" >$${product.price}</h3>
                     </div>
                     <div style="align-self: end">
-                        <button type="button" class="btn btn-primary" style="right: auto">Add To Cart</button>
+                        <form action="?id=${product.id}" method="POST">
+                            <input type="hidden" name="action" value="cart"/>
+                            <input type="hidden" name="type" value="add"/>
+                            <input type="hidden" name="product" value="${product.id}"/>
+                            <button type="submit" class="btn btn-primary" style="right: auto">Add 1 to Cart</button>
+                        </form>
+                        <form action="?id=${product.id}" method="POST">
+                            <input type="hidden" name="action" value="cart"/>
+                            <input type="hidden" name="type" value="remove"/>
+                            <input type="hidden" name="product" value="${product.id}"/>
+                            <button type="submit" class="btn btn-primary" style="right: auto">Remove 1 from Cart</button>
+                        </form>
                     </div>
                 </div>
 
