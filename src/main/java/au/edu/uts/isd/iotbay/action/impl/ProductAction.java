@@ -98,7 +98,7 @@ public class ProductAction extends Action {
         }
 
         message = "Successfully created product.";
-        session.setAttribute("product", product);
+        session.setAttribute("newProduct", product);
         //TODO: Account for catagory's.
         //TODO::Return to product page.
     }

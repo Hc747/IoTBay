@@ -4,15 +4,21 @@
 <%@ page import="au.edu.uts.isd.iotbay.model.product.Product" %>
 <%@ page import="au.edu.uts.isd.iotbay.repository.product.ProductRepository" %>
 <%@ page import="org.bson.types.ObjectId" %>
+<%@ page import="au.edu.uts.isd.iotbay.model.user.User" %>
+<%@ page import="static au.edu.uts.isd.iotbay.util.AuthenticationUtil.authenticate" %>
+<%@ page import="au.edu.uts.isd.iotbay.util.AuthenticationUtil" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
+    User user = AuthenticationUtil.user(session);
+    request.setAttribute("user", user);
     request.setAttribute("home", Constants.path(false));
     final IoTBayApplicationContext context = IoTBayApplicationContext.getInstance(application);
     final ProductRepository repository = context.getProducts();
     final String id = request.getParameter("id");
     final Product product;
+
 
     if (isNullOrEmpty(id) || !ObjectId.isValid(id)) {
         product = null;
@@ -74,10 +80,12 @@
                             </c:forEach>
                     </div>
                 </div>
-                <div>
-                    <a href="create/">Create new product.</a>
-                    <a href="edit/?action=product&type=edit&id=${product.id}">Edit current product.</a>
-                </div>
+                <c:if test="${user.getRole().isStaff()}">
+                    <div>
+                        <a href="create/">Create new product.</a>
+                        <a href="edit/?action=product&type=edit&id=${product.id}">Edit current product.</a>
+                    </div>
+                </c:if>
             </c:if>
         </div>
 

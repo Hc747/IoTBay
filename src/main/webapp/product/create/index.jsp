@@ -12,8 +12,6 @@
 %>
 <t:layout>
     <jsp:body>
-        <br>
-
         <div class="container p-3 my-3 bg-dark text-white">
             <h1 style="text-align: center">Create New Product</h1>
             <br>

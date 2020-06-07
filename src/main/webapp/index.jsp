@@ -25,7 +25,7 @@
                         <div class="card">
                             <a href="/iotbay/product/?id=${product.id}" style="align-content: center">
                                     <h4 style="text-align: center; color: black">${product.name}</h4>
-                                    <p style="text-align: center; color: black">${product.formatPrice()}</p>
+                                    <p style="text-align: center; color: black">$${product.formatPrice()}</p>
                             </a>
                         </div>
                     </c:forEach>
