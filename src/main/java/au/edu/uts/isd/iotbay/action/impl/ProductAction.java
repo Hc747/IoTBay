@@ -99,7 +99,7 @@ public class ProductAction extends Action {
 
         message = "Successfully created product.";
         session.setAttribute("product", product);
-        //TODO: Account for catagory's images, etc.
+        //TODO: Account for catagory's.
         //TODO::Return to product page.
     }
 
@@ -203,7 +203,7 @@ public class ProductAction extends Action {
             reject("Product Price was not valid Can't be a negative value");
         }
 
-        //TODO: Account for catagory's images, etc.
+        //TODO: Account for catagory's etc.
         
         product.setName(name);
         product.setDescription(description);

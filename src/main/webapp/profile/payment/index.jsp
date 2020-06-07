@@ -56,7 +56,7 @@
                                         </c:if>
                                     </table>
                                 </td>
-                                <td><a href="?action=payment&type=edit&id=${method.id}">Edit</a> | <a href="?action=payment&type=delete&id=${method.id}">Delete</a></td>
+                                <td><a href="edit/?id=${method.id}">Edit</a> | <a href="?action=payment&type=delete&id=${method.id}">Delete</a></td>
                             </tr>
                         </c:forEach>
                     </tbody>

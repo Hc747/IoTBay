@@ -11,7 +11,7 @@
 <t:layout>
     <jsp:body>
         <div class="container p-3 my-3 bg-dark text-white">
-            <h1 class="jumbotron-heading" style="text-align: center">Product Title</h1>
+            <h1 style="text-align: center">Product Title</h1>
             <p>ProductId: 123421321</p>
             <div class="container p-3 my-3 bg-dark text-white">
                 <button type="button" class="btn btn-danger">Delete Product</button>
@@ -43,12 +43,6 @@
                         Product Price: $
                     </label>
                     <input id="price" name="price" type="number" placeholder="$0.00" required>
-                </div>
-                <div class="form-group">
-                    <label for="imageURL">
-                        Product Image URL
-                    </label>
-                    <input id="imageURL" name="imageURL" type="url" placeholder="Product Image URL's">
                 </div>
                 <div class="form-group">
                     <label for="categories">
