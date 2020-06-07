@@ -5,6 +5,8 @@ import au.edu.uts.isd.iotbay.model.category.Category;
 import au.edu.uts.isd.iotbay.model.invoice.Invoice;
 import au.edu.uts.isd.iotbay.model.log.UserLog;
 import au.edu.uts.isd.iotbay.model.order.Order;
+import au.edu.uts.isd.iotbay.model.order.OrderProduct;
+import au.edu.uts.isd.iotbay.model.order.OrderStatus;
 import au.edu.uts.isd.iotbay.model.payment.CreditCardPaymentMethod;
 import au.edu.uts.isd.iotbay.model.payment.PaymentMethod;
 import au.edu.uts.isd.iotbay.model.payment.PaypalPaymentMethod;
@@ -33,8 +35,16 @@ public class MongoDatabaseProviderFactory {
         final MongoClient client = MongoClients.create(connectionString);
         final PojoCodecProvider provider = PojoCodecProvider.builder()
                 .register(
-                        Address.class, Category.class, Invoice.class, UserLog.class, Order.class,
-                        PaymentMethod.class, PaypalPaymentMethod.class, CreditCardPaymentMethod.class,
+                        Address.class,
+                        Category.class,
+                        Invoice.class,
+                        UserLog.class,
+                        Order.class,
+                        OrderProduct.class,
+                        OrderStatus.class,
+                        PaymentMethod.class,
+                        PaypalPaymentMethod.class,
+                        CreditCardPaymentMethod.class,
                         Product.class,
                         Shipment.class,
                         User.class
