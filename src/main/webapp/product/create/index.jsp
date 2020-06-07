@@ -5,9 +5,11 @@
   Time: 9:46 pm
   To change this template use File | Settings | File Templates.
 --%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" import="au.edu.uts.isd.iotbay.Constants" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%//TODO: Add actions to buttons%>
+<%
+    request.setAttribute("home", Constants.path(false));
+%>
 <t:layout>
     <jsp:body>
         <br>
@@ -41,12 +43,6 @@
                     <input id="price" name="price" type="number" placeholder="$0.00" required>
                 </div>
                 <div class="form-group">
-                    <label for="imageURL">
-                        Product Image URL
-                    </label>
-                    <input id="imageURL" name="imageURL" type="url" placeholder="Product Image URL's">
-                </div>
-                <div class="form-group">
                     <label for="categories">
                         Product Categories
                     </label>
@@ -54,7 +50,7 @@
                 </div>
                 <div class="container p-3 my-3 bg-dark text-white">
                     <button type="submit" class="btn btn-warning">Confirm Product Create</button>
-                    <button type="button" class="btn btn-light">Cancel</button>
+                    <a type="button" href="${home}" class="btn btn-light">Cancel</a>
                 </div>
             </form>
         </div>

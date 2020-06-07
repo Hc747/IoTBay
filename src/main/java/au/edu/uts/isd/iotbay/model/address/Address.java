@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 public class Address extends IdentifiableModel {
 
     private String address;
-    private Integer postcode;
-
+    private String postcode;
 }

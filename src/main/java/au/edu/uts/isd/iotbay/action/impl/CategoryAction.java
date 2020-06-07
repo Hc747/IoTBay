@@ -49,13 +49,6 @@ public class CategoryAction extends Action {
         if (isNullOrEmpty(name) || isNullOrEmpty(description) || isNullOrEmpty(enabledString)) {
             reject("You must supply a name, description and an enable status in order to create a category.");
         }
-
-        if (!(matches(OBJECT_NAME_PATTERN, name))) {
-            reject("The input name was not a valid name for the category.");
-        }
-        if (!(matches(OBJECT_DESCRIPTION_PATTERN, description))) {
-            reject("The input description was not a valid description for the category.");
-        }
         if (name.length() < 4) {
             reject("Product name must be at least 4 characters.");
         }
@@ -149,12 +142,6 @@ public class CategoryAction extends Action {
             reject("You must supply a name, description and an enable status in order to create a category.");
         }
 
-        if (!(matches(OBJECT_NAME_PATTERN, name))) {
-            reject("The input name was not a valid name for the category.");
-        }
-        if (!(matches(OBJECT_DESCRIPTION_PATTERN, description))) {
-            reject("The input description was not a valid description for the category.");
-        }
         if (name.length() < 4) {
             reject("Product name must be at least 4 characters.");
         }

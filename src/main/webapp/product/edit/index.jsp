@@ -17,7 +17,7 @@
                 <button type="button" class="btn btn-danger">Delete Product</button>
             </div>
         </div>
-        <div class="container p-3 my-3 border" >
+        <div class="container p-3 my-3 bg-dark text-white" >
             <h1 class="jumbotron-heading" style="text-align: center">Update Product Details</h1>
             <form method="post">
                 <div class="form-group">
@@ -45,12 +45,6 @@
                     <input id="price" name="price" type="number" placeholder="$0.00" required>
                 </div>
                 <div class="form-group">
-                    <label for="imageURL">
-                        Product Image URL
-                    </label>
-                    <input id="imageURL" name="imageURL" type="url" placeholder="Product Image URL's">
-                </div>
-                <div class="form-group">
                     <label for="categories">
                         Product Categories
                     </label>
@@ -58,7 +52,7 @@
                 </div>
                 <div>
                     <button type="button" class="btn btn-warning">Confirm Product Edit</button>
-                    <button type="button" class="btn btn-light">Cancel</button>
+                    <a type="button" href="${home}" class="btn btn-light">Cancel</a>
                 </div>
             </form>
         </div>

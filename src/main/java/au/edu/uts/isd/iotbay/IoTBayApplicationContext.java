@@ -13,6 +13,7 @@ import au.edu.uts.isd.iotbay.repository.log.UserLogRepository;
 import au.edu.uts.isd.iotbay.repository.order.OrderRepository;
 import au.edu.uts.isd.iotbay.repository.payment.PaymentMethodRepository;
 import au.edu.uts.isd.iotbay.repository.product.ProductRepository;
+import au.edu.uts.isd.iotbay.repository.shipment.ShipmentRepository;
 import au.edu.uts.isd.iotbay.repository.user.UserRepository;
 import au.edu.uts.isd.iotbay.repository.order.OrderRepository;
 import lombok.Getter;
@@ -38,8 +39,9 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
     private final CategoryRepository categories;
     private final OrderRepository orders;
     private final UserLogRepository userLogs;
+    private final ShipmentRepository shipments;
     
-    IoTBayApplicationContext(MongoDatabaseProvider datasource, ActionProcessor processor, UserRepository users, PaymentMethodRepository payments, ProductRepository products, CategoryRepository categories, OrderRepository orders, UserLogRepository userLogs) {
+    IoTBayApplicationContext(MongoDatabaseProvider datasource, ActionProcessor processor, UserRepository users, PaymentMethodRepository payments, ProductRepository products, CategoryRepository categories, OrderRepository orders, UserLogRepository userLogs, ShipmentRepository shipments) {
         this.datasource = datasource;
         this.processor = Objects.requireNonNull(processor);
         this.users = Objects.requireNonNull(users);
@@ -48,10 +50,11 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
         this.categories = Objects.requireNonNull(categories);
         this.orders = Objects.requireNonNull(orders);
         this.userLogs = Objects.requireNonNull(userLogs);
+        this.shipments = Objects.requireNonNull(shipments);
     }
 
     IoTBayApplicationContext(MongoDatabaseProvider datasource, ActionProcessor processor) {
-        this(datasource, processor, UserRepository.create(datasource), PaymentMethodRepository.create(datasource), ProductRepository.create(datasource), CategoryRepository.create(datasource), OrderRepository.create(datasource), UserLogRepository.create(datasource));
+        this(datasource, processor, UserRepository.create(datasource), PaymentMethodRepository.create(datasource), ProductRepository.create(datasource), CategoryRepository.create(datasource), OrderRepository.create(datasource), UserLogRepository.create(datasource), ShipmentRepository.create(datasource));
     }
 
     public void log(User user, String type) {

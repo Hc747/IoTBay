@@ -7,14 +7,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Shipment extends IdentifiableModel {
 
+    private String name;
     private Address address;
     private String method;
-    private Date date;
+    private LocalDate date;
 
 }
