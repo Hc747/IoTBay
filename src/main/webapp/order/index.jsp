@@ -9,22 +9,8 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <t:layout>
     <jsp:body>
-        <h1 class="jumbotron-heading" style="text-align: center">Orders</h1>
+        <h1 class="jumbotron-heading" style="text-align: center">Orders Below</h1>
         <div class="container">
-            <form action="?action=order" method="POST">
-            <div class="form-group">
-                <label>
-                    Order ID:
-                </label>
-                <input type="number" name="OrderID" class="form-control">
-                <button type="submit" class="btn btn-primary">Search By Order ID</button>
-            </form>
-            <div class="form-group">
-                <label>
-                    Date
-                </label>
-                <input type="date" class="form-control" id="date" name="date" required>
-            </div>
         </div>
     </jsp:body>
 </t:layout>
