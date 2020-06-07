@@ -107,8 +107,9 @@ public class ProductAction extends Action {
         }
 
         message = "Successfully created product.";
+        session.setAttribute("product", product);
         //TODO: Account for catagory's images, etc.
-        //TODO::Return to product page with ProductID
+        //TODO::Return to product page.
     }
 
     @SneakyThrows
@@ -143,7 +144,8 @@ public class ProductAction extends Action {
         }
 
         message = "Successfully deleted the product.";
-        //TODO::Return to a page. Indicate the status of the deletion
+        session.setAttribute("deletedProduct", deleted);
+        //TODO::Return to a page.
     }
 
     @SneakyThrows
@@ -231,7 +233,8 @@ public class ProductAction extends Action {
             reject("Unable to update product.");
         }
         message = "Successfully updated product.";
-        //TODO::Return to product page with ProductID
+        session.setAttribute("updatedProduct", updated);
+        //TODO::Return to product page.
     }
 
 
