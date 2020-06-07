@@ -146,6 +146,8 @@ public class OrderAction extends Action {
             if (ctx.getUsers().update(user) == null) {
                 reject("Unable to place your order.");
             }
+
+            ctx.log(user, "Placed an order.");
         }
 
         ShoppingCartUtil.set(session, new ShoppingCart());

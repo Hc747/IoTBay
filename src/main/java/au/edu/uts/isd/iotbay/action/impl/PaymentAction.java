@@ -95,6 +95,8 @@ public class PaymentAction extends Action {
             reject("Unable to unlink payment method from your account.");
         }
 
+        ctx.log(user, "Unlinked payment method.");
+
         message = "Successfully removed payment method.";
     }
 
@@ -125,6 +127,8 @@ public class PaymentAction extends Action {
             reject("Unable to update your payment method details.");
         }
 
+        ctx.log(user, "Updated payment method.");
+
         message = "Successfully updated payment method.";
     }
 
@@ -147,6 +151,8 @@ public class PaymentAction extends Action {
             if (users.update(user) == null) {
                 reject("Unable to link payment method to your account.");
             }
+
+            ctx.log(user, "Created payment method.");
         }
 
         message = "Successfully created payment method.";
