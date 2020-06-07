@@ -83,9 +83,6 @@ public class ProductAction extends Action {
         double price = Double.parseDouble(priceString);
         int quantity = Integer.parseInt(quantityString);
 
-        //TODO: get input parameters
-        //TODO: validate input parameters
-
         if (name.length() < 4) {
             reject("Product name must be at least 4 characters.");
         }
