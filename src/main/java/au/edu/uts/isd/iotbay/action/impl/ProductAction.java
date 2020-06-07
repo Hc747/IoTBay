@@ -2,6 +2,7 @@ package au.edu.uts.isd.iotbay.action.impl;
 
 import au.edu.uts.isd.iotbay.IoTBayApplicationContext;
 import au.edu.uts.isd.iotbay.action.Action;
+import au.edu.uts.isd.iotbay.model.category.Category;
 import au.edu.uts.isd.iotbay.model.product.Product;
 import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.repository.product.ProductRepository;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.DecimalFormat;
+import java.util.List;
 
 import static au.edu.uts.isd.iotbay.util.Validator.Patterns.*;
 import static au.edu.uts.isd.iotbay.util.Validator.Patterns.OBJECT_DESCRIPTION_PATTERN;
@@ -101,7 +103,7 @@ public class ProductAction extends Action {
         }
 
         final ProductRepository repository = ctx.getProducts();
-        final Product product = repository.create(new Product(name, description, quantity, price));
+        final Product product = repository.create(new Product().create(name, description, quantity, price));
 
         if (product == null) {
             reject("Unable to create product.");
