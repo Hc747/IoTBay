@@ -45,12 +45,6 @@
                     <input id="price" name="price" type="number" placeholder="$0.00" required>
                 </div>
                 <div class="form-group">
-                    <label for="imageURL">
-                        Product Image URL
-                    </label>
-                    <input id="imageURL" name="imageURL" type="url" placeholder="Product Image URL's">
-                </div>
-                <div class="form-group">
                     <label for="categories">
                         Product Categories
                     </label>

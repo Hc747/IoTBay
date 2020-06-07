@@ -10,21 +10,12 @@
 <t:layout>
     <jsp:body>
         <h1 class="jumbotron-heading" style="text-align: center">Product Title</h1>
-        <div class="html-editor-align-center">
-            <img class="mx-auto d-block" src="https://www.w3schools.com/images/w3schools_green.jpg", alt="productName"/>
-        </div>
         <div class="container p-3 my-3 bg-dark text-white">
             <div>
                 <h3 style="text-align: left" >$ Product Price</h3>
             </div>
             <div style="align-self: end">
                 <button type="button" class="btn btn-primary" style="right: auto">Add To Cart</button>
-                <button type="button" class="btn btn-secondary" style="right: auto">Add To Wishlist</button>
-            </div>
-        </div>
-        <div class="container p-3 my-3 border">
-            <div class="card" style="border: black">
-                <img class="mx-auto d-block" src="https://www.w3schools.com/images/w3schools_green.jpg", alt="productName">
             </div>
         </div>
 
