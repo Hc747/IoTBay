@@ -1,13 +1,15 @@
+<%@ page import="au.edu.uts.isd.iotbay.Constants" %>
 <%@ page import="au.edu.uts.isd.iotbay.util.AuthenticationUtil" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%
     request.setAttribute("user", AuthenticationUtil.user(session));
+    request.setAttribute("endpoint", Constants.path(true, "profile", "payment"));
 %>
 <t:layout>
     <jsp:body>
         <div class="container d-flex justify-content-between">
-            <form action="?action=payment&type=create" method="post">
+            <form action="${endpoint}?action=payment&type=create" method="post">
                 <div>Create Credit Card Payment Method</div>
                 <input type="hidden" name="impl" value="CREDIT_CARD"/>
                 <div class="form-group">
@@ -31,7 +33,7 @@
                 </div>
             </form>
 
-            <form action="?action=payment&type=create" method="post">
+            <form action="${endpoint}?action=payment&type=create" method="post">
                 <div>Create Paypal Payment Method</div>
                 <input type="hidden" name="impl" value="PAYPAL"/>
                 <div class="form-group">

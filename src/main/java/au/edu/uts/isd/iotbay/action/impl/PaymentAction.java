@@ -24,7 +24,7 @@ import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
 public class PaymentAction extends Action {
 
     @Override
-    protected void invoke(ServletContext application, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected void invoke(ServletContext application, HttpSession session, HttpServletRequest request, HttpServletResponse response) {
         final String type = request.getParameter("type");
 
         if (isNullOrEmpty(type)) {
@@ -33,13 +33,43 @@ public class PaymentAction extends Action {
 
         final IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);
 
-        //TODO(mathew): dispatch the other actions
         switch (type.toLowerCase()) {
-            case "delete":  delete(ctx, session, request); break;
-            case "update": break;
+            case "delete": delete(ctx, session, request); break;
+            case "update": update(ctx, session, request); break;
             case "create": create(ctx, session, request); break;
             default: break;
         }
+    }
+
+    @SneakyThrows
+    private PaymentMethod build(HttpServletRequest request) {
+        final String impl = request.getParameter("impl");
+        final PaymentMethod.Type type = PaymentMethod.Type.findByName(impl);
+
+        if (type == null) {
+            reject("Unknown payment method type.");
+        }
+
+        final PaymentMethod method;
+
+        //TODO: validation of inputs
+
+        switch (type) {
+            case CREDIT_CARD:
+                String number = request.getParameter("number");
+                String holder = request.getParameter("holder");
+                String cvv = request.getParameter("cvv");
+                String date = request.getParameter("expiration");
+                method = new CreditCardPaymentMethod(null, number, holder, cvv, LocalDate.parse(date));
+                break;
+            case PAYPAL:
+                String token = request.getParameter("token");
+                method = new PaypalPaymentMethod(null, token);
+                break;
+            default: reject("Unhandled payment method type: " + type); return null;
+        }
+
+        return method;
     }
 
     @SneakyThrows
@@ -62,55 +92,62 @@ public class PaymentAction extends Action {
         user.getPayments().remove(method);
 
         if (users.update(user) == null) {
-            reject("Unable to update account. Please try again.");
+            reject("Unable to unlink payment method from your account.");
         }
 
-        message = "Payment method with ID " + identifier + " successfully removed from your account.";
+        message = "Successfully removed payment method.";
+    }
+
+    @SneakyThrows
+    private void update(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
+        final User user = authenticate(session);
+        final String identifier = request.getParameter("id");
+
+        if (isNullOrEmpty(identifier) || !ObjectId.isValid(identifier)) {
+            reject("Invalid ID provided.");
+        }
+
+        final PaymentMethod method = Misc.findById(user.getPayments(), identifier);
+
+        if (method == null) {
+            reject("Unable to find payment method with ID: " + identifier);
+        }
+
+        final PaymentMethod updated = build(request);
+        updated.setId(method.getId());
+
+        user.getPayments().set(user.getPayments().indexOf(method), updated);
+
+        final PaymentMethodRepository payments = ctx.getPayments();
+        final UserRepository users = ctx.getUsers();
+
+        if (payments.update(updated) == null || users.update(user) == null) {
+            reject("Unable to update your payment method details.");
+        }
+
+        message = "Successfully updated payment method.";
     }
 
     @SneakyThrows
     private void create(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
-//        final User user = authenticate(session);
+        final PaymentMethodRepository payments = ctx.getPayments();
+        final PaymentMethod method = payments.create(build(request));
 
-        final String impl = request.getParameter("impl");
-        final PaymentMethod.Type type = PaymentMethod.Type.findByName(impl);
-
-        if (type == null) {
-            reject("Unknown payment method type.");
-        }
-
-        final PaymentMethod method;
-
-        //TODO: validation of inputs
-
-        switch (type) {
-            case CREDIT_CARD:
-                String number = request.getParameter("number");
-                String holder = request.getParameter("holder");
-                String cvv = request.getParameter("cvv");
-                String date = request.getParameter("date");
-                method = new CreditCardPaymentMethod(null, number, holder, cvv, LocalDate.parse(date));
-                break;
-            case PAYPAL:
-                String token = request.getParameter("token");
-                method = new PaypalPaymentMethod(null, token);
-                break;
-            default: reject("Unhandled payment method type."); return;
-        }
-
-        final PaymentMethodRepository repository = ctx.getPayments();
-        final PaymentMethod record = repository.create(method);
-
-        if (record == null) {
+        if (method == null) {
             reject("Unable to create payment method.");
         }
 
-        //TODO: implement
-//        final UserPaymentMethod association = repository.associate(user, record);
+        final boolean authenticated = AuthenticationUtil.isAuthenticated(session);
 
-//        if (association == null) {
-//            reject("Unable to link payment method to your account.");
-//        }
+        if (authenticated) {
+            final User user = authenticate(session);
+            final UserRepository users = ctx.getUsers();
+            user.getPayments().add(method);
+
+            if (users.update(user) == null) {
+                reject("Unable to link payment method to your account.");
+            }
+        }
 
         message = "Successfully created payment method.";
     }

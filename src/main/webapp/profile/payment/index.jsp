@@ -1,3 +1,4 @@
+<%@ page import="au.edu.uts.isd.iotbay.Constants" %>
 <%@ page import="au.edu.uts.isd.iotbay.model.payment.PaymentMethod" %>
 <%@ page import="au.edu.uts.isd.iotbay.model.user.User" %>
 <%@ page import="au.edu.uts.isd.iotbay.util.AuthenticationUtil" %>
@@ -9,7 +10,7 @@
     final User user = AuthenticationUtil.user(session);
     final List<PaymentMethod> payments = user.getPayments();
     request.setAttribute("methods", payments);
-    //TODO: link for creating payment methods
+    request.setAttribute("create", Constants.path(true, "profile", "payment", "create"));
 %>
 <t:layout>
     <jsp:body>
@@ -62,6 +63,7 @@
                     </tbody>
                 </table>
             </c:if>
+            <a href="${create}" type="button">Create a new payment method.</a>
         </div>
     </jsp:body>
 </t:layout>

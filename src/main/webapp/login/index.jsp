@@ -21,6 +21,7 @@
     <jsp:body>
         <div class="container">
             <form action="?action=login" method="POST">
+                <div>Login to your account</div>
                 <div class="form-group">
                     <label for="username">
                         Username
