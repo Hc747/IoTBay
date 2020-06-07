@@ -11,7 +11,7 @@
     <jsp:body>
         <h1 class="jumbotron-heading" style="text-align: center">Make Order</h1>
         <div class="container">
-            <form action="?action=order&" method="POST">
+            <form action="?action=order&type=create" method="POST">
             <div class="form-group">
                 <label for="invoiceId">Invoice Id:</label>
                 <input type="text" name="invoiceId" id="invoiceId" required><br>
