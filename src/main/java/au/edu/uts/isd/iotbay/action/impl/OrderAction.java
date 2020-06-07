@@ -30,17 +30,19 @@ import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
 public class OrderAction extends Action {
     @Override
     protected void invoke(ServletContext application, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        String identifier = request.getParameter("id");
+        String type = request.getParameter("type");
 
-        if (isNullOrEmpty(identifier)) {
-            reject("The Order ID was not found");
+        if (isNullOrEmpty(type)) {
+            return;
         }
+        final IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);
 
-        IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);
-        OrderRepository orders = ctx.getOrders();
-        Order order = orders.findById(identifier);
-        //do business logic here
-        orders.update(order);
+        switch (type.toLowerCase()) {
+            case "create": create(ctx, session, request);break;
+            case "update": create(ctx, session, request);break;
+            case "delete": create(ctx, session, request);break;
+            default: break;
+        }
 
     }
 
@@ -90,6 +92,7 @@ public class OrderAction extends Action {
         final PaymentMethodRepository paymentMethodRepository = ctx.getPayments();
         PaymentMethod paymentMethod = paymentMethodRepository.findById(ObjectId);*/
 
-    }
 
+
+    }
 }

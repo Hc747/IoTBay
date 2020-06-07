@@ -16,12 +16,19 @@ import java.util.List;
 @NoArgsConstructor
 public class Order extends IdentifiableModel {
 
-    private Shipment shipment;
+    String Shipment_id;
+    String Invoice_id;
+    String Payment_method;
+    String Products;
+    String status;
+    LocalDate date;
+
+   /* private Shipment shipment;
     private Invoice invoice;
     private PaymentMethod payment;
     private List<OrderProduct> products;
     private List<OrderStatus> statuses;
-    private LocalDate date;
+    private LocalDate date;*/
 
 
 }
