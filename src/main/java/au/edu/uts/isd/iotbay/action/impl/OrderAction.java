@@ -18,10 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.DecimalFormat;
 
-import static au.edu.uts.isd.iotbay.util.Validator.Patterns.*;
-import static au.edu.uts.isd.iotbay.util.Validator.Patterns.OBJECT_DESCRIPTION_PATTERN;
 import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
-import static au.edu.uts.isd.iotbay.util.Validator.matches;
 
 public class OrderAction extends Action {
     @Override
