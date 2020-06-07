@@ -10,14 +10,18 @@ public class ShoppingCartUtil {
 
     private static final String SESSION_KEY = "shopping-cart";
 
-    public static ShoppingCart cart(HttpSession session) {
+    public static ShoppingCart get(HttpSession session) {
         Object cart = session.getAttribute(SESSION_KEY);
         if (cart instanceof ShoppingCart) {
             return (ShoppingCart) cart;
         }
         ShoppingCart instance = new ShoppingCart();
-        session.setAttribute(SESSION_KEY, instance);
+        set(session, instance);
         return instance;
+    }
+
+    public static void set(HttpSession session, ShoppingCart cart) {
+        session.setAttribute(SESSION_KEY, cart);
     }
 
     public static Invoice invoice(ShoppingCart cart, User user) {

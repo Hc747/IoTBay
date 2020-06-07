@@ -15,7 +15,6 @@ import au.edu.uts.isd.iotbay.repository.payment.PaymentMethodRepository;
 import au.edu.uts.isd.iotbay.repository.product.ProductRepository;
 import au.edu.uts.isd.iotbay.repository.shipment.ShipmentRepository;
 import au.edu.uts.isd.iotbay.repository.user.UserRepository;
-import au.edu.uts.isd.iotbay.repository.order.OrderRepository;
 import lombok.Getter;
 
 import javax.annotation.PreDestroy;
@@ -106,6 +105,7 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
         registry.register("payment", PaymentAction::new);
         registry.register("shipment", ShipmentAction::new);
         registry.register("order", OrderAction::new);
+        registry.register("cart", ShoppingCartAction::new);
 
         return registry;
     }
