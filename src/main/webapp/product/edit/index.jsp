@@ -74,7 +74,7 @@
                             <label for="price">
                                 Product Price: $
                             </label>
-                            <input id="price" name="price" type="number" placeholder="$0.00" required value="${product.price}">
+                            <input id="price" name="price" type="number" placeholder="$0.00" required value="${product.formatPrice()}">
                         </div>
                         <div class="form-group">
                             <label for="categories">

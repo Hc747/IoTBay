@@ -41,7 +41,7 @@
                 <div class="container p-3 my-3 bg-dark text-white">
                     <h1 style="text-align: center">${product.name}</h1>
                     <div>
-                        <h3 style="text-align: left" >$${product.price}</h3>
+                        <h3 style="text-align: left" >$${product.formatPrice()}</h3>
                     </div>
                     <div style="align-self: end">
                         <form action="?id=${product.id}" method="POST">
