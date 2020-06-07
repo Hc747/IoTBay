@@ -9,7 +9,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <t:layout>
     <jsp:body>
-        <h1 class="jumbotron-heading" style="text-align: center">Make Order</h1>
+        <h1 class="jumbotron-heading" style="text-align: center">Create Order</h1>
         <div class="container">
             <form action="?action=order&type=create" method="POST">
             <div class="form-group">
