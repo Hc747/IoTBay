@@ -11,6 +11,12 @@
     <jsp:body>
         <div class="container">
             <form action="?action=shipment" method="POST">
+                <div class="form-group">
+                    <label>
+                        Name
+                    </label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" required>
+                </div>
             <div class="form-group">
                 <label>
                     Shipment method
