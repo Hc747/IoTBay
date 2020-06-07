@@ -103,7 +103,7 @@ public class ProductAction extends Action {
         }
 
         final ProductRepository repository = ctx.getProducts();
-        final Product product = repository.create(new Product().create(name, description, quantity, price));
+        final Product product = repository.create(Product.create(name, description, quantity, price));
 
         if (product == null) {
             reject("Unable to create product.");
