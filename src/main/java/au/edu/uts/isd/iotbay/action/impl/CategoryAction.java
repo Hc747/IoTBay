@@ -69,7 +69,7 @@ public class CategoryAction extends Action {
         }
         boolean enabled = Boolean.getBoolean(enabledString);
         final CategoryRepository repository = ctx.getCategories();
-        final Category category = repository.create(new Category().create(name, description));
+        final Category category = repository.create(Category.create(name, description, enabled));
 
         if (category == null) {
             reject("Unable to create the category.");
