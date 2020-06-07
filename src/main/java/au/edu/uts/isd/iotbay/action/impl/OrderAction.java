@@ -39,8 +39,6 @@ public class OrderAction extends Action {
 
         switch (type.toLowerCase()) {
             case "create": create(ctx, session, request);break;
-            case "update": create(ctx, session, request);break;
-            case "delete": create(ctx, session, request);break;
             default: break;
         }
 
@@ -92,6 +90,21 @@ public class OrderAction extends Action {
         final PaymentMethodRepository paymentMethodRepository = ctx.getPayments();
         PaymentMethod paymentMethod = paymentMethodRepository.findById(ObjectId);*/
 
+        String invoiceId = request.getParameter("invoiceId");
+        String shipmentId = request.getParameter("shipmentId");
+        String payment = request.getParameter("payment");
+        String product = request.getParameter("product");
+        String quantity = request.getParameter("quantity");
+        String status = "Received";
 
+        if (isNullOrEmpty(invoiceId) || isNullOrEmpty(shipmentId) || isNullOrEmpty(payment) || isNullOrEmpty(product) || isNullOrEmpty(quantity)) {
+            reject("You must supply a invoice Id, shipment Id, payment method and quantity in order to create an order.");
+        }
+
+        final OrderRepository repository = ctx.getOrders();
+        final Order order = repository.create(new Order(shipmentId, invoiceId, payment, product, status));
+        session.setAttribute("Order", order);
+
+        message = "Shipment has been saved";
     }
 }

@@ -21,7 +21,7 @@ public class Order extends IdentifiableModel {
     String Payment_method;
     String Products;
     String status;
-    LocalDate date;
+    //LocalDate date;
 
    /* private Shipment shipment;
     private Invoice invoice;
