@@ -4,7 +4,7 @@
     <jsp:body>
         <div class="container">
             <form action="?action=register" method="POST">
-                <div>Create an account</div>
+                <h1 class="jumbotron-heading" style="text-align: center">Create an account</h1>
                 <div class="form-group">
                     <label for="name">
                         Name
