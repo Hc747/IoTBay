@@ -34,9 +34,4 @@ public class CreditCardPaymentMethod extends PaymentMethod {
     public Type type() {
         return Type.CREDIT_CARD;
     }
-
-    @Override
-    public String details() {
-        return String.format("Card Number: %s, Holder: %s, CVV: %s, Expiration: %s", number, holder, cvv, expiration.toString());
-    }
 }

@@ -2,6 +2,7 @@ package au.edu.uts.isd.iotbay.action.impl;
 
 import au.edu.uts.isd.iotbay.IoTBayApplicationContext;
 import au.edu.uts.isd.iotbay.action.Action;
+import au.edu.uts.isd.iotbay.model.category.Category;
 import au.edu.uts.isd.iotbay.model.product.Product;
 import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.repository.product.ProductRepository;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.DecimalFormat;
+import java.util.List;
 
 import static au.edu.uts.isd.iotbay.util.Validator.Patterns.*;
 import static au.edu.uts.isd.iotbay.util.Validator.Patterns.OBJECT_DESCRIPTION_PATTERN;
@@ -81,9 +83,6 @@ public class ProductAction extends Action {
         double price = Double.parseDouble(priceString);
         int quantity = Integer.parseInt(quantityString);
 
-        //TODO: get input parameters
-        //TODO: validate input parameters
-
         if (name.length() < 4) {
             reject("Product name must be at least 4 characters.");
         }
@@ -101,15 +100,16 @@ public class ProductAction extends Action {
         }
 
         final ProductRepository repository = ctx.getProducts();
-        final Product product = repository.create(new Product(name, description, quantity, price));
+        final Product product = repository.create(Product.create(name, description, quantity, price));
 
         if (product == null) {
             reject("Unable to create product.");
         }
 
         message = "Successfully created product.";
+        session.setAttribute("product", product);
         //TODO: Account for catagory's images, etc.
-        //TODO::Return to product page with ProductID
+        //TODO::Return to product page.
     }
 
     @SneakyThrows
@@ -134,7 +134,7 @@ public class ProductAction extends Action {
         final Product product = repository.findById(id);
 
         if (product == null) {
-            reject("Could not find product to delete. Id may have been incorrect.");
+            reject("Could not find product to delete.");
         }
 
         Product deleted = repository.delete(product);
@@ -144,12 +144,13 @@ public class ProductAction extends Action {
         }
 
         message = "Successfully deleted the product.";
-        //TODO::Return to a page. Indicate the status of the
+        session.setAttribute("deletedProduct", deleted);
+        //TODO::Return to a page.
     }
 
     @SneakyThrows
     private void update(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
-        final String identifier = request.getParameter("productId");
+        final String identifier = request.getParameter("id");
 
         if (isNullOrEmpty(identifier)) {
             reject("No Product Id found");
@@ -169,7 +170,7 @@ public class ProductAction extends Action {
         final Product product = repository.findById(id);
 
         if (product == null) {
-            reject("Could not find product to delete. Id may have been incorrect.");
+            reject("Could not find product to delete.");
         }
         //Get the input parameters
         String name = request.getParameter("name");
@@ -232,7 +233,8 @@ public class ProductAction extends Action {
             reject("Unable to update product.");
         }
         message = "Successfully updated product.";
-        //TODO::Return to product page with ProductID
+        session.setAttribute("updatedProduct", updated);
+        //TODO::Return to product page.
     }
 
 

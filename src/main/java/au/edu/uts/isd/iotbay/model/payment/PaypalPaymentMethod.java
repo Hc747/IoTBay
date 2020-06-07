@@ -25,9 +25,4 @@ public class PaypalPaymentMethod extends PaymentMethod {
     public Type type() {
         return Type.PAYPAL;
     }
-
-    @Override
-    public String details() {
-        return String.format("Token: %s", token);
-    }
 }
