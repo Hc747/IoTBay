@@ -10,16 +10,12 @@
 <%//TODO: Add actions to buttons%>
 <t:layout>
     <jsp:body>
+        <br>
+
         <div class="container p-3 my-3 bg-dark text-white">
             <h1 class="jumbotron-heading" style="text-align: center">Create New Product</h1>
             <br>
-            <div class="container p-3 my-3 bg-dark text-white">
-                <button type="button" class="btn btn-warning">Confirm Product Create</button>
-                <button type="button" class="btn btn-light">Cancel</button>
-            </div>
-        <hr>
-        <div class="container p-3 my-3 bg-dark text-white">
-            <form method="post">
+            <form action="?action=product&type=create" method="post">
                 <div class="form-group">
                     <label for="name">
                         Product Name
@@ -56,7 +52,10 @@
                     </label>
                     <input id="categories" name="categories" type="text" placeholder="Product Categories">
                 </div>
-                <button type="submit" class="btn btn-warning">Confirm Product Create</button>
+                <div class="container p-3 my-3 bg-dark text-white">
+                    <button type="submit" class="btn btn-warning">Confirm Product Create</button>
+                    <button type="button" class="btn btn-light">Cancel</button>
+                </div>
             </form>
         </div>
     </jsp:body>
