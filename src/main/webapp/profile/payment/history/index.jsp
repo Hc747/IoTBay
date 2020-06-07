@@ -1,25 +1,76 @@
 <%@ page import="au.edu.uts.isd.iotbay.Constants" %>
 <%@ page import="au.edu.uts.isd.iotbay.model.order.Order" %>
+<%@ page import="au.edu.uts.isd.iotbay.model.payment.PaymentMethod" %>
 <%@ page import="au.edu.uts.isd.iotbay.model.user.User" %>
 <%@ page import="au.edu.uts.isd.iotbay.util.AuthenticationUtil" %>
-<%@ page import="java.util.List" %>
+<%@ page import="org.bson.types.ObjectId" %>
+<%@ page import="java.time.LocalDate" %>
+<%@ page import="java.util.Set" %>
+<%@ page import="java.util.stream.Collectors" %>
+<%@ page import="static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty" %>
+<%@ page import="java.util.stream.Stream" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" isELIgnored="false" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%
     final User user = AuthenticationUtil.user(session);
-    final List<Order> orders = user.getOrders();
-    request.setAttribute("orders", orders);
+    Stream<Order> orders = user.getOrders().stream();
+    final Set<PaymentMethod> methods = user.getOrders().stream().map(Order::getPayment).collect(Collectors.toSet());
+    final Set<LocalDate> dates = user.getOrders().stream().map(Order::getDate).collect(Collectors.toSet());
+
+    final String identifier = request.getParameter("id");
+
+    if (!isNullOrEmpty(identifier) && ObjectId.isValid(identifier)) {
+        final ObjectId id = new ObjectId(identifier);
+        orders = orders.filter(order -> order.getPayment().getId().equals(id));
+    }
+
+    if (!isNullOrEmpty(request.getParameter("date"))) {
+        final LocalDate date;
+        LocalDate date1;
+        try {
+            date1 = LocalDate.parse(request.getParameter("date"));
+        } catch (Exception e) {
+            date1 = null;
+        }
+
+        date = date1;
+        if (date != null) {
+            orders = orders.filter(order -> order.getDate().atStartOfDay().equals(date.atStartOfDay()));
+        }
+    }
+
+    request.setAttribute("orders", orders.collect(Collectors.toList()));
+    request.setAttribute("methods", methods);
+    request.setAttribute("dates", dates);
     request.setAttribute("back", Constants.path(true, "profile", "payment"));
 %>
 <t:layout>
     <jsp:body>
         <div class="container">
-            <c:if test="${(orders == null) or (orders.isEmpty())}">
+            <c:if test="${(orders == null)}">
                 <h1 class="jumbotron-heading" style="text-align: center">You don't have an order history.</h1>
             </c:if>
-            <c:if test="${not (orders == null) and (not orders.isEmpty())}">
+            <c:if test="${orders != null}">
                 <h1 class="jumbotron-heading" style="text-align: center">Your payment history</h1>
+
+                <form action="" method="GET">
+                    <div class="form-group">
+                        <label for="id">Payment ID</label>
+                        <select name="id" id="id">
+                            <option disabled selected value> -- select an option -- </option>
+                            <c:forEach var="method" items="${methods}">
+                                <option value="${method.id}">${method.type()} - <c:if test="${method.type().name().equalsIgnoreCase('CREDIT_CARD')}">${method.number}</c:if><c:if test="${method.type().name().equalsIgnoreCase('PAYPAL')}">${method.token}</c:if></option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" class="form-control" id="date" name="date" placeholder="Date">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </form>
+
                 <table class="table table-bordered" style="text-align: center">
                     <thead>
                     <tr>
