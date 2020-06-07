@@ -29,6 +29,5 @@
                     </c:forEach>
                 </div>
             </div>
-        TODO: store content here.
     </jsp:body>
 </t:layout>
