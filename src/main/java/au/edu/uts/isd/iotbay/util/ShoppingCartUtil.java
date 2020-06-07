@@ -25,11 +25,10 @@ public class ShoppingCartUtil {
     }
 
     public static Invoice invoice(ShoppingCart cart, User user) {
-        final String[] names = user.names();
-        return invoice(cart, user.getUsername(), names[0], names[1]);
+        return invoice(cart, user.getUsername(), user.getName());
     }
 
-    public static Invoice invoice(ShoppingCart cart, String email, String firstname, String lastname) {
-        return new Invoice(cart.totalCost(), email, firstname, lastname);
+    public static Invoice invoice(ShoppingCart cart, String email, String name) {
+        return new Invoice(cart.totalCost(), email, name);
     }
 }
