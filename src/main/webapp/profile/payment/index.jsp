@@ -9,18 +9,18 @@
     final User user = AuthenticationUtil.user(session);
     final List<PaymentMethod> payments = user.getPayments();
     request.setAttribute("methods", payments);
+    //TODO: link for creating payment methods
 %>
 <t:layout>
     <jsp:body>
-        <div class="container d-flex justify-content-between">
+        <div class="container">
             <c:if test="${(methods == null) or (methods.isEmpty())}">
                 You don't have any payment methods.
             </c:if>
             <c:if test="${not (methods == null) and (not methods.isEmpty())}">
-                <table class="table">
+                <table class="table table-bordered" style="text-align: center">
                     <thead>
                         <tr>
-                            <th scope="col">ID</th>
                             <th scope="col">Type</th>
                             <th scope="col">Details</th>
                             <th scope="col">Actions</th>
@@ -28,11 +28,35 @@
                     </thead>
                     <tbody>
                         <c:forEach var="method" items="${methods}">
-                            <tr class="row">
-                                <th scope="row">${method.id}</th>
-                                <td class="col-1">${method.type()}</td>
-                                <td class="col-9">${method.inline()}</td>
-                                <td class="col-1"><a href="?action=payment&type=edit&id=${method.id}">Edit</a> | <a href="?action=payment&type=delete&id=${method.id}">Delete</a></td>
+                            <tr>
+                                <td>${method.type()}</td>
+                                <td>
+                                    <table class="table table-bordered">
+                                        <c:if test="${method.type().name().equalsIgnoreCase('PAYPAL')}">
+                                            <thead>
+                                                <th colspan="4">Token</th>
+                                            </thead>
+                                            <tbody>
+                                                <td>${method.token}</td>
+                                            </tbody>
+                                        </c:if>
+                                        <c:if test="${method.type().name().equalsIgnoreCase('CREDIT_CARD')}">
+                                            <thead>
+                                                <th>Number</th>
+                                                <th>Holder</th>
+                                                <th>CVV</th>
+                                                <th>Expiration</th>
+                                            </thead>
+                                            <tbody>
+                                                <td>${method.number}</td>
+                                                <td>${method.holder}</td>
+                                                <td>${method.cvv}</td>
+                                                <td>${method.expiration}</td>
+                                            </tbody>
+                                        </c:if>
+                                    </table>
+                                </td>
+                                <td><a href="?action=payment&type=edit&id=${method.id}">Edit</a> | <a href="?action=payment&type=delete&id=${method.id}">Delete</a></td>
                             </tr>
                         </c:forEach>
                     </tbody>
