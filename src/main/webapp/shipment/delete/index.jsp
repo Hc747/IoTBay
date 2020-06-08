@@ -15,7 +15,7 @@
                 <label>
                     Please enter shipment id
                 </label>
-                <input type="text" class="form-control" id="did" name="did" placeholder="Enter ID" required>
+                <input type="text" class="form-control" id="id" name="id" placeholder="Enter ID" required>
                 <button type="submit" class="btn btn-primary">Delete</button>
             </form>
         </div>

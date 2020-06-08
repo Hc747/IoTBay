@@ -47,8 +47,6 @@ public class ShipmentAction extends Action {
             default:
                 break;
         }
-
-
     }
 
     @SneakyThrows
@@ -99,7 +97,7 @@ public class ShipmentAction extends Action {
     @SneakyThrows
     protected void delete(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) throws ActionException {
 
-        final String identifier = request.getParameter("did");
+        final String identifier = request.getParameter("id");
 
         if (isNullOrEmpty(identifier)) {
             reject("Shipment ID is not found");
@@ -109,23 +107,15 @@ public class ShipmentAction extends Action {
             reject("Shipment ID is not valid");
         }
 
-        final ObjectId id = new ObjectId(identifier);
-
         final ShipmentRepository repository = ctx.getShipments();
-        final Shipment shipment = repository.findById(id);
+        final Shipment shipment = repository.findById(identifier);
 
         if (shipment == null) {
             reject("Shipment is not found");
         }
 
-        Shipment deleted = repository.delete(shipment);
-
-        if (deleted == null) {
-            reject("Shipment is not valid to be deleted");
-        }
-
-        message = "Shipment has been deleted";
-        session.setAttribute("deletedShipment", deleted);
+        repository.delete(shipment);
+        message="Shipment has been deleted";
     }
 }
 

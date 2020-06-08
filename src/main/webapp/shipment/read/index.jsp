@@ -11,11 +11,11 @@
 <t:layout>
     <jsp:body>
 <div class ="container">
-    <form action="?action=shipment&type=delete" method="POST">
+    <form action="?action=shipment" method="POST">
         <label>
-    Please enter shipment id and estimated date
+            Please enter shipment ID
         </label>
-    <input type="text" class="form-control" id="sid" name="sid" placeholder="Enter ID" required>
+    <input type="text" class="form-control" id="id" name="id" placeholder="Enter ID" required>
         <label>
             Please enter the estimated date
         </label>
