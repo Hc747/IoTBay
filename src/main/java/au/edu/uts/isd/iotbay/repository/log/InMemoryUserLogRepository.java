@@ -5,9 +5,7 @@ import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.repository.InMemoryRepository;
 
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
 import java.util.Collection;
-import java.util.Date;
 import java.util.stream.Collectors;
 
 public class InMemoryUserLogRepository extends InMemoryRepository<UserLog> implements UserLogRepository {
@@ -18,9 +16,8 @@ public class InMemoryUserLogRepository extends InMemoryRepository<UserLog> imple
     }
 
     @Override
-    public Collection<UserLog> findByUserBeforeDate(User user, Date date) {
-        final ChronoLocalDate timestamp = LocalDate.from(date.toInstant());
-        return findByUser(user).stream().filter(log -> log.getDate().isBefore(timestamp)).collect(Collectors.toList());
+    public Collection<UserLog> findByUserBeforeDate(User user, LocalDate date) {
+        return findByUser(user).stream().filter(log -> log.getDate().isBefore(date)).collect(Collectors.toList());
     }
 }
 
