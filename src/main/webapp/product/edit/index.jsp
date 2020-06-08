@@ -46,7 +46,7 @@
                     <h1 style="text-align: center">${product.name}</h1>
                     <p style="text-align: center">ProductId: ${product.id}</p>
                     <div class="container p-3 my-3 bg-dark text-white">
-                        <button type="button" class="btn btn-danger">Delete Product</button>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteProduct">Delete Product</button>
                         <a type="button" class="btn btn-light" href="/iotbay/product/?id=${product.id}">Return to Product Page</a>
                         <a type="button" class="btn btn-light" href="/iotbay/product/edit/?action=product&type=edit&id=${product.id}">Reload Form Values</a>
                     </div>
@@ -93,6 +93,29 @@
                     </form>
                 </div>
             </c:if>
+        </div>
+        <!-- Confirm Window - Source: https://getbootstrap.com/docs/4.0/components/modal/ -->
+        <div class="modal fade" id="confirmDeleteProduct" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteProduct" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="confirmDeleteProductLabel">Are you sure you want to delete this product?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        This will delete the product from the IoTBay inventory.<br>
+                        This action can not be undone.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <form action="/iotbay/product/edit/?action=product&type=delete&id=${product.id}" method="post">
+                            <button type="submit" class="btn btn-danger">Confirm Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </jsp:body>
 </t:layout>

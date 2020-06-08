@@ -42,6 +42,11 @@
                     <p>We were unable to display the product. Try going back to the home page using the button bellow and then try find the product again.</p>
                     <a type="button" href="${home}" class="btn btn-light">Home</a>
                 </div>
+                <c:if test="${user.getRole().isStaff()}">
+                    <div>
+                        <a href="create/">Create new product.</a>
+                    </div>
+                </c:if>
             </c:if>
             <c:if test="${product != null}">
                 <div class="container p-3 my-3 bg-dark text-white">
