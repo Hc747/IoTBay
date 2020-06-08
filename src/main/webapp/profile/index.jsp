@@ -11,6 +11,7 @@
 <%@ page import="java.util.Date" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
     User user = AuthenticationUtil.user(session);
     request.setAttribute("user", user);
@@ -32,6 +33,7 @@
     final IoTBayApplicationContext context = IoTBayApplicationContext.getInstance(application);
     final UserLogRepository repository = context.getUserLogs();
     final Collection<UserLog> userlogs = repository.findByUserBeforeDate(user, date);
+    request.setAttribute("logs", userlogs);
     request.setAttribute("date", date);
 %>
 <t:layout>
@@ -77,11 +79,11 @@
             </form>
         </div>
         <div class="container d-flex justify-content-between">
-            <form action="?date=${nowDate}" method="get">
+            <form action="?date=${date}" method="get">
                 <div class="form-group">
                     <h3>View activity logs</h3>
                     <label for="logDate">Up to date:</label>
-                    <input id="logDate" name="date" type="date" value="${nowDate}">
+                    <input id="logDate" name="date" type="date" value="${date}">
                 </div>
                 <div class="form-group">
                     <input class="submit" type="submit">
@@ -89,19 +91,19 @@
             </form>
         </div>
         <div>
-            <c:if test="${not input.isEmpty()}">
-                <c:if test="${not userlogs.isEmpty()}">
+            <c:if test="${date != null}">
+                <c:if test="${not logs.isEmpty()}">
                 <div class="container">
                     <div class="row">
                         <div class="col-1">#</div>
                         <div class="col-1">Type</div>
                         <div class="col-1">Timestamp</div>
                     </div>
-                    <c:forEach var="method" items="${methods}">
+                    <c:forEach var="log" items="${logs}">
                         <div class="row">
-                            <div class="col-1">${userlogs.id}</div>
-                            <div class="col-1">${userlogs.type}</div>
-                            <div class="col-1">${method.timestamp}</div>
+                            <div class="col-1">${log.id}</div>
+                            <div class="col-1">${log.type}</div>
+                            <div class="col-1">${log.date}</div>
                         </div>
                     </c:forEach>
                 </c:if>
