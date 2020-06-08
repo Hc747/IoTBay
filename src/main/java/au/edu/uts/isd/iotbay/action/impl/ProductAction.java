@@ -108,7 +108,7 @@ public class ProductAction extends Action {
         final User user = authenticate(session);
         validate(user);
 
-        final String identifier = request.getParameter("productId");
+        final String identifier = request.getParameter("id");
 
         if (isNullOrEmpty(identifier)) {
             reject("No Product Id found");

@@ -42,26 +42,34 @@
                     <p>We were unable to display the product. Try going back to the home page using the button bellow and then try find the product again.</p>
                     <a type="button" href="${home}" class="btn btn-light">Home</a>
                 </div>
+                <c:if test="${user.getRole().isStaff()}">
+                    <div>
+                        <a href="create/">Create new product.</a>
+                    </div>
+                </c:if>
             </c:if>
             <c:if test="${product != null}">
                 <div class="container p-3 my-3 bg-dark text-white">
                     <h1 style="text-align: center">${product.name}</h1>
-                    <div>
-                        <h3 style="text-align: left" >$${product.formatPrice()}</h3>
-                    </div>
-                    <div style="align-self: end">
-                        <form action="?id=${product.id}" method="POST">
-                            <input type="hidden" name="action" value="cart"/>
-                            <input type="hidden" name="type" value="add"/>
-                            <input type="hidden" name="product" value="${product.id}"/>
-                            <button type="submit" class="btn btn-primary" style="right: auto">Add 1 to Cart</button>
-                        </form>
-                        <form action="?id=${product.id}" method="POST">
-                            <input type="hidden" name="action" value="cart"/>
-                            <input type="hidden" name="type" value="remove"/>
-                            <input type="hidden" name="product" value="${product.id}"/>
-                            <button type="submit" class="btn btn-primary" style="right: auto">Remove 1 from Cart</button>
-                        </form>
+                    <h3 style="text-align: center" >Quantity Remaining: ${product.quantity}</h3>
+                    <h3 style="text-align: center" >$${product.formatPrice()}</h3>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <form action="?id=${product.id}" method="POST" style="float: right;">
+                                <input type="hidden" name="action" value="cart"/>
+                                <input type="hidden" name="type" value="add"/>
+                                <input type="hidden" name="product" value="${product.id}"/>
+                                <button type="submit" class="btn btn-primary" style="right: auto">Add 1 to Cart</button>
+                            </form>
+                        </div>
+                        <div class="col-sm-46">
+                            <form action="?id=${product.id}" method="POST" style="float: left">
+                                <input type="hidden" name="action" value="cart"/>
+                                <input type="hidden" name="type" value="remove"/>
+                                <input type="hidden" name="product" value="${product.id}"/>
+                                <button type="submit" class="btn btn-primary" style="right: auto">Remove 1 from Cart</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
 
