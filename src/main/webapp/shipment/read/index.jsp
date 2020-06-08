@@ -36,8 +36,13 @@ if(isNullOrEmpty(id) || !ObjectId.isValid(id))
         <label>
             Please enter shipment ID
         </label>
+        </div>
+        <div class="form-group">
         <input type="text" id="id", name="id", placeholder="Enter ID">
+        </div>
+            <div class="form-group">
         <input type="submit" id="submit" name="submit" value="submit">
+            </div>
         </div>
     </form>
         <c:if test="${shipemnt == null}">
