@@ -27,9 +27,9 @@ public abstract class Action implements Serializable {
 //            message = "An unexpected error occurred. Unable to process your request.";
             message = e.getClass().getSimpleName() + ": " + e.getMessage(); //TODO: don't expose internal error details in prod
             type = MessageType.DANGER;
-            
-            e.printStackTrace();
-            throw e; //TODO: don't throw when not in dev environment
+//
+//            e.printStackTrace();
+//            throw e; //TODO: don't throw when not in dev environment
         }
     }
     
