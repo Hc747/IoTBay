@@ -100,7 +100,6 @@ public class ProductAction extends Action {
         message = "Successfully created product.";
         session.setAttribute("newProduct", product);
         //TODO: Account for catagory's.
-        //TODO::Return to product page.
     }
 
     @SneakyThrows
@@ -206,6 +205,7 @@ public class ProductAction extends Action {
         product.setPrice(price);
 
         final Product updated = repository.update(product);
+
 
         if (updated == null) {
             reject("Unable to update product.");

@@ -23,7 +23,6 @@
     final IoTBayApplicationContext context = IoTBayApplicationContext.getInstance(application);
     final CategoryRepository repository = context.getCategories();
     final Collection<Category> categories = repository.all();
-
     request.setAttribute("categories", categories);
 %>
 <t:layout>
@@ -38,7 +37,8 @@
                     <div class="card">
                         <a href="${home}categories/category/?id=${category.id}" style="align-content: center">
                             <h4 style="text-align: center; color: black">${category.name}</h4>
-                            <p style="text-align: center; color: black">${category.products.size()} items</p>
+                            <p style="text-align: center; color: black">${category.description} items</p>
+<%--                            <p style="text-align: center; color: black">${category.productId.size()} items</p>--%>
                         </a>
                     </div>
                 </c:forEach>

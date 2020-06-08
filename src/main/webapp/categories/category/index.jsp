@@ -5,7 +5,14 @@
 <%@ page import="au.edu.uts.isd.iotbay.repository.category.CategoryRepository" %>
 <%@ page import="au.edu.uts.isd.iotbay.model.category.Category" %>
 <%@ page import="static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty" %>
-<%@ page import="org.bson.types.ObjectId" %><%--
+<%@ page import="org.bson.types.ObjectId" %>
+<%@ page import="au.edu.uts.isd.iotbay.model.product.Product" %>
+<%@ page import="au.edu.uts.isd.iotbay.repository.product.ProductRepository" %>
+<%@ page import="javax.persistence.criteria.CriteriaBuilder" %>
+<%@ page import="javax.persistence.criteria.Predicate" %>
+<%@ page import="javax.persistence.criteria.CriteriaQuery" %>
+<%@ page import="javax.persistence.criteria.Root" %>
+<%@ page import="java.util.Collection" %><%--
   Created by IntelliJ IDEA.
   User: matt
   Date: 8/6/20
@@ -21,6 +28,7 @@
     request.setAttribute("home", Constants.path(false));
     final IoTBayApplicationContext context = IoTBayApplicationContext.getInstance(application);
     final CategoryRepository repository = context.getCategories();
+    final ProductRepository productRepository = context.getProducts();
     final String id = request.getParameter("id");
     final Category category;
 
@@ -30,8 +38,16 @@
     } else {
         category = repository.findById(id);
     }
+//    Collection<Product> match = productRepository.findAll(product -> {
+//        if (product.getDescription().equals("condition")){
+//            return true;
+//        }
+//        return false;
+//    });
+//    match.size();
 
     request.setAttribute("category", category);
+
 %>
 <t:layout>
     <jsp:body>
@@ -52,7 +68,7 @@
             <c:if test="${category != null}">
                 <div class="container p-3 my-3 bg-dark text-white">
                     <h1 style="text-align: center">${category.name}</h1>
-                    <h3 style="text-align: center" >Products in Category: ${category.products.size()}</h3>
+<%--                    <h3 style="text-align: center" >Products in Category: ${category.productid.size()}</h3>--%>
                 </div>
 
                 <div class="container p-3 my-3 bg-dark text-white">
@@ -64,11 +80,11 @@
                         <br>
                         <h4>Category Products:</h4>
                         <div class="card-columns">
-                            <c:forEach var="product" items="${category.products}">
-                                <div class="card">
-                                    <a href="/product/?id=${product.id}">${product.name}</a>
-                                </div>
-                            </c:forEach>
+<%--                            <c:forEach var="product" items="${category.productid}">--%>
+<%--                                <div class="card">--%>
+<%--                                    <a href="/product/?id=${product}">${}</a>--%>
+<%--                                </div>--%>
+<%--                            </c:forEach>--%>
                         </div>
                     </div>
                 </div>

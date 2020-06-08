@@ -3,10 +3,9 @@ package au.edu.uts.isd.iotbay.action.impl;
 import au.edu.uts.isd.iotbay.IoTBayApplicationContext;
 import au.edu.uts.isd.iotbay.action.Action;
 import au.edu.uts.isd.iotbay.model.category.Category;
-import au.edu.uts.isd.iotbay.model.product.Product;
 import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.repository.category.CategoryRepository;
-import au.edu.uts.isd.iotbay.repository.product.ProductRepository;
+
 import au.edu.uts.isd.iotbay.util.AuthenticationUtil;
 import lombok.SneakyThrows;
 import org.bson.types.ObjectId;
@@ -16,13 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
-import java.util.List;
-
-import static au.edu.uts.isd.iotbay.util.Validator.Patterns.*;
 import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
-import static au.edu.uts.isd.iotbay.util.Validator.matches;
+
 
 public class CategoryAction extends Action {
     @Override

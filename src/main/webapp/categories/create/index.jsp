@@ -37,33 +37,6 @@
                     </label>
                     <textarea class="form-control" name="description" id="description" rows="3" placeholder="Category Description" required></textarea>
                 </div>
-                <div class="form-group">
-                    <label for="radio">Category Status:</label>
-                    <div id="radio">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" id="true" name="enabled" value="true">
-                            <label class="form-check-label" for="true">
-                                Enabled
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" id="false" name="enabled" value="false" checked>
-                            <label class="form-check-label" for="false">
-                                Disabled
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="products">
-                        Category products:
-                    </label>
-                    <select multiple class="form-control" id="products" name="products" >
-                        <c:forEach var="product" items="${products}">
-                            <option value="${product.id}">${product.name}</option>
-                        </c:forEach>
-                    </select>
-                </div>
                 <div class="container p-3 my-3 bg-dark text-white">
                     <button type="submit" class="btn btn-warning">Confirm Product Create</button>
                     <a type="button" href="${home}" class="btn btn-light">Cancel</a>

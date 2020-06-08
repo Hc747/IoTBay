@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 
+import javax.persistence.Entity;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
