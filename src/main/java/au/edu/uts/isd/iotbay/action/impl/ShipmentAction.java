@@ -71,18 +71,16 @@ public class ShipmentAction extends Action {
 
         LocalDate delivery = LocalDate.now().atStartOfDay().plus(days, ChronoUnit.DAYS).toLocalDate();
 
-
         if (isNullOrEmpty(name) || isNullOrEmpty(method) || isNullOrEmpty(address) || isNullOrEmpty(postcode)) {
             reject("Please fill in the blank");
         }
-
 
         final ShipmentRepository repository = ctx.getShipments();
         final Shipment shipment = repository.create(new Shipment(name, a, method, delivery));
 
         session.setAttribute("shipment", shipment);
 
-        message = "Shipment has been saved";
+        message = "Shipment has been saved, the id is " + shipment.getId();
     }
 
     @SneakyThrows
@@ -134,7 +132,7 @@ public class ShipmentAction extends Action {
         shipment.setDate(delivery);
 
         repository.update(shipment);
-        message="Shipment has been deleted";
+        message="Shipment has been updated";
     }
 
     @SneakyThrows

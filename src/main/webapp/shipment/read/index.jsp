@@ -38,9 +38,6 @@ if(isNullOrEmpty(id) || !ObjectId.isValid(id))
         <input type="text" id="id", name="id", placeholder="Enter ID">
         <input type="submit" id="submit" name="submit" value="submit">
     </form>
-        <c:if test="${shipemnt == null}">
-            Shipment ID is not found !
-        </c:if>
     <c:if test="${shipment != null}">
         <div class="form-group">
             Shipment ID: ${shipment.id}
