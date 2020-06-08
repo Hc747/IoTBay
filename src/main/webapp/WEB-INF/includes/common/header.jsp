@@ -38,7 +38,7 @@
                         final String url = entry.getValue();
                         final boolean end = !entries.hasNext();
                 %>
-                    <a href="<%= url %>" class="navbar-brand align-items-center"><strong><%= title %></strong></a><span class="text-white"><%= end ? "" : "&gt;"%></span>
+                    <span class="navbar-brand align-items-center"><% if (!end) { %><a href="<%= url %>"><% } %><strong><%= title %></strong><% if (!end) { %></a><% } %><span class="text-white"><%= end ? "" : "&gt;"%></span></span>
                 <%
                     }
                 %>
