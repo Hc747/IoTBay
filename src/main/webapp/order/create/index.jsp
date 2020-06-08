@@ -41,6 +41,7 @@
                 </div>
             </form>
             <a href="/iotbay/shipment"><button style="background-color: dodgerblue; border: white; color: white; padding: 5px; border-radius: 2px">Go to Shipment</button></a>
+            <a href="/iotbay/order/delete"><button style="background-color: dodgerblue; border: white; color: white; padding: 5px; border-radius: 2px">Delete Order</button></a>
         </div>
     </jsp:body>
 </t:layout>
