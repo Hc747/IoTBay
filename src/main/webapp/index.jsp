@@ -19,13 +19,17 @@
         <jsp:include page="/WEB-INF/includes/common/banner.jsp"/>
             <div class="container">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <h4>Products:</h4>
                     </div>
-                    <div class="col-sm-6">
-                        <a style="float: right" type="button" href="categories/">View Categories</a>
+                    <div class="col-sm-4">
+                        <a class="btn btn-light" style="float: right" type="button" href="categories/">View Categories</a>
+                    </div>
+                    <div class="col-sm-4">
+                        <a class="btn btn-light" style="float: right" type="button" href="search/">Search Products</a>
                     </div>
                 </div>
+                <br>
                 <div class="card-columns">
                     <c:forEach var="product" items="${products}">
                         <div class="card">
