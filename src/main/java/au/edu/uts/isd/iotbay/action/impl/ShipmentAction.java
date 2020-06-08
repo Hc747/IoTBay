@@ -2,13 +2,9 @@ package au.edu.uts.isd.iotbay.action.impl;
 
 import au.edu.uts.isd.iotbay.IoTBayApplicationContext;
 import au.edu.uts.isd.iotbay.action.Action;
-import au.edu.uts.isd.iotbay.model.order.Order;
-import au.edu.uts.isd.iotbay.model.product.Product;
-import au.edu.uts.isd.iotbay.repository.order.OrderRepository;
-import au.edu.uts.isd.iotbay.repository.product.ProductRepository;
-import au.edu.uts.isd.iotbay.repository.shipment.ShipmentRepository;
-import au.edu.uts.isd.iotbay.model.shipment.Shipment;
 import au.edu.uts.isd.iotbay.model.address.Address;
+import au.edu.uts.isd.iotbay.model.shipment.Shipment;
+import au.edu.uts.isd.iotbay.repository.shipment.ShipmentRepository;
 import lombok.SneakyThrows;
 import org.bson.types.ObjectId;
 
@@ -18,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
 
 import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
 
@@ -84,7 +79,7 @@ public class ShipmentAction extends Action {
 
         final ShipmentRepository repository = ctx.getShipments();
         final Shipment shipment = repository.create(new Shipment(name, a, method, delivery));
-        session.setAttribute("shipment", shipment);
+//        session.setAttribute("shipment", shipment); //TODO: why?
 
         message = "Shipment has been saved";
     }

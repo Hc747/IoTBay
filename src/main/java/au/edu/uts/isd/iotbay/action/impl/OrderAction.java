@@ -82,28 +82,30 @@ public class OrderAction extends Action {
     @SneakyThrows
     private void create(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
         final ShoppingCart cart = ShoppingCartUtil.get(session);
-        final User user = AuthenticationUtil.user(session);
-        final boolean guest = user == null;
-        String email = request.getParameter("email");
-        String name = request.getParameter("name");
-        String paymentMethod = request.getParameter("payment_method");
 
         if (cart.isEmpty()) {
             reject("Your cart is empty.");
         }
 
+        final User user = AuthenticationUtil.user(session);
+        final boolean guest = user == null;
+        final String email = request.getParameter("email");
+        final String name = request.getParameter("name");
+        final String method = request.getParameter("payment_method");
+
         //TODO: validate input
-        if (isNullOrEmpty(name) || isNullOrEmpty(email)) {
-            reject("You must supply an email address or name.");
+        if (isNullOrEmpty(name) || isNullOrEmpty(email) || isNullOrEmpty(method) || !ObjectId.isValid(method)) {
+            reject("You must supply an email address, name and payment method id.");
         }
-        final Invoice invoice = ShoppingCartUtil.invoice(cart, request.getParameter("email"), request.getParameter("name"));
+
+        final Invoice invoice = ShoppingCartUtil.invoice(cart, email, name);
 
         final PaymentMethod payment;
 
         if (guest) {
-            payment = ctx.getPayments().findById(request.getParameter("payment_method"));//TODO: validate input
+            payment = ctx.getPayments().findById(method);
         } else {
-            payment = Misc.findById(user.getPayments(), request.getParameter("payment_method"));//TODO: validate input
+            payment = Misc.findById(user.getPayments(), method);
         }
 
         if (payment == null) {
