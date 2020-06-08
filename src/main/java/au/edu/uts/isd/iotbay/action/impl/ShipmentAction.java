@@ -131,11 +131,10 @@ public class ShipmentAction extends Action {
         a.setPostcode(postcode);
         shipment.setName(name);
         shipment.setAddress(a);
+        shipment.setDate(delivery);
 
-        final Shipment update = repository.update(shipment);
-
-        message="Shipment has been updated";
-        session.setAttribute("update", update);
+        repository.update(shipment);
+        message="Shipment has been deleted";
     }
 
     @SneakyThrows
@@ -158,9 +157,8 @@ public class ShipmentAction extends Action {
             reject("Shipment is not found");
         }
 
-        final Shipment delete = repository.delete(shipment);
+        repository.delete(shipment);
         message="Shipment has been deleted";
-        session.setAttribute("delete", delete);
     }
 }
 
