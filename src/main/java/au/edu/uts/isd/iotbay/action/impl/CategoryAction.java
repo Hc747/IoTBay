@@ -81,7 +81,7 @@ public class CategoryAction extends Action {
         final User user = authenticate(session);
         validate(user);
 
-        final String identifier = request.getParameter("productId");
+        final String identifier = request.getParameter("id");
 
         if (isNullOrEmpty(identifier)) {
             reject("No Category Id found");
@@ -152,10 +152,19 @@ public class CategoryAction extends Action {
             reject("Product description must be at least 10 characters.");
         }
 
-        if (!(enabledString.equals("false")) || (enabledString.equals("true"))) {
-            reject("The input enabled status was not a valid boolean.");
+        Boolean enabled = null;
+        if (enabledString.equals("false")) {
+            enabled = Boolean.getBoolean(enabledString);
+        } else if (enabledString.equals("true")) {
+            enabled = Boolean.getBoolean(enabledString);
+        } else {
+            reject("The enabled status was not a valid boolean.");
         }
-        boolean enabled = Boolean.getBoolean(enabledString);
+
+        category.setName(name);
+        category.setDescription(description);
+        category.setEnabled(enabled);
+
         final Category updated = repository.update(category);
 
         if (updated == null) {

@@ -44,6 +44,7 @@ public class OrderAction extends Action {
         switch (type.toLowerCase()) {
             //When the type post value is create than invoke create method
             case "create": create(ctx, session, request);break;
+            case "delete": delete(ctx, session, request);break;
             default: break;
         }
     }
@@ -65,7 +66,7 @@ public class OrderAction extends Action {
         }
 
         repository.delete(order);
-        message = "Order was successfully  deleted";
+        message = "Order was successfully deleted";
     }
 
     @SneakyThrows
