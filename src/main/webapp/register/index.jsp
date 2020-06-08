@@ -2,7 +2,7 @@
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <t:layout>
     <jsp:body>
-        <div class="container">
+        <div class="text-center container">
             <form action="?action=register" method="POST">
                 <h1 class="jumbotron-heading" style="text-align: center">Create an account</h1>
                 <div class="form-group">

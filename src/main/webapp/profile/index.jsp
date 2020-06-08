@@ -38,10 +38,11 @@
 %>
 <t:layout>
     <jsp:body>
-        <div class="container d-flex justify-content-between">
-            <a href="payment/">View payment details.</a>
-            <a href="payment/history/">View payment history.</a>
-            <a href="passwordUpdate/">Update Password.</a>
+
+        <br><div class="container d-flex justify-content-between">
+            <a class="btn btn-outline-secondary" href="payment/">View payment details.</a>
+            <a class="btn btn-outline-secondary" href="payment/history/">View payment history.</a>
+            <a class="btn btn-outline-secondary" href="passwordUpdate/">Update Password.</a>
 <%--            <a href="userlogs/">View your activity logs.</a>--%>
         </div>
         <br>

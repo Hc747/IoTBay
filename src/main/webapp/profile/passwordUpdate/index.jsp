@@ -15,26 +15,27 @@
     <jsp:body>
 <html>
 <head>
-    <form action="?action=password" method="POST">
-        <h1 class="jumbotron-heading" style="text-align: center">Create an account</h1>
-        <div class="form-group">
-            <label for="cPass">
-                Current Password
-            </label>
-            <input type="password" class="form-control" id="cPass" name="cPass" required>
-        </div>
-        <div class="form-group">
-            <label for="nPass">
-                New password
-            </label>
-            <input type="password" class="form-control" id="nPass" name="nPass" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-    </div>
+
 </head>
 <body>
-
+<div style="padding-left: 300px; padding-right: 300px; padding-top: 150px">
+<form action="?action=password" method="POST">
+    <h1 class="jumbotron-heading" style="text-align: center">Update Password</h1>
+    <div class="form-group">
+        <label for="cPass">
+            Current Password
+        </label>
+        <input type="password" class="form-control" id="cPass" name="cPass" required>
+    </div>
+    <div class="form-group">
+        <label for="nPass">
+            New password
+        </label>
+        <input type="password" class="form-control" id="nPass" name="nPass" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</div>
 </body>
 </html>
     </jsp:body>
