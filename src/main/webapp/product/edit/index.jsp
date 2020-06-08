@@ -44,13 +44,16 @@
             <c:if test="${product != null}">
                 <div class="container p-3 my-3 bg-dark text-white">
                     <h1 style="text-align: center">${product.name}</h1>
-                    <p>ProductId: ${product.id}</p>
+                    <p style="text-align: center">ProductId: ${product.id}</p>
                     <div class="container p-3 my-3 bg-dark text-white">
                         <button type="button" class="btn btn-danger">Delete Product</button>
+                        <a type="button" class="btn btn-light" href="/iotbay/product/?id=${product.id}">Return to Product Page</a>
+                        <a type="button" class="btn btn-light" href="/iotbay/product/edit/?action=product&type=edit&id=${product.id}">Reload Form Values</a>
                     </div>
                 </div>
                 <div class="container p-3 my-3 bg-dark text-white" >
-                    <h1 class="jumbotron-heading" style="text-align: center">Update Product Details</h1>
+                    <h1 style="text-align: center">Update Product Details</h1>
+                    <p>Please reload the form values using the button above after updating the product before making further product updates.</p>
                     <form action="?action=product&type=update&id=${product.id}" method="post">
                         <div class="form-group">
                             <label for="name">
