@@ -15,6 +15,7 @@ public class InMemoryUserLogRepository extends InMemoryRepository<UserLog> imple
         return findAll(log -> log.getUser().equals(user));
     }
 
+    //retrieves the user logs before the selected date
     @Override
     public Collection<UserLog> findByUserBeforeDate(User user, LocalDate date) {
         return findByUser(user).stream().filter(log -> log.getDate().isBefore(date)).collect(Collectors.toList());

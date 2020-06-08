@@ -23,6 +23,7 @@ public class User extends IdentifiableModel {
     private List<PaymentMethod> payments;
     private List<Order> orders;
 
+    //Splits the first and last name
     public String[] names() {
         final String[] components = name.split(" +");
         final StringJoiner joiner = new StringJoiner(" ");
