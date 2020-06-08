@@ -73,6 +73,10 @@ public class ShoppingCartAction extends Action {
 
         final ShoppingCart cart = ShoppingCartUtil.get(session);
 
+        if (!cart.contains(product)) {
+            reject("Cart does not contain item.");
+        }
+
         cart.remove(product);
 
         ShoppingCartUtil.set(session, cart);
@@ -89,6 +93,10 @@ public class ShoppingCartAction extends Action {
         }
 
         final ShoppingCart cart = ShoppingCartUtil.get(session);
+
+        if (!cart.contains(product)) {
+            reject("Cart does not contain item.");
+        }
 
         cart.remove(product);
 
