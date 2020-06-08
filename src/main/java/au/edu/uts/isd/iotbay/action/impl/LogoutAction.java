@@ -16,8 +16,10 @@ public class LogoutAction extends AuthenticatedAction {
     protected void invoke(ServletContext application, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
         super.invoke(application, session, request, response);
         final IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);
+        //gets the current session
         User user = AuthenticationUtil.user(session);
 
+        //adds action to the log + ends the session
         ctx.log(user, "Logout");
         AuthenticationUtil.unauthenticate(session);
 

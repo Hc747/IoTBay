@@ -27,16 +27,19 @@ public class RegisterAction extends UnauthenticatedAction {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String phone = request.getParameter("phone");
-        
+
+        //validation
         if (isNullOrEmpty(name) || isNullOrEmpty(username) || isNullOrEmpty(password) || isNullOrEmpty(phone)) {
             reject("You must supply a name, username, password and phone number in order to register.");
         }
 
+        //validation
         if (!matches(Validator.Patterns.NAME_PATTERN, name) || !matches(Validator.Patterns.USERNAME_PATTERN, username) || !matches(Validator.Patterns.PASSWORD_PATTERN, password) || !matches(Validator.Patterns.PHONE_NUMBER_PATTERN, phone)) {
             //TODO: improve UX; provide specific errors
             reject("Your nominated name, username, password and / or phone number do not meet validation requirements.");
         }
 
+        //gets instance of the application and checks if the user is already taken
         final IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);
         final User existing = ctx.getUsers().findByUsername(username);
         
@@ -46,6 +49,7 @@ public class RegisterAction extends UnauthenticatedAction {
             reject("Sorry, that username is already taken.");
         }
 
+        // creates a new user in the database
         final User user = ctx.getUsers().create(new User(name, username, AuthenticationUtil.hash(password), phone, Role.USER, true, LocalDate.now(), null, new ArrayList<>(), new ArrayList<>()));
 
         if (user == null) {
@@ -54,8 +58,10 @@ public class RegisterAction extends UnauthenticatedAction {
             reject("Unable to register an account; please try again.");
         }
 
+        //adds action to the log
         ctx.log(user, "Register");
 
+        //sets the session
         AuthenticationUtil.authenticate(session, user);
         
         message = String.format("Registration successful. Welcome %s", user.getUsername());

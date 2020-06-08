@@ -25,13 +25,13 @@
         <label for="cPass">
             Current Password
         </label>
-        <input type="password" class="form-control" id="cPass" name="cPass" required>
+        <input type="password" class="form-control" id="cPass" name="cPass" required> <%--current password--%>
     </div>
     <div class="form-group">
         <label for="nPass">
             New password
         </label>
-        <input type="password" class="form-control" id="nPass" name="nPass" required>
+        <input type="password" class="form-control" id="nPass" name="nPass" required> <%--new password--%>
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
