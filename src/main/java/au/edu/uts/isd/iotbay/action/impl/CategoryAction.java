@@ -3,8 +3,10 @@ package au.edu.uts.isd.iotbay.action.impl;
 import au.edu.uts.isd.iotbay.IoTBayApplicationContext;
 import au.edu.uts.isd.iotbay.action.Action;
 import au.edu.uts.isd.iotbay.model.category.Category;
+import au.edu.uts.isd.iotbay.model.product.Product;
 import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.repository.category.CategoryRepository;
+import au.edu.uts.isd.iotbay.repository.product.ProductRepository;
 import au.edu.uts.isd.iotbay.util.AuthenticationUtil;
 import lombok.SneakyThrows;
 import org.bson.types.ObjectId;
@@ -13,6 +15,10 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.List;
 
 import static au.edu.uts.isd.iotbay.util.Validator.Patterns.*;
 import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
@@ -44,10 +50,10 @@ public class CategoryAction extends Action {
 
         String name = request.getParameter("name");
         String description = request.getParameter("description");
-        String enabledString = request.getParameter("enabled");
 
-        if (isNullOrEmpty(name) || isNullOrEmpty(description) || isNullOrEmpty(enabledString)) {
-            reject("You must supply a name, description and an enable status in order to create a category.");
+
+        if (isNullOrEmpty(name) || isNullOrEmpty(description)) {
+            reject("You must supply a name and description in order to create a category.");
         }
         if (name.length() < 4) {
             reject("Product name must be at least 4 characters.");
@@ -56,24 +62,14 @@ public class CategoryAction extends Action {
         if (description.length() < 10) {
             reject("Product description must be at least 10 characters.");
         }
-        Boolean enabled = null;
-        if (enabledString.equals("false")) {
-            enabled = Boolean.getBoolean(enabledString);
-        } else if (enabledString.equals("true")) {
-            enabled = Boolean.getBoolean(enabledString);
-        } else {
-            reject("The enabled status was not a valid boolean.");
-        }
 
         final CategoryRepository repository = ctx.getCategories();
-        final Category category = repository.create(Category.create(name, description, enabled));
+        final Category category = repository.create(Category.create(name, description));
 
         if (category == null) {
             reject("Unable to create the category.");
         }
         message = "Successfully created product.";
-        //TODO::Return to a page.
-        session.setAttribute("newCategory", category);
     }
 
     @SneakyThrows
@@ -100,7 +96,6 @@ public class CategoryAction extends Action {
             reject("Could not find category to delete.");
         }
 
-        //TODO: Account for products with Category Assigned to them. Do we delete categories with products assigned to the category?
         Category deleted = repository.delete(category);
 
         if (deleted == null) {
@@ -108,8 +103,6 @@ public class CategoryAction extends Action {
         }
 
         message = "Successfully deleted the product.";
-        //TODO::Return to a page.
-        session.setAttribute("deletedCategory", deleted);
     }
 
     @SneakyThrows
@@ -135,13 +128,11 @@ public class CategoryAction extends Action {
         if (category == null) {
             reject("Could not find category to delete.");
         }
-        //TODO: Account for products with Category Assigned to them. If the category is being changed to disabled. How will this affect products with this category?
         String name = request.getParameter("name");
         String description = request.getParameter("description");
-        String enabledString = request.getParameter("enabled").toLowerCase();
 
-        if (isNullOrEmpty(name) || isNullOrEmpty(description) || isNullOrEmpty(enabledString)) {
-            reject("You must supply a name, description and an enable status in order to create a category.");
+        if (isNullOrEmpty(name) || isNullOrEmpty(description) ) {
+            reject("You must supply a name and description in order to create a category.");
         }
 
         if (name.length() < 4) {
@@ -152,18 +143,8 @@ public class CategoryAction extends Action {
             reject("Product description must be at least 10 characters.");
         }
 
-        Boolean enabled = null;
-        if (enabledString.equals("false")) {
-            enabled = Boolean.getBoolean(enabledString);
-        } else if (enabledString.equals("true")) {
-            enabled = Boolean.getBoolean(enabledString);
-        } else {
-            reject("The enabled status was not a valid boolean.");
-        }
-
         category.setName(name);
         category.setDescription(description);
-        category.setEnabled(enabled);
 
         final Category updated = repository.update(category);
 
@@ -171,8 +152,6 @@ public class CategoryAction extends Action {
             reject("Unable to update category.");
         }
         message = "Successfully updated category.";
-        //TODO::Return to a page.
-        session.setAttribute("updatedCategory", updated);
     }
 
     @SneakyThrows
