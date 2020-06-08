@@ -78,15 +78,19 @@ public class ShoppingCart implements Serializable {
         }
     }
 
+    //Contain return product quantity
     public boolean contains(Product product) {
         return quantity(product) > 0;
     }
 
+    //Returns the quantity of the product
     public int quantity(Product product) {
         final OrderProduct current = find(product);
+        //return the quantity of the object (either they
         return current == null ? 0 : current.getQuantity();
     }
 
+    //get the product id
     public OrderProduct find(Product product) {
         for (OrderProduct p : products) {
             if (p.getProduct().getId().equals(product.getId())) {
