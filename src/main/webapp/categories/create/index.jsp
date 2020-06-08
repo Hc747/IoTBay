@@ -27,19 +27,18 @@
             <form action="?action=category&type=create" method="post">
                 <div class="form-group">
                     <label for="name">
-                        Category Name
+                        Category Name:
                     </label>
                     <input class="form-control" id="name" name="name"type="text" placeholder="Category Name" required>
                 </div>
                 <div class="form-group">
                     <label for="description">
-                        Category Description
+                        Category Description:
                     </label>
                     <textarea class="form-control" name="description" id="description" rows="3" placeholder="Category Description" required></textarea>
-<%--                    <input id="description" name="description" type="text" placeholder="Category Description" required>--%>
                 </div>
                 <div class="form-group">
-                    <label for="radio">Category Status</label>
+                    <label for="radio">Category Status:</label>
                     <div id="radio">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" id="true" name="enabled" value="true">
@@ -58,11 +57,11 @@
 
                 <div class="form-group">
                     <label for="products">
-                        Category products
+                        Category products:
                     </label>
                     <select multiple class="form-control" id="products" name="products" >
                         <c:forEach var="product" items="${products}">
-                            <option value="${product.id}">"${product.name}"</option>
+                            <option value="${product.id}">${product.name}</option>
                         </c:forEach>
                     </select>
                 </div>
