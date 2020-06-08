@@ -6,8 +6,8 @@ import au.edu.uts.isd.iotbay.persistence.mongo.MongoDatabaseProvider;
 import au.edu.uts.isd.iotbay.repository.MongoRepository;
 import com.mongodb.client.model.Filters;
 
+import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Date;
 
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.lt;
@@ -21,11 +21,11 @@ public class MongoUserLogRepository extends MongoRepository<UserLog> implements 
     @Override
     public Collection<UserLog> findByUser(User user) {
         //TODO: user.id
-        return findAll(eq("user", user));
+        return findAll(eq("user._id", user.getId()));
     }
 
     @Override
-    public Collection<UserLog> findByUserBeforeDate(User user, Date date) {
-        return findAll(Filters.and(eq("user", user), lt("date", date)));
+    public Collection<UserLog> findByUserBeforeDate(User user, LocalDate date) {
+        return findAll(Filters.and(eq("user._id", user.getId()), lt("date", date)));
     }
 }

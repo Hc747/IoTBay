@@ -3,12 +3,10 @@
 <%@ page import="au.edu.uts.isd.iotbay.model.user.User" %>
 <%@ page import="au.edu.uts.isd.iotbay.repository.log.UserLogRepository" %>
 <%@ page import="au.edu.uts.isd.iotbay.util.AuthenticationUtil" %>
-<%@ page import="java.text.DateFormat" %>
+<%@ page import="java.time.LocalDate" %>
 <%@ page import="static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty" %>
-<%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="java.time.Instant" %>
+<%@ page import="java.time.temporal.ChronoUnit" %>
 <%@ page import="java.util.Collection" %>
-<%@ page import="java.util.Date" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -16,20 +14,22 @@
     User user = AuthenticationUtil.user(session);
     request.setAttribute("user", user);
 
-    Date date;
+    LocalDate date;
     final String input = request.getParameter("date");
 
     if (isNullOrEmpty(input)) {
-        date = Date.from(Instant.now());
+        date = LocalDate.now();//.plus(1, ChronoUnit.DAYS).atStartOfDay().toLocalDate();
 
     } else {
-        DateFormat format = new SimpleDateFormat("yyyy-mm-dd");
         try {
-            date = format.parse(input);
+            date = LocalDate.parse(input);
         } catch (Exception e) {
-            date = Date.from(Instant.now());
+            date = LocalDate.now();
         }
     }
+
+    date = date.plus(1, ChronoUnit.DAYS).atStartOfDay().toLocalDate();
+
     final IoTBayApplicationContext context = IoTBayApplicationContext.getInstance(application);
     final UserLogRepository repository = context.getUserLogs();
     final Collection<UserLog> userlogs = repository.findByUserBeforeDate(user, date);
