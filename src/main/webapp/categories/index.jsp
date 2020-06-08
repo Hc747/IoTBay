@@ -1,10 +1,12 @@
 <%@ page import="au.edu.uts.isd.iotbay.model.category.Category" %>
 <%@ page import="au.edu.uts.isd.iotbay.IoTBayApplicationContext" %>
 <%@ page import="au.edu.uts.isd.iotbay.repository.category.CategoryRepository" %>
+<%@ page import="static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty" %>
 <%@ page import="java.util.Collection" %>
 <%@ page import="au.edu.uts.isd.iotbay.Constants" %>
 <%@ page import="au.edu.uts.isd.iotbay.util.AuthenticationUtil" %>
-<%@ page import="au.edu.uts.isd.iotbay.model.user.User" %><%--
+<%@ page import="au.edu.uts.isd.iotbay.model.user.User" %>
+<%@ page import="org.bson.types.ObjectId" %><%--
   Created by IntelliJ IDEA.
   User: matt
   Date: 8/6/20
@@ -19,8 +21,9 @@
     request.setAttribute("user", user);
     request.setAttribute("home", Constants.path(false));
     final IoTBayApplicationContext context = IoTBayApplicationContext.getInstance(application);
-    final CategoryRepository productRepository = context.getCategories();
-    final Collection<Category> categories = productRepository.all();
+    final CategoryRepository repository = context.getCategories();
+    final Collection<Category> categories = repository.all();
+
     request.setAttribute("categories", categories);
 %>
 <t:layout>
