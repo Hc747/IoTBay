@@ -26,17 +26,23 @@ import java.util.stream.Collectors;
 
 import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
 
+//Order inherits from abstract class Action and provides implementation
 public class OrderAction extends Action {
     @Override
     protected void invoke(ServletContext application, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        //Gets the post request from the view
+        //Determines what function is invoked
         String type = request.getParameter("type");
-
+        //Validate the post data from the type
         if (isNullOrEmpty(type)) {
             return;
         }
         final IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);
 
+        //Check what action is the user trying to perform
+        //Convert all submission to lower case and convert
         switch (type.toLowerCase()) {
+            //When the type post value is create than invoke create method
             case "create": create(ctx, session, request);break;
             default: break;
         }
@@ -80,31 +86,41 @@ public class OrderAction extends Action {
     }
 
     @SneakyThrows
+    //Method to create an order in the database
     private void create(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
+        //Create a shopping cart object with the session data
         final ShoppingCart cart = ShoppingCartUtil.get(session);
 
+        //Check whether the cart has products (is it empty?)
         if (cart.isEmpty()) {
+            //Don't submit any order if the cart is empty
+            //Display error message
             reject("Your cart is empty.");
         }
 
+        //Authenticates the user action
         final User user = AuthenticationUtil.user(session);
         final boolean guest = user == null;
+        //Store posted values from the view to be validated
         final String email = request.getParameter("email");
         final String name = request.getParameter("name");
         final String method = request.getParameter("payment_method");
 
-        //TODO: validate input
+        //Validate the input from the user, whether they have input an email, payment method
         if (isNullOrEmpty(name) || isNullOrEmpty(email) || isNullOrEmpty(method) || !ObjectId.isValid(method)) {
+            //Display error message
             reject("You must supply an email address, name and payment method id.");
         }
 
+        //Create an invoice object using the ShoppingCartUtil
         final Invoice invoice = ShoppingCartUtil.invoice(cart, email, name);
-
+        //Create payment method object
         final PaymentMethod payment;
-
+        //if the the user is a guest
         if (guest) {
             payment = ctx.getPayments().findById(method);
         } else {
+            //If the user is a registered than get existing payment methods
             payment = Misc.findById(user.getPayments(), method);
         }
 
@@ -113,26 +129,32 @@ public class OrderAction extends Action {
         }
 
         boolean modified = false;
-
+        //Check for each item in the cart
         for (OrderProduct item : cart.products()) {
             final Product product = ctx.getProducts().findById(item.getProduct().getId());
 
             if (product == null) {
                 modified = true;
                 cart.delete(item.getProduct());
+                //Check if the product quantity in the cart is less than the product quantity in the product
+                //Make sure the customer does not order too many items
             } else if (product.getQuantity() < cart.quantity(product)) {
                 modified = true;
                 cart.set(product, product.getQuantity());
             }
         }
 
+        //If the cart is empty and the product order amount is too much than prevent the order
         if (modified || cart.isEmpty()) {
+            //Display error message
             reject("Some of the products you selected are not currently available at the requested quantities.");
         }
 
+        //List of products in the cart
         final List<Product> products = cart.products().stream().map(item -> {
-            //decrement available products in the database by the requested amount
+            //decrement available products in the database by the requested amount by customer
             final Product product = ctx.getProducts().findById(item.getProduct().getId());
+            //Set the quantity of the product (product InStock - product amount requested by customer
             product.setQuantity(product.getQuantity() - item.getQuantity());
             ctx.getProducts().update(product);
 
@@ -141,10 +163,11 @@ public class OrderAction extends Action {
             return item.getProduct();
         }).collect(Collectors.toList());
 
+        //Order object with values
         final Order order = ctx.getOrders().create(new Order(invoice, payment, Order.Status.CREATED, products, LocalDate.now()));
 
+        //if the the order object is null than do not place order and display error message
         if (order == null) {
-            //TODO: increment products by requested amount in case of failure // rollback
             reject("Unable to place your order.");
         }
 
@@ -160,6 +183,7 @@ public class OrderAction extends Action {
 
         ShoppingCartUtil.set(session, new ShoppingCart());
 
+        //success message with the orderId
         message = "Your order was placed. ID: " + order.getId();
     }
 }

@@ -9,11 +9,15 @@ import java.util.List;
 
 public class ShoppingCart implements Serializable {
 
+    //Shopping cart keeps a list of OrderProducts
     private final List<OrderProduct> products = new ArrayList<>();
 
+    //Order products has a product object and it's quantity
+    //set takes in a product object and a int quantity
     public void set(Product product, int quantity) {
         final boolean delete = quantity <= 0;
 
+        //if the product quantity is less than zero, delete the product from the list
         if (delete) {
             delete(product);
         } else {
@@ -31,33 +35,45 @@ public class ShoppingCart implements Serializable {
         return new ArrayList<>(products);
     }
 
+    //totalCost returns an integer the total cost
     public double totalCost() {
+        //Initialise the total cost
         double total = 0.0D;
+        //for each product added to the cart, get the quantity and price of the product and add it to the total
         for (OrderProduct p : products) {
+            //Add the total cost of the product into the total variable
             total += (p.getProduct().getPrice() * p.getQuantity());
         }
         return total;
     }
 
+    //Calculate the total item in the cart
     public int totalItems() {
+        //Initialise as 0 as there are no items in the cart
         int total = 0;
+        //for each product added to the cart, get the quantity of the product and add it to the total
         for (OrderProduct p : products) {
+            //Add the quantity of the product to the current total
             total += p.getQuantity();
         }
+        //return the total
         return total;
     }
 
+    //add increments the product by 1 in the shopping cart
     public void add(Product product) {
         set(product, quantity(product) + 1);
     }
-
+    //remove decrements the product by 1 in the shopping cart
     public void remove(Product product) {
         set(product, quantity(product) - 1);
     }
-
+    //delete removes the current product in the cart
     public void delete(Product product) {
         final OrderProduct current = find(product);
+        //remove only when there is a product in the cart
         if (current != null) {
+            //remove the selected product
             products.remove(current);
         }
     }
