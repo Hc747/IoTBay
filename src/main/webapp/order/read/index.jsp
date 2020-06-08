@@ -49,7 +49,7 @@ if(isNullOrEmpty(id) || !ObjectId.isValid(id))
             Order Amount: ${order.invoice.amount}
         </div>
         <div class="form-group">
-            Ordered By: ${order.invoice.firstName}
+            Ordered By: ${order.invoice.name}
         </div>
         <div class="form-group">
             Order Placed On: ${order.date}
