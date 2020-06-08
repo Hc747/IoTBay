@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * A {@code Filter} that ensures a session is unauthenticated.
+ */
 public class UnauthenticatedFilter implements Filter {
 
     private static final String REDIRECTION_PATH = Constants.path(true);

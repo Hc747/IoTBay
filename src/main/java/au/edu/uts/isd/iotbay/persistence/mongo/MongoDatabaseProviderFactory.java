@@ -29,6 +29,9 @@ import java.util.StringJoiner;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
 import static org.bson.codecs.configuration.CodecRegistries.fromRegistries;
 
+/**
+ * Factory class with reasonable defaults for providing an implementation of the {@code MongoDatabaseProvider} interface.
+ */
 public class MongoDatabaseProviderFactory {
 
     public static MongoDatabaseProvider mongo(String connectionString, String database) {

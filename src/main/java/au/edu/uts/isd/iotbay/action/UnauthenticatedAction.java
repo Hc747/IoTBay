@@ -7,6 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * An {@code Action} that may only be invoked by unauthenticated {@code User}s.
+ */
 public class UnauthenticatedAction extends Action {
 
     @Override

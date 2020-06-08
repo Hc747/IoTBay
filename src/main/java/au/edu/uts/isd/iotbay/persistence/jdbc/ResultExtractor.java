@@ -6,13 +6,23 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * The {@code ResultExtractor} interface provides a mechanism of uniformly transforming a {@code ResultSet} row into
+ * a POJO of type {@code T}.
+ * @param <T>
+ *     The type of object to extract from the {@code ResultSet}
+ */
 @FunctionalInterface
 public interface ResultExtractor<T> {
 
-    //TODO(harrison): documentation
-
+    /**
+     * Provides a means of extracting a POJO of type {@code T} from a {@code ResultSet} row.
+     */
     T extract(ResultSet results) throws SQLException;
 
+    /**
+     * Attempts to extract 1 row from the {@code ResultSet}
+     */
     default T single(ResultSet results) throws SQLException {
         try (ResultSet rs = results) {
             if (rs.next()) {
@@ -22,6 +32,9 @@ public interface ResultExtractor<T> {
         }
     }
 
+    /**
+     * Attempts to extract all rows from the {@code ResultSet}
+     */
     default Collection<T> all(ResultSet results) throws SQLException {
         try (ResultSet rs = results) {
             final List<T> elements = new ArrayList<>(results.getFetchSize());

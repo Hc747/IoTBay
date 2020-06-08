@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Properties;
 
+/**
+ * Factory class with reasonable defaults for providing an implementation of the {@code ConnectionProvider} interface.
+ */
 public final class ConnectionProviderFactory {
 
     public static ConnectionProvider hikari(String propertiesPath) {

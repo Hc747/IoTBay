@@ -2,8 +2,13 @@ package au.edu.uts.isd.iotbay.util;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import au.edu.uts.isd.iotbay.model.user.User;
+
 import javax.servlet.http.HttpSession;
 
+/**
+ * A utility class providing common authentication functionality (generating password hashes, checking passwords,
+ * retrieving or storing the user in a session, etc).
+ */
 public class AuthenticationUtil {
     
     private static final String SESSION_KEY = "authenticated-user";

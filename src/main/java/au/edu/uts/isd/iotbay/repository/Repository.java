@@ -17,9 +17,20 @@ import java.util.stream.Collectors;
  */
 public interface Repository<T extends Identifiable> {
 
-    //TODO(harrison): documentation
+    /**
+     * Retrieves the first element from the underlying data store whose element equals the parameterised {@code id} ObjectId.
+     *
+     * @param id
+     * The ObjectId to lookup.
+     *
+     * @return
+     * An element whose id matches or null iff no elements matched the {@code id ObjectId}.
+     */
     T findById(ObjectId id);
 
+    /**
+     * @see Repository#findById(ObjectId id)
+     */
     default T findById(String id) {
         return findById(new ObjectId(id));
     }
@@ -83,7 +94,7 @@ public interface Repository<T extends Identifiable> {
     }
 
     /**
-     * Retrieves the first element from the underlying data store that matcesh the parameterised {@code criteria} predicate.
+     * Retrieves the first element from the underlying data store that matches the parameterised {@code criteria} predicate.
      * @see Repository#all
      *
      * @param criteria

@@ -2,6 +2,9 @@ package au.edu.uts.isd.iotbay;
 
 import java.util.StringJoiner;
 
+/**
+ * A class containing CONSTANT_VALUES used to configure the application.
+ */
 public final class Constants {
 
     public static boolean PERSISTENCE_ENABLED = true;

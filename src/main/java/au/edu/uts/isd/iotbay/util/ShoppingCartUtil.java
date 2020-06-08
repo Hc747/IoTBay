@@ -6,6 +6,9 @@ import au.edu.uts.isd.iotbay.model.user.User;
 
 import javax.servlet.http.HttpSession;
 
+/**
+ * A utility class for interacting with the {@code User}s {@code ShoppingCart} across sessions.
+ */
 public class ShoppingCartUtil {
 
     private static final String SESSION_KEY = "shopping-cart";

@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Objects;
 
+/**
+ * The {@code ActionProcessor} is used to invoke and process {@code Action}s uniformly against inbound {@code HttpServletRequest}s.
+ */
 @Getter
 public class ActionProcessor {
 

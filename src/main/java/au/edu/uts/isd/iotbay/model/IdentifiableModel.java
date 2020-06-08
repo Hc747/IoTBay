@@ -2,6 +2,9 @@ package au.edu.uts.isd.iotbay.model;
 
 import org.bson.types.ObjectId;
 
+/**
+ * The base class for Models to be persisted in MongoDB.
+ */
 public class IdentifiableModel implements Identifiable {
 
     protected ObjectId _id;

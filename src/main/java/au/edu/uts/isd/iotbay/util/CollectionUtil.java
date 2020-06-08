@@ -7,7 +7,10 @@ import java.util.Collection;
 
 import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
 
-public class Misc {
+/**
+ * A utility class for operating upon collections of {@code Identifiable} elements.
+ */
+public class CollectionUtil {
 
     public static <T extends Identifiable> T findById(Collection<T> elements, String id) {
         if (isNullOrEmpty(id) || !ObjectId.isValid(id)) {
@@ -15,7 +18,6 @@ public class Misc {
         }
         return findById(elements, new ObjectId(id));
     }
-
 
     public static <T extends Identifiable> T findById(Collection<T> elements, ObjectId id) {
         for (T element : elements) {
@@ -26,7 +28,7 @@ public class Misc {
         return null;
     }
 
-    private Misc() {
+    private CollectionUtil() {
         throw new IllegalStateException("Unable to create an instance of: " + getClass().getSimpleName());
     }
 }

@@ -13,6 +13,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * A {@code Filter} that ensures a session is authenticated.
+ */
 public class AuthenticatedFilter implements Filter {
 
     private static final String AUTHENTICATION_PATH = Constants.path(true, "login");

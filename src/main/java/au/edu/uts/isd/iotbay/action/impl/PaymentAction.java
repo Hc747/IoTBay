@@ -9,7 +9,7 @@ import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.repository.payment.PaymentMethodRepository;
 import au.edu.uts.isd.iotbay.repository.user.UserRepository;
 import au.edu.uts.isd.iotbay.util.AuthenticationUtil;
-import au.edu.uts.isd.iotbay.util.Misc;
+import au.edu.uts.isd.iotbay.util.CollectionUtil;
 import lombok.SneakyThrows;
 import org.bson.types.ObjectId;
 
@@ -111,7 +111,7 @@ public class PaymentAction extends Action {
             reject("Invalid ID provided.");
         }
 
-        final PaymentMethod method = Misc.findById(user.getPayments(), identifier);
+        final PaymentMethod method = CollectionUtil.findById(user.getPayments(), identifier);
 
         if (method == null) {
             reject("Unable to find payment method with ID: " + identifier);
@@ -139,7 +139,7 @@ public class PaymentAction extends Action {
             reject("Invalid ID provided.");
         }
 
-        final PaymentMethod method = Misc.findById(user.getPayments(), identifier);
+        final PaymentMethod method = CollectionUtil.findById(user.getPayments(), identifier);
 
         if (method == null) {
             reject("Unable to find payment method with ID: " + identifier);

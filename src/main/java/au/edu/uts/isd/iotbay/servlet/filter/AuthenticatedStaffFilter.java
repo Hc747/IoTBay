@@ -5,6 +5,9 @@ import au.edu.uts.isd.iotbay.model.user.User;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+/**
+ * A {@code Filter} that ensures a session is authenticated and the authenticated user is a staff member.
+ */
 public class AuthenticatedStaffFilter extends AuthenticatedFilter {
 
     @Override

@@ -8,6 +8,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.Serializable;
 
+import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
+
+/**
+ * Represents functionality that would typically be exposed via servlets; simpler to implement and dispatch,
+ * can be registered / de-registered dynamically, and provides greater flexibility in terms of how they may be invoked.
+ */
 public abstract class Action implements Serializable {
     
     public static final String KEY = "action";
@@ -24,12 +30,8 @@ public abstract class Action implements Serializable {
             message = e.getMessage();
             type = MessageType.WARNING;
         } catch (Exception e) {
-//            message = "An unexpected error occurred. Unable to process your request.";
-            message = e.getClass().getSimpleName() + ": " + e.getMessage(); //TODO: don't expose internal error details in prod
+            message = e.getClass().getSimpleName() + ": " + e.getMessage();
             type = MessageType.DANGER;
-//
-//            e.printStackTrace();
-//            throw e; //TODO: don't throw when not in dev environment
         }
     }
     
@@ -40,7 +42,7 @@ public abstract class Action implements Serializable {
     }
     
     public String render() {
-        if (message == null || message.isEmpty() || type == null) {
+        if (isNullOrEmpty(message) || type == null) {
             return "";
         }
 

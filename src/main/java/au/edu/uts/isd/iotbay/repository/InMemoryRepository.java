@@ -9,6 +9,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Provides the underlying {@code Repository} functionality for storing objects transiently in memory.
+ * Does not persist between deployments.
+ *
+ * @param <T>
+ *      The type of elements stored within the underlying {@code Map}.
+ */
 public abstract class InMemoryRepository<T extends Identifiable> implements Repository<T> {
 
     protected final Map<ObjectId, T> elements;

@@ -3,6 +3,9 @@ package au.edu.uts.isd.iotbay.util;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * A utility class providing methods for validating / sanitising user input.
+ */
 public class Validator {
 
     public static boolean matches(String regex, String input) {
@@ -23,6 +26,9 @@ public class Validator {
         throw new IllegalStateException("Unable to create an instance of: " + getClass().getSimpleName());
     }
 
+    /**
+     * Commonly used validation regular expressions.
+     */
     public static class Patterns {
         public static final Pattern CREDIT_CARD_PATTERN = Pattern.compile("(\\d{4} ?){4,}");
         public static final Pattern CVV_PATTERN = Pattern.compile("\\d{3,}");
@@ -32,8 +38,5 @@ public class Validator {
         public static final Pattern PHONE_NUMBER_PATTERN = Pattern.compile("[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]*");
         public static final Pattern DECIMAL_PATTERN = Pattern.compile("(\\d+(\\.\\d+)?)");
         public static final Pattern WHOLE_NUMBER_PATTERN = Pattern.compile("\\d+");
-//        public static final Pattern OBJECT_NAME_PATTERN = Pattern.compile("(\\w+ ?)+");
-//        public static final Pattern OBJECT_DESCRIPTION_PATTERN = Pattern.compile("[\\w ]");
-
     }
 }

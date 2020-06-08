@@ -3,7 +3,7 @@
 <%@ page import="au.edu.uts.isd.iotbay.model.payment.PaymentMethod" %>
 <%@ page import="au.edu.uts.isd.iotbay.model.user.User" %>
 <%@ page import="au.edu.uts.isd.iotbay.util.AuthenticationUtil" %>
-<%@ page import="au.edu.uts.isd.iotbay.util.Misc" %>
+<%@ page import="au.edu.uts.isd.iotbay.util.CollectionUtil" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
@@ -16,7 +16,7 @@
     if (isNullOrEmpty(id)) {
         method = null;
     } else {
-        method = Misc.findById(user.getPayments(), id);
+        method = CollectionUtil.findById(user.getPayments(), id);
     }
 
     request.setAttribute("method", method);

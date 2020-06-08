@@ -12,11 +12,27 @@ import java.util.Objects;
 
 import static com.mongodb.client.model.Filters.eq;
 
+/**
+ * Provides the underlying {@code Repository} functionality for interfacing with a MongoDB Collection.
+ * Persists between deployments.
+ *
+ * @param <T>
+ *     The type of elements stored within the underlying {@code MongoCollection}.
+ */
 public abstract class MongoRepository<T extends Identifiable> implements Repository<T> {
 
     protected final MongoDatabaseProvider datasource;
     protected final MongoCollection<T> collection;
 
+    /**
+     * Constructs a MongoRepository
+     * @param datasource
+     *      The underlying database provider.
+     * @param clazz
+     *      The class of object to persist.
+     * @param collection
+     *      The name of the collection within MongoDB.
+     */
     protected MongoRepository(MongoDatabaseProvider datasource, Class<T> clazz, String collection) {
         this.datasource = Objects.requireNonNull(datasource);
         this.collection = datasource.collection(collection, clazz);
@@ -31,6 +47,9 @@ public abstract class MongoRepository<T extends Identifiable> implements Reposit
         return identity(instance.getId());
     }
 
+    /**
+     * Generates a MongoDB BSON criteria for matching objects by ID.
+     */
     protected Bson identity(ObjectId id) {
         return eq("_id", id);
     }

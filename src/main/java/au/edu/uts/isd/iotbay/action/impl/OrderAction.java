@@ -11,7 +11,7 @@ import au.edu.uts.isd.iotbay.model.product.Product;
 import au.edu.uts.isd.iotbay.model.user.User;
 import au.edu.uts.isd.iotbay.repository.order.OrderRepository;
 import au.edu.uts.isd.iotbay.util.AuthenticationUtil;
-import au.edu.uts.isd.iotbay.util.Misc;
+import au.edu.uts.isd.iotbay.util.CollectionUtil;
 import au.edu.uts.isd.iotbay.util.ShoppingCartUtil;
 import lombok.SneakyThrows;
 import org.bson.types.ObjectId;
@@ -128,7 +128,7 @@ public class OrderAction extends Action {
             payment = ctx.getPayments().findById(method);
         } else {
             //If the user is a registered than get existing payment methods
-            payment = Misc.findById(user.getPayments(), method);
+            payment = CollectionUtil.findById(user.getPayments(), method);
         }
 
         if (payment == null) {

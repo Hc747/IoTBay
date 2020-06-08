@@ -4,6 +4,10 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 
+/**
+ * The {@code MongoDatabaseProvider} interface provides a layer of abstraction over how the underlying {@code MongoDatabase}
+ * is produced. Furthermore, it provides mechanisms for producing a reference to a {@code MongoCollection}
+ */
 public interface MongoDatabaseProvider extends AutoCloseable {
 
     MongoDatabase database();

@@ -24,6 +24,10 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.function.Supplier;
 
+/**
+ * Represents the centralised IoTBay application state; stored as a singleton within the active servlet context object
+ * of the web-server.
+ */
 @Getter
 public final class IoTBayApplicationContext implements Serializable, AutoCloseable {
     
