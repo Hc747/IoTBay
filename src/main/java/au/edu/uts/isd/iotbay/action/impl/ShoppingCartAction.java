@@ -25,9 +25,12 @@ public class ShoppingCartAction extends Action {
             return;
         }
 
+        //Creates an instance of the shopping cart object
         final IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);
 
+        //Check the type of input posted from the view
         switch (type.toLowerCase()) {
+            //Invoke the appropriate function based in the add function
             case "add": add(ctx, session, request); break;
             case "remove": remove(ctx, session, request); break;
             case "delete": delete(ctx, session, request); break;

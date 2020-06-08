@@ -37,6 +37,7 @@ public class OrderAction extends Action {
         if (isNullOrEmpty(type)) {
             return;
         }
+        //Gets the instance of the application (action registry)
         final IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);
 
         //Check what action is the user trying to perform
@@ -58,14 +59,19 @@ public class OrderAction extends Action {
         if (!ObjectId.isValid(identifier)) {
             reject("Order Id invalid.");
         }
+        //Get orders from the repository
         final OrderRepository repository= ctx.getOrders();
+        //Get the order object and finds the id passed into  it
         final Order order = repository.findById(identifier);
 
+        //Checks if the id is valid
         if(order == null) {
             reject("Order Id Invalid.");
         }
 
+        //Call the deleted function from the repository
         repository.delete(order);
+        //Display success message
         message = "Order was successfully deleted";
     }
 

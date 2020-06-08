@@ -37,6 +37,7 @@ if(isNullOrEmpty(id) || !ObjectId.isValid(id))
         </label>
         <input type="text" id="id", name="id", placeholder="Enter ID">
         <input type="submit" id="submit" name="submit" value="submit">
+        <h4>Your Shipment details are below: </h4>
     </form>
     <c:if test="${order != null}">
         <div class="form-group">
@@ -47,9 +48,6 @@ if(isNullOrEmpty(id) || !ObjectId.isValid(id))
         </div>
         <div class="form-group">
             Order Amount: ${order.invoice.amount}
-        </div>
-        <div class="form-group">
-            Ordered By: ${order.invoice.name}
         </div>
         <div class="form-group">
             Order Placed On: ${order.date}
