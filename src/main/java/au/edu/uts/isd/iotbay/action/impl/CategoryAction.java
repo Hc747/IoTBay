@@ -44,7 +44,7 @@ public class CategoryAction extends Action {
 
         String name = request.getParameter("name");
         String description = request.getParameter("description");
-        String enabledString = request.getParameter("enabled").toLowerCase();
+        String enabledString = request.getParameter("enabled");
 
         if (isNullOrEmpty(name) || isNullOrEmpty(description) || isNullOrEmpty(enabledString)) {
             reject("You must supply a name, description and an enable status in order to create a category.");
@@ -56,11 +56,15 @@ public class CategoryAction extends Action {
         if (description.length() < 10) {
             reject("Product description must be at least 10 characters.");
         }
-
-        if (!(enabledString.equals("false")) || (enabledString.equals("true"))) {
-            reject("The input enabled status was not a valid boolean.");
+        Boolean enabled = null;
+        if (enabledString.equals("false")) {
+            enabled = Boolean.getBoolean(enabledString);
+        } else if (enabledString.equals("true")) {
+            enabled = Boolean.getBoolean(enabledString);
+        } else {
+            reject("The enabled status was not a valid boolean.");
         }
-        boolean enabled = Boolean.getBoolean(enabledString);
+
         final CategoryRepository repository = ctx.getCategories();
         final Category category = repository.create(Category.create(name, description, enabled));
 

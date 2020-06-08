@@ -13,7 +13,6 @@
     final Collection<Product> products = productRepository.all();
 
     request.setAttribute("products", products);
-    final DecimalFormat priceFormat = new DecimalFormat("###,##0.00");
 %>
 <t:layout>
     <jsp:body>
