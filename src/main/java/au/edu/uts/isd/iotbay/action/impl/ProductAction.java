@@ -53,13 +53,16 @@ public class ProductAction extends Action {
     @SneakyThrows
     private void create(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
         final User user = authenticate(session);
+        //Validation of user
         validate(user);
 
+        //Fetch Input Parameters
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         String quantityString = request.getParameter("quantity");
         String priceString = request.getParameter("price");
 
+        //Check if input parameters meet specifications
         if (isNullOrEmpty(name) || isNullOrEmpty(description) || isNullOrEmpty(quantityString) || isNullOrEmpty(priceString)) {
             reject("You must supply a name, description, quantity and priceString in order to create a product.");
         }
@@ -91,23 +94,29 @@ public class ProductAction extends Action {
             reject("Product priceString cannot be negative.");
         }
 
+        //Create the product in the database.
         final ProductRepository repository = ctx.getProducts();
         final Product product = Product.create(name, description, quantity, price);
         final Product newProduct = repository.create(product);
 
+        //Check that the product was successfully added to the db
         if (newProduct == null) {
             reject("Unable to create product.");
         }
+        //Return confirmation message that product created
         message = "Successfully created product.";
     }
 
     @SneakyThrows
     private void delete(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
+        //Validation of the user
         final User user = authenticate(session);
         validate(user);
 
+        //Get the input object id for the object to be deleted
         final String identifier = request.getParameter("id");
 
+        //Check the input object id is valid
         if (isNullOrEmpty(identifier)) {
             reject("No Product Id found");
         }
@@ -116,31 +125,39 @@ public class ProductAction extends Action {
             reject("Product Id was not valid.");
         }
 
+        //Create a objectID object with the input ObjectID
         final ObjectId id = new ObjectId(identifier);
 
+        //Initialise the ProductRepository and find the product with the object id
         final ProductRepository repository = ctx.getProducts();
         final Product product = repository.findById(id);
 
+        //Check the product at id exists
         if (product == null) {
             reject("Could not find product to delete.");
         }
-
+        //Delete the product from the database.
         Product deleted = repository.delete(product);
 
+        //Confirm the product deleted from the database
         if (deleted == null) {
             reject("Unable to delete the product.");
         }
 
+        //Return confirmation message
         message = "Successfully deleted the product.";
     }
 
     @SneakyThrows
     private void update(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
+        //Validation of the user
         final User user = authenticate(session);
         validate(user);
 
+        //Get the input object id for the object to be deleted
         final String identifier = request.getParameter("id");
 
+        //Check the input object id is valid
         if (isNullOrEmpty(identifier)) {
             reject("No Product Id found");
         }
@@ -149,9 +166,11 @@ public class ProductAction extends Action {
             reject("Product Id was not valid.");
         }
 
+        //Initialise the ProductRepository and find the product with the object id
         final ProductRepository repository = ctx.getProducts();
         final Product product = repository.findById(identifier);
 
+        //Check the product at id exists
         if (product == null) {
             reject("Could not find product to delete.");
         }
@@ -194,12 +213,13 @@ public class ProductAction extends Action {
         if (price < 0) {
             reject("Product Price was not valid Can't be a negative value");
         }
-        
+        //Update object product
         product.setName(name);
         product.setDescription(description);
         product.setQuantity(quantity);
         product.setPrice(price);
 
+        //Add selected categories to the product. Verify's the id is safe to add before adding
         final CategoryRepository categoryRepository = ctx.getCategories();
         for (String category : categories) {
             if (!(isNullOrEmpty(category))) {
@@ -213,17 +233,20 @@ public class ProductAction extends Action {
             }
         }
 
+        //Update the object in the database with the object updated
         final Product updated = repository.update(product);
 
+        //Check that the update was applied
         if (updated == null) {
             reject("Unable to update product.");
         }
+        //Confirmation message
         message = "Successfully updated product.";
     }
 
 
     @SneakyThrows
-    private User authenticate(HttpSession session) {
+    private User authenticate(HttpSession session) { //Ensures the user is logged in
         User user = AuthenticationUtil.user(session);
         if (user == null) {
             reject("You cannot do this while logged out.");
@@ -232,7 +255,7 @@ public class ProductAction extends Action {
     }
 
     @SneakyThrows
-    private void validate(User user) {
+    private void validate(User user) { //Checks that the user is a staff member
         if (!user.getRole().isStaff()) {
             reject("You don't have permission to perform this action.");
         }
