@@ -79,14 +79,62 @@ public class ShipmentAction extends Action {
 
         final ShipmentRepository repository = ctx.getShipments();
         final Shipment shipment = repository.create(new Shipment(name, a, method, delivery));
-//        session.setAttribute("shipment", shipment); //TODO: why?
+
+        session.setAttribute("shipment", shipment);
 
         message = "Shipment has been saved";
     }
 
-    //@SneakyThrows
+    @SneakyThrows
     protected void update(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
+        final String identifier = request.getParameter("id");
+        String name = request.getParameter("name");
+        String method = request.getParameter("method");
+        String address = request.getParameter("address");
+        String postcode = request.getParameter("postcode");
 
+        Address a = new Address(address, postcode);
+
+        int days = 0;
+        switch (method) {
+            case "free":
+                days = 10;
+                break;
+            case "standard":
+                days = 5;
+                break;
+            case "express":
+                days = 2;
+                break;
+            default:
+                break;
+        }
+
+        LocalDate delivery = LocalDate.now().atStartOfDay().plus(days, ChronoUnit.DAYS).toLocalDate();
+
+        if (isNullOrEmpty(identifier)) {
+            reject("Shipment ID is not found");
+        }
+
+        if (!ObjectId.isValid(identifier)) {
+            reject("Shipment ID is not valid");
+        }
+
+        final ShipmentRepository repository = ctx.getShipments();
+        final Shipment shipment = repository.findById(identifier);
+
+        if (shipment == null) {
+            reject("Shipment is not found");
+        }
+
+        a.setAddress(address);
+        a.setPostcode(postcode);
+        shipment.setName(name);
+        shipment.setAddress(a);
+        shipment.setDate(delivery);
+
+        repository.update(shipment);
+        message="Shipment has been deleted";
     }
 
     @SneakyThrows

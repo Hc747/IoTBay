@@ -102,6 +102,7 @@ public final class IoTBayApplicationContext implements Serializable, AutoCloseab
         registry.register("logout", LogoutAction::new);
         registry.register("user", UserAction::new);
         registry.register("product", ProductAction::new);
+        registry.register("category", CategoryAction::new);
         registry.register("payment", PaymentAction::new);
         registry.register("shipment", ShipmentAction::new);
         registry.register("order", OrderAction::new);

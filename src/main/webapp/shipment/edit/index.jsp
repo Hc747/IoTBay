@@ -2,7 +2,7 @@
   Created by IntelliJ IDEA.
   User: user
   Date: 7/06/2020
-  Time: 4:13 pm
+  Time: 3:40 pm
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page import="au.edu.uts.isd.iotbay.action.Action" %>
@@ -12,6 +12,10 @@
     <jsp:body>
         <div class="container">
             <form action="?action=shipment&type=update" method="POST">
+                <label>
+                    Please enter shipment id
+                </label>
+                <input type="text" class="form-control" id="id" name="id" placeholder="Enter ID" required>
                 <div class="form-group">
                     <label>
                         Name
@@ -40,7 +44,7 @@
                     </label>
                     <input type="text" class="form-control" id="postcode" name="postcode" placeholder="Enter postcode" required>
                 </div>
-                <button type="submit" class="btn btn-primary">update</button>
+                <button type="submit" class="btn btn-primary">Save</button>
             </form>
         </div>
     </jsp:body>

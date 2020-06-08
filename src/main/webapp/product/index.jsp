@@ -62,7 +62,7 @@
                                 <button type="submit" class="btn btn-primary" style="right: auto">Add 1 to Cart</button>
                             </form>
                         </div>
-                        <div class="col-sm-46">
+                        <div class="col-sm-6">
                             <form action="?id=${product.id}" method="POST" style="float: left">
                                 <input type="hidden" name="action" value="cart"/>
                                 <input type="hidden" name="type" value="remove"/>

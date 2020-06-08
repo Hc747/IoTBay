@@ -4,6 +4,9 @@
 <%@ page import="au.edu.uts.isd.iotbay.model.product.Product" %>
 <%@ page import="org.bson.types.ObjectId" %>
 <%@ page import="static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty" %>
+<%@ page import="au.edu.uts.isd.iotbay.repository.category.CategoryRepository" %>
+<%@ page import="java.util.Collection" %>
+<%@ page import="au.edu.uts.isd.iotbay.model.category.Category" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%--
@@ -19,15 +22,17 @@
     request.setAttribute("home", Constants.path(false));
     final IoTBayApplicationContext context = IoTBayApplicationContext.getInstance(application);
     final ProductRepository repository = context.getProducts();
+    final CategoryRepository catalogueRepository = context.getCategories();
     final String id = request.getParameter("id");
     final Product product;
+    final Collection<Category> categories = catalogueRepository.all();
 
     if (isNullOrEmpty(id) || !ObjectId.isValid(id)) {
         product = null;
     } else {
         product = repository.findById(id);
     }
-
+    request.setAttribute("categories", categories);
     request.setAttribute("product", product);
 %>
 <t:layout>
@@ -46,9 +51,17 @@
                     <h1 style="text-align: center">${product.name}</h1>
                     <p style="text-align: center">ProductId: ${product.id}</p>
                     <div class="container p-3 my-3 bg-dark text-white">
-                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteProduct">Delete Product</button>
-                        <a type="button" class="btn btn-light" href="/iotbay/product/?id=${product.id}">Return to Product Page</a>
-                        <a type="button" class="btn btn-light" href="/iotbay/product/edit/?action=product&type=edit&id=${product.id}">Reload Form Values</a>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteProduct">Delete Product</button>
+                            </div>
+                            <div class="col-sm-4">
+                                <a type="button" class="btn btn-light" href="/iotbay/product/?id=${product.id}">Return to Product Page</a>
+                            </div>
+                            <div class="col-sm-4">
+                                <a type="button" class="btn btn-light" href="/iotbay/product/edit/?action=product&type=edit&id=${product.id}">Reload Form Values</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="container p-3 my-3 bg-dark text-white" >
@@ -57,33 +70,43 @@
                     <form action="?action=product&type=update&id=${product.id}" method="post">
                         <div class="form-group">
                             <label for="name">
-                                Product Name
+                                Product Name:
                             </label>
-                            <input id="name" name="name"type="text" placeholder="Product Name" required value="${product.name}">
+                            <input class="form-control" id="name" name="name"type="text" placeholder="Product Name" required value="${product.name}">
                         </div>
                         <div class="form-group">
                             <label for="description">
-                                Product Description
+                                Product Description:
                             </label>
-                            <input id="description" name="description" type="text" placeholder="Product Description" required value="${product.description}">
+                            <textarea class="form-control" id="description" name="description" rows="3" placeholder="ProductDescription" required>${product.description}</textarea>
+<%--                            <input class="form-control" id="description" name="description" type="text" placeholder="Product Description" required value="${product.description}">--%>
                         </div>
                         <div class="form-group">
                             <label for="quantity">
-                                Product Quantity
+                                Product Quantity:
                             </label>
-                            <input id="quantity" name="quantity"type="number" placeholder="0" required value="${product.quantity}">
+                            <input class="form-control" id="quantity" name="quantity"type="number" placeholder="0" required value="${product.quantity}">
                         </div>
                         <div class="form-group">
                             <label for="price">
-                                Product Price: $
+                                Product Price:
                             </label>
-                            <input id="price" name="price" type="number" step="0.01" placeholder="$0.00" required value="${product.formatPrice()}">
+                            <input class="form-control" id="price" name="price" type="number" step="0.01" placeholder="$0.00" required value="${product.price}">
                         </div>
                         <div class="form-group">
                             <label for="categories">
-                                Product Categories
+                                Product Categories:
                             </label>
-                            <input id="categories" name="categories" type="text" placeholder="Product Categories">
+                            <select multiple class="form-control" id="categories" name="categories">
+                                <c:forEach var="category" items="${categories}">
+                                    <c:if test="${product.categories.contains(category.id) == true}">
+                                        <option selected value="${category.id}">${category.name}</option>
+                                    </c:if>
+                                    <c:if test="${product.categories.contains(category.id) == false}">
+                                        <option value="${category.id}">${category.name}</option>
+                                    </c:if>
+                                </c:forEach>
+                            </select>
                         </div>
                         <div>
                             <button type="submit" class="btn btn-warning">Confirm Product Edit</button>
