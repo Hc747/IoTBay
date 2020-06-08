@@ -5,66 +5,47 @@
   Time: 3:40 pm
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page import="au.edu.uts.isd.iotbay.model.shipment.Shipment" %>
-<%@ page import="au.edu.uts.isd.iotbay.IoTBayApplicationContext" %>
-<%@ page import="au.edu.uts.isd.iotbay.repository.shipment.ShipmentRepository" %>
+<%@ page import="au.edu.uts.isd.iotbay.action.Action" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
-<%@ page import="org.bson.types.ObjectId" %>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page import="static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty" %>
-<%
-    final IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);
-    final ShipmentRepository repository = ctx.getShipments();
-    final String id = request.getParameter("id");
-    final Shipment shipment;
-
-    if(isNullOrEmpty(id) || !ObjectId.isValid(id))
-    {
-        shipment = null;
-    } else {
-        shipment = repository.findById(id);
-    }
-
-    request.setAttribute("shipment", shipment);
-%>
 <t:layout>
     <jsp:body>
-        <div class ="container">
-            <form method="POST">
-                <div clas="form-group">
+        <div class="container">
+            <form action="?action=shipment&type=update" method="POST">
+                <label>
+                    Please enter shipment id
+                </label>
+                <input type="text" class="form-control" id="id" name="id" placeholder="Enter ID" required>
+                <div class="form-group">
                     <label>
-                        Please enter shipment ID
+                        Name
                     </label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" required>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="id", name="id", placeholder="Enter ID">
+                    <label>
+                        Shipment method
+                    </label>
+                    <select name="method" class="form-control">
+                        <option value="free">Free (10 ~ 14 days)</option>
+                        <option value="standard">Standard (5 ~ 7 days)</option>
+                        <option value="express">Express (2 ~ 5 days)</option>
+                    </select>
                 </div>
                 <div class="form-group">
-                    <input type="submit" id="submit" name="submit" value="submit">
+                    <label>
+                        Address
+                    </label>
+                    <input type="text" class="form-control" id="address" name="address" placeholder="Enter Address" required>
                 </div>
-        </div>
-        </form>
-        <c:if test="${shipemnt == null}">
-            Shipment ID is not found !
-        </c:if>
-        <c:if test="${shipment != null}">
-            <div class="form-group">
-                Shipment ID: ${shipment.id}
-            </div>
-            <div class="form-group">
-                Shipment method: ${shipment.method}
-            </div>
-            <div class="form-group">
-                Shipment address: ${shipment.address.address}
-            </div>
-            <div class="form-group">
-                Shipment postcode: ${shipment.address.postcode}
-            </div>
-            <div class="form-group">
-                Estimated date: ${shipment.date}
-            </div>
-        </c:if>
+                <div class="form-group">
+                    <label>
+                        Post code
+                    </label>
+                    <input type="text" class="form-control" id="postcode" name="postcode" placeholder="Enter postcode" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
         </div>
     </jsp:body>
 </t:layout>
