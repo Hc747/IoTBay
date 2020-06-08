@@ -30,7 +30,7 @@ public class ShoppingCartAction extends Action {
 
         //Check the type of input posted from the view
         switch (type.toLowerCase()) {
-            //Invoke the appropriate function based in the add function
+            //Invoke the appropriate function based function
             case "add": add(ctx, session, request); break;
             case "remove": remove(ctx, session, request); break;
             case "delete": delete(ctx, session, request); break;
@@ -39,9 +39,10 @@ public class ShoppingCartAction extends Action {
     }
 
     @SneakyThrows
+    //Get a product to the shopping cart
     private Product getProduct(IoTBayApplicationContext ctx, HttpServletRequest request) {
         final String identifier = request.getParameter("product");
-
+        //Validate if the product id is valid
         if (isNullOrEmpty(identifier) || !ObjectId.isValid(identifier)) {
             reject("Invalid product ID supplied.");
         }
@@ -50,12 +51,16 @@ public class ShoppingCartAction extends Action {
     }
 
     @SneakyThrows
+    //Add a product to the shopping cart
     private void add(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
         final Product product = getProduct(ctx, request);
 
+        //validate the product you need to add to the shopping cart
         if (product == null) {
+            //Display error message and prevent the product from being added
             reject("Unable to find product to add to your cart.");
         }
+
 
         final ShoppingCart cart = ShoppingCartUtil.get(session);
 
@@ -67,21 +72,27 @@ public class ShoppingCartAction extends Action {
     }
 
     @SneakyThrows
+    //removes an object from the shopping cart
     private void remove(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
         final Product product = getProduct(ctx, request);
 
+        //Checks the product in the shopping cart
         if (product == null) {
+            //Prevent from removing product because there are no product
             reject("Unable to find product to remove from your cart.");
         }
 
+
         final ShoppingCart cart = ShoppingCartUtil.get(session);
 
+        //Validate if the product is in the cart
         if (!cart.contains(product)) {
             reject("Cart does not contain " + product.getName() + ".");
         }
 
         final int quantity = cart.quantity(product);
 
+        //invoke remove cart
         cart.remove(product);
 
         ShoppingCartUtil.set(session, cart);
@@ -90,6 +101,7 @@ public class ShoppingCartAction extends Action {
     }
 
     @SneakyThrows
+    //Removes a product from the shopping cart
     private void delete(IoTBayApplicationContext ctx, HttpSession session, HttpServletRequest request) {
         final Product product = getProduct(ctx, request);
 
@@ -103,12 +115,14 @@ public class ShoppingCartAction extends Action {
             reject("Cart does not contain " + product.getName() + ".");
         }
 
+        //Quantity of the product in the cart
         final int quantity = cart.quantity(product);
 
         cart.remove(product);
 
         ShoppingCartUtil.set(session, cart);
 
+        //Display message
         message = "All " + quantity + " " + product.getName() + " were removed from your cart.";
     }
 }

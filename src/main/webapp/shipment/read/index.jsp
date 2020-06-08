@@ -29,32 +29,55 @@ if(isNullOrEmpty(id) || !ObjectId.isValid(id))
         request.setAttribute("shipment", shipment);
 %>
 <t:layout>
-    <jsp:body>
-<div class ="container">
+<html>
+<style>
+    table {
+        font-family: Arial;
+        border-collapse: collapse;
+        width: 30%;
+    }
+    td{
+        border: 1px solid;
+        text-align: left;
+        padding: 2px;
+    }
+    tr:nth-child(even)
+    {
+        background-color: darkgrey;
+    }
+    tr:nth-child(odd)
+    {
+        background-color: burlywood;
+    }
+    p
+    {
+        color: white;
+        font-size: 16px;
+    }
+    input[type=submit]
+    {
+        background-color: dodgerblue;
+        color: white;
+        border: none;
+    }
+</style>
+<body>
     <form method="POST">
         <label>
-            Please enter shipment ID
+            <h3>Please enter valid shipment ID</h3>
         </label>
+        <br>
         <input type="text" id="id", name="id", placeholder="Enter ID">
         <input type="submit" id="submit" name="submit" value="submit">
     </form>
-    <c:if test="${shipment != null}">
-        <div class="form-group">
-            Shipment ID: ${shipment.id}
-        </div>
-        <div class="form-group">
-            Shipment method: ${shipment.method}
-        </div>
-        <div class="form-group">
-            Shipment address: ${shipment.address.address}
-        </div>
-        <div class="form-group">
-            Shipment postcode: ${shipment.address.postcode}
-        </div>
-        <div class="form-group">
-            Estimated date: ${shipment.date}
-        </div>
-    </c:if>
-        </div>
-    </jsp:body>
+    <br>
+<table>
+    <tr><td><p>Shipment ID: ${shipment.id}</p></td></tr>
+    <tr><td><p>Shipment method: ${shipment.method}</p></td></tr>
+    <tr><td><p>Shipment address: ${shipment.address.address}</p></td></tr>
+    <tr><td><p>Shipment postcode: ${shipment.address.postcode}</p></td></tr>
+    <tr><td><p>Estimated date: ${shipment.date}</p></td></tr>
+</table>
+</body>
+</html>
 </t:layout>
