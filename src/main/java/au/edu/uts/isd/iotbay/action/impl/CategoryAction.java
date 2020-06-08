@@ -95,7 +95,6 @@ public class CategoryAction extends Action {
         if (deleted == null) {
             reject("Unable to delete the category.");
         }
-
         message = "Successfully deleted the product.";
     }
 

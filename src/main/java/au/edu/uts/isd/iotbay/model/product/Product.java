@@ -23,13 +23,13 @@ public class Product extends IdentifiableModel {
     private int quantity;
     private double price;
 
-    private List<Category> categories;
+    private List<ObjectId> categories;
 
-    public static Product create(String name, String description, int quantity, double price, Category... categories) {
+    public static Product create(String name, String description, int quantity, double price, ObjectId... categories) {
         return new Product(name, description, quantity, price, Arrays.asList(categories));
     }
 
-    public boolean addCategories(Category... categories) {
+    public boolean addCategories(ObjectId... categories) {
         return this.categories.addAll(Arrays.asList(categories));
     }
 

@@ -5,6 +5,7 @@ import au.edu.uts.isd.iotbay.action.Action;
 import au.edu.uts.isd.iotbay.model.category.Category;
 import au.edu.uts.isd.iotbay.model.product.Product;
 import au.edu.uts.isd.iotbay.model.user.User;
+import au.edu.uts.isd.iotbay.repository.category.CategoryRepository;
 import au.edu.uts.isd.iotbay.repository.product.ProductRepository;
 import au.edu.uts.isd.iotbay.util.AuthenticationUtil;
 import lombok.SneakyThrows;
@@ -58,6 +59,7 @@ public class ProductAction extends Action {
         String description = request.getParameter("description");
         String quantityString = request.getParameter("quantity");
         String priceString = request.getParameter("price");
+        String[] categories = request.getParameterValues("categories");
 
         if (isNullOrEmpty(name) || isNullOrEmpty(description) || isNullOrEmpty(quantityString) || isNullOrEmpty(priceString)) {
             reject("You must supply a name, description, quantity and priceString in order to create a product.");
@@ -89,17 +91,28 @@ public class ProductAction extends Action {
         if (price < 0) {
             reject("Product priceString cannot be negative.");
         }
-
+        final CategoryRepository categoryRepository = ctx.getCategories();
         final ProductRepository repository = ctx.getProducts();
-        final Product product = repository.create(Product.create(name, description, quantity, price));
+        Product product = Product.create(name, description, quantity, price);
 
-        if (product == null) {
-            reject("Unable to create product.");
+        for (String category : categories) {
+            if (!(isNullOrEmpty(category))) {
+                if (ObjectId.isValid(category)) {
+                    ObjectId id = new ObjectId(category);
+                    Category newCategory = categoryRepository.findById(id);
+                    if (newCategory != null) {
+                        product.addCategories(id);
+                    }
+                }
+            }
         }
 
+        final Product newProduct = repository.create(product);
+
+        if (newProduct == null) {
+            reject("Unable to create product.");
+        }
         message = "Successfully created product.";
-        session.setAttribute("newProduct", product);
-        //TODO: Account for catagory's.
     }
 
     @SneakyThrows
@@ -133,8 +146,6 @@ public class ProductAction extends Action {
         }
 
         message = "Successfully deleted the product.";
-        session.setAttribute("deletedProduct", deleted);
-        //TODO::Return to a page.
     }
 
     @SneakyThrows
@@ -163,6 +174,7 @@ public class ProductAction extends Action {
         String description = request.getParameter("description");
         String quantityString = request.getParameter("quantity");
         String priceString = request.getParameter("price");
+        String[] categories = request.getParameterValues("categories");
 
         //Validate the input parameters
         if (isNullOrEmpty(name) || isNullOrEmpty(description) || isNullOrEmpty(quantityString) || isNullOrEmpty(priceString)) {
@@ -196,23 +208,31 @@ public class ProductAction extends Action {
         if (price < 0) {
             reject("Product Price was not valid Can't be a negative value");
         }
-
-        //TODO: Account for catagory's etc.
         
         product.setName(name);
         product.setDescription(description);
         product.setQuantity(quantity);
         product.setPrice(price);
 
-        final Product updated = repository.update(product);
+        final CategoryRepository categoryRepository = ctx.getCategories();
+        for (String category : categories) {
+            if (!(isNullOrEmpty(category))) {
+                if (ObjectId.isValid(category)) {
+                    ObjectId id = new ObjectId(category);
+                    Category newCategory = categoryRepository.findById(id);
+                    if (newCategory != null) {
+                        product.addCategories(id);
+                    }
+                }
+            }
+        }
 
+        final Product updated = repository.update(product);
 
         if (updated == null) {
             reject("Unable to update product.");
         }
         message = "Successfully updated product.";
-//        session.setAttribute("updatedProduct", updated);
-        //TODO::Return to product page.
     }
 
 

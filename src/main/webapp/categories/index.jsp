@@ -37,7 +37,7 @@
                     <div class="card">
                         <a href="${home}categories/category/?id=${category.id}" style="align-content: center">
                             <h4 style="text-align: center; color: black">${category.name}</h4>
-                            <p style="text-align: center; color: black">${category.description} items</p>
+                            <p style="text-align: center; color: black">${category.description}</p>
 <%--                            <p style="text-align: center; color: black">${category.productId.size()} items</p>--%>
                         </a>
                     </div>
@@ -45,7 +45,7 @@
             </div>
             <c:if test="${user.getRole().isStaff()}">
                 <div>
-                    <a href="/create">Create a new category.</a>
+                    <a href="${home}/categories/create">Create a new category.</a>
                 </div>
             </c:if>
         </div>
