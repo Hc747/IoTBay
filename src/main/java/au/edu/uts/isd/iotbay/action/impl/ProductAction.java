@@ -59,7 +59,6 @@ public class ProductAction extends Action {
         String description = request.getParameter("description");
         String quantityString = request.getParameter("quantity");
         String priceString = request.getParameter("price");
-        String[] categories = request.getParameterValues("categories");
 
         if (isNullOrEmpty(name) || isNullOrEmpty(description) || isNullOrEmpty(quantityString) || isNullOrEmpty(priceString)) {
             reject("You must supply a name, description, quantity and priceString in order to create a product.");
@@ -91,22 +90,9 @@ public class ProductAction extends Action {
         if (price < 0) {
             reject("Product priceString cannot be negative.");
         }
-        final CategoryRepository categoryRepository = ctx.getCategories();
+
         final ProductRepository repository = ctx.getProducts();
-        Product product = Product.create(name, description, quantity, price);
-
-        for (String category : categories) {
-            if (!(isNullOrEmpty(category))) {
-                if (ObjectId.isValid(category)) {
-                    ObjectId id = new ObjectId(category);
-                    Category newCategory = categoryRepository.findById(id);
-                    if (newCategory != null) {
-                        product.addCategories(id);
-                    }
-                }
-            }
-        }
-
+        final Product product = Product.create(name, description, quantity, price);
         final Product newProduct = repository.create(product);
 
         if (newProduct == null) {

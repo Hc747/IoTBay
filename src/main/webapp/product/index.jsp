@@ -7,6 +7,7 @@
 <%@ page import="au.edu.uts.isd.iotbay.model.user.User" %>
 <%@ page import="static au.edu.uts.isd.iotbay.util.AuthenticationUtil.authenticate" %>
 <%@ page import="au.edu.uts.isd.iotbay.util.AuthenticationUtil" %>
+<%@ page import="au.edu.uts.isd.iotbay.repository.category.CategoryRepository" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -16,6 +17,7 @@
     request.setAttribute("home", Constants.path(false));
     final IoTBayApplicationContext context = IoTBayApplicationContext.getInstance(application);
     final ProductRepository repository = context.getProducts();
+    final CategoryRepository categoryRepository = context.getCategories();
     final String id = request.getParameter("id");
     final Product product;
 
@@ -31,6 +33,7 @@
 //    request.setAttribute("disable_remove", product == null || !cart.contains(product));
 
     request.setAttribute("product", product);
+    request.setAttribute("categoryRepository", categoryRepository);
 %>
 <t:layout>
     <jsp:body>
@@ -81,11 +84,13 @@
                         </div>
                         <br>
                         <h4>Product Categories:</h4>
+                        <div class="card-columns">
                             <c:forEach var="category" items="${product.categories}">
                                 <div class="card">
-                                    <a href="/category/?id=${category.id}">${category.name}</a>
+                                    <a href="${home}categories/category/?id=${category}"><p style="text-align: center; color: black">${categoryRepository.findById(category).getName()}<p></a>
                                 </div>
                             </c:forEach>
+                        </div>
                     </div>
                 </div>
                 <c:if test="${user.getRole().isStaff()}">

@@ -23,6 +23,7 @@
     <jsp:body>
         <div class="container p-3 my-3 bg-dark text-white">
             <h1 style="text-align: center">Create New Product</h1>
+            <p>Please create the product using the table bellow. To assign a category to the product, create the product then edit the product to assign a category.</p>
             <br>
             <form action="?action=product&type=create" method="post">
                 <div class="form-group">
@@ -36,7 +37,6 @@
                         Product Description:
                     </label>
                     <textarea class="form-control" name="description" id="description" rows="3" placeholder="Product Description" required></textarea>
-<%--                    <input id="description" name="description" type="text" placeholder="Product Description" required>--%>
                 </div>
                 <div class="form-group">
                     <label for="quantity">
@@ -49,16 +49,6 @@
                         Product Price:
                     </label>
                     <input class="form-control" id="price" name="price" step="0.01" type="number" placeholder="$0.00" required>
-                </div>
-                <div class="form-group">
-                    <label for="categories">
-                        Product Categories:
-                    </label>
-                    <select multiple class="form-control" id="categories" name="categories">
-                        <c:forEach var="category" items="${categories}">
-                            <option value="${category.id}">${category.name}</option>
-                        </c:forEach>
-                    </select>
                 </div>
                 <div class="container p-3 my-3 bg-dark text-white">
                     <button type="submit" class="btn btn-warning">Confirm Product Create</button>

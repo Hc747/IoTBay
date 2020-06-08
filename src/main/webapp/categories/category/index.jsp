@@ -38,14 +38,14 @@
     } else {
         category = repository.findById(id);
     }
-//    Collection<Product> match = productRepository.findAll(product -> {
-//        if (product.getDescription().equals("condition")){
-//            return true;
-//        }
-//        return false;
-//    });
-//    match.size();
-
+    ObjectId objectId = new ObjectId(id);
+    Collection<Product> match = productRepository.findAll(product -> {
+        if (product.getCategories().contains(objectId)){
+            return true;
+        }
+        return false;
+    });
+    request.setAttribute("match", match);
     request.setAttribute("category", category);
 
 %>
@@ -68,7 +68,7 @@
             <c:if test="${category != null}">
                 <div class="container p-3 my-3 bg-dark text-white">
                     <h1 style="text-align: center">${category.name}</h1>
-<%--                    <h3 style="text-align: center" >Products in Category: ${category.productid.size()}</h3>--%>
+                    <h3 style="text-align: center" >Products in Category: ${match.size()}</h3>
                 </div>
 
                 <div class="container p-3 my-3 bg-dark text-white">
@@ -80,11 +80,14 @@
                         <br>
                         <h4>Category Products:</h4>
                         <div class="card-columns">
-<%--                            <c:forEach var="product" items="${category.productid}">--%>
-<%--                                <div class="card">--%>
-<%--                                    <a href="/product/?id=${product}">${}</a>--%>
-<%--                                </div>--%>
-<%--                            </c:forEach>--%>
+                            <c:forEach var="product" items="${match}">
+                                <div class="card">
+                                    <a href="${home}product/?id=${product.id}">
+                                        <h4 style="text-align: center; color: black">${product.name}</h4>
+                                        <p style="text-align: center; color: black">$${product.formatPrice()}</p>
+                                    </a>
+                                </div>
+                            </c:forEach>
                         </div>
                     </div>
                 </div>
