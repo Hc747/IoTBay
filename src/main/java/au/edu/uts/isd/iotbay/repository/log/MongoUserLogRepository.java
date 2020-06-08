@@ -24,6 +24,7 @@ public class MongoUserLogRepository extends MongoRepository<UserLog> implements 
         return findAll(eq("user._id", user.getId()));
     }
 
+    //retrieves the user logs by the user and inputted date
     @Override
     public Collection<UserLog> findByUserBeforeDate(User user, LocalDate date) {
         return findAll(Filters.and(eq("user._id", user.getId()), lt("date", date)));
