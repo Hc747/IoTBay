@@ -5,9 +5,9 @@
   Time: 3:40 pm
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page import="au.edu.uts.isd.iotbay.model.shipment.Shipment" %>
+<%@ page import="au.edu.uts.isd.iotbay.model.order.Order" %>
 <%@ page import="au.edu.uts.isd.iotbay.IoTBayApplicationContext" %>
-<%@ page import="au.edu.uts.isd.iotbay.repository.shipment.ShipmentRepository" %>
+<%@ page import="au.edu.uts.isd.iotbay.repository.order.OrderRepository" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ page import="org.bson.types.ObjectId" %>
@@ -15,18 +15,18 @@
 <%@ page import="static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty" %>
 <%
 final IoTBayApplicationContext ctx = IoTBayApplicationContext.getInstance(application);
-final ShipmentRepository repository = ctx.getShipments();
+final OrderRepository repository = ctx.getOrders();
 final String id = request.getParameter("id");
-final Shipment shipment;
+final Order order;
 
 if(isNullOrEmpty(id) || !ObjectId.isValid(id))
 {
-    shipment = null;
+    order = null;
 } else {
-    shipment = repository.findById(id);
+    order = repository.findById(id);
 }
 
-        request.setAttribute("shipment", shipment);
+        request.setAttribute("order", order);
 %>
 <t:layout>
     <jsp:body>
@@ -38,21 +38,21 @@ if(isNullOrEmpty(id) || !ObjectId.isValid(id))
         <input type="text" id="id", name="id", placeholder="Enter ID">
         <input type="submit" id="submit" name="submit" value="submit">
     </form>
-    <c:if test="${shipment != null}">
+    <c:if test="${order != null}">
         <div class="form-group">
-            Shipment ID: ${shipment.id}
+            Shipment ID: ${order.id}
         </div>
         <div class="form-group">
-            Shipment method: ${shipment.method}
+            Order Status: ${order.status}
         </div>
         <div class="form-group">
-            Shipment address: ${shipment.address.address}
+            Order Amount: ${order.invoice.amount}
         </div>
         <div class="form-group">
-            Shipment postcode: ${shipment.address.postcode}
+            Ordered By: ${order.invoice.firstName}
         </div>
         <div class="form-group">
-            Estimated date: ${shipment.date}
+            Order Placed On: ${order.date}
         </div>
     </c:if>
         </div>
