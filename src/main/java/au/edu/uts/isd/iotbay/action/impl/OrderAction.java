@@ -84,12 +84,18 @@ public class OrderAction extends Action {
         final ShoppingCart cart = ShoppingCartUtil.get(session);
         final User user = AuthenticationUtil.user(session);
         final boolean guest = user == null;
+        String email = request.getParameter("email");
+        String name = request.getParameter("name");
+        String paymentMethod = request.getParameter("payment_method");
 
         if (cart.isEmpty()) {
             reject("Your cart is empty.");
         }
 
         //TODO: validate input
+        if (isNullOrEmpty(name) || isNullOrEmpty(email)) {
+            reject("You must supply an email address or name.");
+        }
         final Invoice invoice = ShoppingCartUtil.invoice(cart, request.getParameter("email"), request.getParameter("name"));
 
         final PaymentMethod payment;
