@@ -26,7 +26,7 @@
                     <input type="text" class="form-control" name="holder" id="holder" value="${user.name}" required>
                 </div>
                 <div class="form-group">
-                    <label for="expiration">Role: </label>
+                    <label for="expiration">Expiration Date: </label>
                     <input type="date" class="form-control" name="expiration" id="expiration" required>
                 </div>
                 <div class="form-group">
