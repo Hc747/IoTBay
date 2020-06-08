@@ -40,6 +40,7 @@
                     <button type="submit" class="btn btn-primary">Submit Order</button>
                 </div>
             </form>
+            <a href="/iotbay/shipment"><button style="background-color: dodgerblue; border: white; color: white; padding: 5px; border-radius: 2px">Go to Shipment</button></a>
         </div>
     </jsp:body>
 </t:layout>
