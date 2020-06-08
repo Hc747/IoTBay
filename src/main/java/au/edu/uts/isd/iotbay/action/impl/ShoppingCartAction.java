@@ -73,11 +73,17 @@ public class ShoppingCartAction extends Action {
 
         final ShoppingCart cart = ShoppingCartUtil.get(session);
 
+        if (!cart.contains(product)) {
+            reject("Cart does not contain " + product.getName() + ".");
+        }
+
+        final int quantity = cart.quantity(product);
+
         cart.remove(product);
 
         ShoppingCartUtil.set(session, cart);
 
-        message = "1 of " + cart.quantity(product) + " " + product.getName() + " was removed from your cart.";
+        message = "1 of " + quantity + " " + product.getName() + " was removed from your cart.";
     }
 
     @SneakyThrows
@@ -90,10 +96,16 @@ public class ShoppingCartAction extends Action {
 
         final ShoppingCart cart = ShoppingCartUtil.get(session);
 
+        if (!cart.contains(product)) {
+            reject("Cart does not contain " + product.getName() + ".");
+        }
+
+        final int quantity = cart.quantity(product);
+
         cart.remove(product);
 
         ShoppingCartUtil.set(session, cart);
 
-        message = "All " + cart.quantity(product) + " " + product.getName() + " were removed from your cart.";
+        message = "All " + quantity + " " + product.getName() + " were removed from your cart.";
     }
 }

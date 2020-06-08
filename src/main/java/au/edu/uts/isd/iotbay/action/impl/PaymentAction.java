@@ -19,7 +19,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 
+import static au.edu.uts.isd.iotbay.util.Validator.Patterns.*;
 import static au.edu.uts.isd.iotbay.util.Validator.isNullOrEmpty;
+import static au.edu.uts.isd.iotbay.util.Validator.matches;
 
 public class PaymentAction extends Action {
 
@@ -60,10 +62,38 @@ public class PaymentAction extends Action {
                 String holder = request.getParameter("holder");
                 String cvv = request.getParameter("cvv");
                 String date = request.getParameter("expiration");
-                method = new CreditCardPaymentMethod(null, number, holder, cvv, LocalDate.parse(date));
+
+                if (isNullOrEmpty(number) || isNullOrEmpty(holder) || isNullOrEmpty(cvv) || isNullOrEmpty(date)) {
+                    reject("You must provide a credit card number, holder, CVV and expiration date in order to add this payment method.");
+                }
+
+                if (!matches(CREDIT_CARD_PATTERN, number)) {
+                    reject("The credit card number provided did not pass validation.");
+                }
+
+                if (!matches(CVV_PATTERN, cvv)) {
+                    reject("The CVV provided did not pass validation.");
+                }
+
+                if (!matches(NAME_PATTERN, holder)) {
+                    reject("The holder name provided did not pass validation.");
+                }
+
+                //TODO: regex validation
+                try {
+                    method = new CreditCardPaymentMethod(null, number, holder, cvv, LocalDate.parse(date));
+                } catch (Exception e) {
+                    reject("The expiration date provided did not pass validation.");
+                    return null;
+                }
                 break;
             case PAYPAL:
                 String token = request.getParameter("token");
+
+                if (isNullOrEmpty(token)) {
+                    reject("You must provide a PayPal token in order to add this payment method.");
+                }
+
                 method = new PaypalPaymentMethod(null, token);
                 break;
             default: reject("Unhandled payment method type: " + type); return null;
