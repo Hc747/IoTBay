@@ -30,6 +30,7 @@
         <filter-name>authenticated</filter-name>
         <url-pattern>/profile/*</url-pattern>
         <url-pattern>/payment/*</url-pattern>
+        <url-pattern>/passwordUpdate/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>unauthenticated</filter-name>

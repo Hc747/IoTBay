@@ -23,7 +23,7 @@
         date = Date.from(Instant.now());
 
     } else {
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat format = new SimpleDateFormat("yyyy-mm-dd");
         try {
             date = format.parse(input);
         } catch (Exception e) {
@@ -41,12 +41,16 @@
         <div class="container d-flex justify-content-between">
             <a href="payment/">View payment details.</a>
             <a href="payment/history/">View payment history.</a>
+            <a href="passwordUpdate/">Update Password.</a>
 <%--            <a href="userlogs/">View your activity logs.</a>--%>
         </div>
         <br>
 
         <div class="container d-flex justify-content-between">
             <form action="?action=user&type=update" method="post">
+                <div class="form-group">
+                    <h4>Account details</h4>
+                </div>
                 <div class="form-group">
                     <label for="name">Full Name: </label>
                     <input type="text" class="form-control" name="name" id="name" value="${user.name}">
@@ -67,9 +71,6 @@
                     <p><small><b>Account created: </b>${user.created}</small></p>
                 </div>
                 <div class="form-group">
-                    <p><small><b>Account verified: </b>${user.verified}</small></p>
-                </div>
-                <div class="form-group">
                     <label for="disable">Disable account: </label>
                     <input type="checkbox" name="disable" id="disable">
                 </div>
@@ -78,12 +79,15 @@
                 </div>
             </form>
         </div>
+
+        <br>
+        <br>
         <div class="container d-flex justify-content-between">
             <form action="?date=${date}" method="get">
                 <div class="form-group">
                     <h3>View activity logs</h3>
                     <label for="logDate">Up to date:</label>
-                    <input id="logDate" name="date" type="date" value="${date}">
+                    <input id="logDate" name="date" type="date">
                 </div>
                 <div class="form-group">
                     <input class="submit" type="submit">
@@ -94,18 +98,22 @@
             <c:if test="${date != null}">
                 <c:if test="${not logs.isEmpty()}">
                 <div class="container">
-                    <div class="row">
-                        <div class="col-1">#</div>
-                        <div class="col-1">Type</div>
-                        <div class="col-1">Timestamp</div>
-                    </div>
+                    <table class="table">
+                    <thead>
+                        <th scope="col">#</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Date</th>
+                    </thead>
+                        <tbody>
                     <c:forEach var="log" items="${logs}">
-                        <div class="row">
-                            <div class="col-1">${log.id}</div>
-                            <div class="col-1">${log.type}</div>
-                            <div class="col-1">${log.date}</div>
-                        </div>
+                        <tr>
+                            <td>${log.id}</td>
+                            <td>${log.type}</td>
+                            <td>${log.date}</td>
+                        </tr>
                     </c:forEach>
+                        </tbody>
+                    </table>
                 </c:if>
             </c:if>
         </div>
